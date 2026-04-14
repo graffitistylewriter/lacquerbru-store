@@ -1,0 +1,19 @@
+{
+  "name": "lacquerbru-store",
+  "version": "1.0.0",
+  "description": "An e-commerce store for lacquer products.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {},
+  "author": "graffitistylewriter",
+  "license": "MIT"
+}
