@@ -24,7 +24,7 @@
 
         {% for product in featured_collection.products limit: section.settings.products_to_show %}
 
-          {% render 'product-card', product: product %}
+          {% render 'product-card', card: product %}
 
         {% endfor %}
 

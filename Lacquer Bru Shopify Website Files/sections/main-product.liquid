@@ -29,10 +29,13 @@
                   assign image_loading = 'eager'
                 endif
               %}
+              {% assign img_height = 1600.0 | divided_by: media.aspect_ratio | round %}
               <img
                 src="{{ media | image_url: width: 1600 }}"
                 alt="{{ media.alt | default: product.title | escape }}"
                 loading="{{ image_loading }}"
+                width="1600"
+                height="{{ img_height }}"
                 class="lb-product-gallery__image"
                 data-lb-product-image="{{ forloop.index0 }}"
               >
@@ -50,10 +53,13 @@
                   aria-label="Show image {{ forloop.index }} for {{ product.title | escape }}"
                   data-lb-product-thumb="{{ forloop.index0 }}"
                 >
+                  {% assign thumb_height = 180.0 | divided_by: media.aspect_ratio | round %}
                   <img
                     src="{{ media | image_url: width: 180 }}"
                     alt="{{ media.alt | default: product.title | escape }}"
                     loading="lazy"
+                    width="180"
+                    height="{{ thumb_height }}"
                   >
                 </button>
               {% endif %}

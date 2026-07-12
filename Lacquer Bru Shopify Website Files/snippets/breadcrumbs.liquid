@@ -1,0 +1,32 @@
+{% comment %}
+  Renders breadcrumb navigation based on the current page type.
+  Accepts an optional `fallback_collection` param for product pages
+  reached outside of a collection context.
+{% endcomment %}
+
+<nav class="lb-breadcrumbs" aria-label="Breadcrumb">
+  <a href="{{ routes.root_url }}">Home</a>
+
+  {% case request.page_type %}
+    {% when 'product' %}
+      {% assign product_collection = collection | default: fallback_collection %}
+      {% if product_collection != blank %}
+        <a href="{{ product_collection.url }}">{{ product_collection.title }}</a>
+      {% endif %}
+      <span aria-current="page">{{ product.title }}</span>
+
+    {% when 'collection' %}
+      <span aria-current="page">{{ collection.title }}</span>
+
+    {% when 'search' %}
+      <span aria-current="page">Search Results</span>
+
+    {% when 'page' %}
+      <span aria-current="page">{{ page.title }}</span>
+
+    {% else %}
+      {% if template contains 'cart' %}
+        <span aria-current="page">Cart</span>
+      {% endif %}
+  {% endcase %}
+</nav>
