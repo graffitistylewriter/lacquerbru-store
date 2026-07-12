@@ -1,0 +1,130 @@
+<section class="lb-hero">
+
+  {% if section.settings.bg_image != blank %}
+    <div class="lb-hero__bg">
+      {{
+        section.settings.bg_image
+        | image_url: width: 2000
+        | image_tag: class: 'lb-hero__bg-img'
+      }}
+    </div>
+  {% endif %}
+
+  <div class="lb-hero__overlay" aria-hidden="true"></div>
+
+  <div class="lb-hero__content">
+
+    {% if section.settings.eyebrow != blank %}
+      <span class="lb-hero__eyebrow">
+        {{ section.settings.eyebrow }}
+      </span>
+    {% endif %}
+
+    <h1 class="lb-hero__title">
+
+      {{ section.settings.heading }}
+
+      {% if section.settings.heading_em != blank %}
+        <em>{{ section.settings.heading_em }}</em>
+      {% endif %}
+
+    </h1>
+
+    {% if section.settings.subtext != blank %}
+      <p class="lb-hero__subtext">
+        {{ section.settings.subtext }}
+      </p>
+    {% endif %}
+
+    <div class="lb-hero__buttons">
+
+      {% if section.settings.button_primary_text != blank %}
+        <a href="{{ section.settings.button_primary_link }}" class="lb-btn lb-btn--primary">
+          {{ section.settings.button_primary_text }}
+        </a>
+      {% endif %}
+
+      {% if section.settings.button_secondary_text != blank %}
+        <a href="{{ section.settings.button_secondary_link }}" class="lb-btn lb-btn--ghost">
+          {{ section.settings.button_secondary_text }}
+        </a>
+      {% endif %}
+
+    </div>
+
+  </div>
+
+  <div class="lb-hero__scroll" aria-hidden="true">
+    <div class="lb-hero__scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "LB Hero",
+
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "If Not Unique, Why Bother"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Street Artist."
+    },
+    {
+      "type": "text",
+      "id": "heading_em",
+      "label": "Emphasised Heading",
+      "default": "Digital Creator."
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Graffiti murals, digital art, and creative assets born from 16 years of aerosol culture in Cape Town."
+    },
+
+    {
+      "type": "text",
+      "id": "button_primary_text",
+      "label": "Primary Button Text",
+      "default": "Shop the Collection"
+    },
+    {
+      "type": "url",
+      "id": "button_primary_link",
+      "label": "Primary Button Link"
+    },
+
+    {
+      "type": "text",
+      "id": "button_secondary_text",
+      "label": "Secondary Button Text",
+      "default": "Commission Inquiry"
+    },
+    {
+      "type": "url",
+      "id": "button_secondary_link",
+      "label": "Secondary Button Link"
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "LB Hero"
+    }
+  ]
+}
+{% endschema %}

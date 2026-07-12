@@ -1,0 +1,21 @@
+/* ======================================
+   GLOBAL ANIMATIONS
+====================================== */
+
+.fade-in {
+
+  opacity: 0;
+
+  transform: translateY(30px);
+
+  transition:
+    opacity .6s ease,
+    transform .6s ease;
+}
+
+.fade-in.visible {
+
+  opacity: 1;
+
+  transform: translateY(0);
+}

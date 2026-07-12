@@ -1,0 +1,21 @@
+[
+  {
+    "name": "Theme Info",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Lacquer Bru custom Shopify theme."
+      }
+    ]
+  },
+  {
+    "name": "Brand Assets",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      }
+    ]
+  }
+]

@@ -1,0 +1,50 @@
+<section class="lb-product-main">
+
+  <div class="lb-product-main__media">
+    {% if product.featured_image %}
+      {{
+        product.featured_image
+        | image_url: width: 1600
+        | image_tag: loading: 'eager'
+      }}
+    {% endif %}
+  </div>
+
+  <div class="lb-product-main__content">
+
+    <p class="lb-kicker">{{ product.type | default: 'Shop' }}</p>
+    <h1>{{ product.title }}</h1>
+    <p class="lb-product-main__price">{{ product.price | money }}</p>
+
+    {% if product.description != blank %}
+      <div class="lb-product-main__description">
+        {{ product.description }}
+      </div>
+    {% endif %}
+
+    {% form 'product', product %}
+      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+      <button
+        type="submit"
+        class="lb-btn"
+        {% unless product.available %}disabled{% endunless %}
+      >
+        {% if product.available %}
+          Add To Cart
+        {% else %}
+          Sold Out
+        {% endif %}
+      </button>
+    {% endform %}
+
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "Main Product",
+  "settings": []
+}
+{% endschema %}

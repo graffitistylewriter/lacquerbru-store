@@ -1,0 +1,61 @@
+<nav id="nb" class="lb-site-nav">
+
+  <a href="{{ routes.root_url }}" class="nav-logo" aria-label="{{ shop.name }}">
+    <span class="nav-logo-top">Lacquer</span>
+    <span class="nav-logo-bot">BRU</span>
+  </a>
+
+  <div class="nav-links">
+    {% if section.settings.menu != blank %}
+      {% for link in section.settings.menu.links %}
+        <a href="{{ link.url }}">{{ link.title }}</a>
+      {% endfor %}
+    {% else %}
+      <a href="{{ routes.root_url }}">Home</a>
+      <a href="/pages/gallery">Gallery</a>
+      <a href="/pages/about">About</a>
+      <a href="/pages/featured-projects">Projects</a>
+      <a href="/pages/shop">Shop</a>
+      <a href="/pages/contact">Contact</a>
+      <a href="/pages/commission" class="nav-cta">Commission</a>
+    {% endif %}
+  </div>
+
+  <button class="hamburger" type="button" aria-label="Open menu" aria-controls="mm" aria-expanded="false" data-lb-menu-open>
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+</nav>
+
+<div class="mobile-menu" id="mm" aria-hidden="true">
+  <button class="mobile-close" type="button" aria-label="Close menu" data-lb-menu-close>&times;</button>
+
+  {% if section.settings.menu != blank %}
+    {% for link in section.settings.menu.links %}
+      <a href="{{ link.url }}">{{ link.title }}</a>
+    {% endfor %}
+  {% else %}
+    <a href="{{ routes.root_url }}">Home</a>
+    <a href="/pages/gallery">Gallery</a>
+    <a href="/pages/about">About</a>
+    <a href="/pages/featured-projects">Projects</a>
+    <a href="/pages/shop">Shop</a>
+    <a href="/pages/contact">Contact</a>
+    <a href="/pages/commission">Commission</a>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "LB Header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Navigation Menu"
+    }
+  ]
+}
+{% endschema %}

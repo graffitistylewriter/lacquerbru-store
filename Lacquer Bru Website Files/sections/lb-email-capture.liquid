@@ -1,0 +1,59 @@
+<section class="lb-email-capture">
+
+  <div class="lb-email-capture__inner">
+
+    <h2>{{ section.settings.heading }}</h2>
+
+    <p>{{ section.settings.subheading }}</p>
+
+    {% form 'customer' %}
+
+      <input
+        type="email"
+        name="contact[email]"
+        placeholder="Enter your email"
+        required
+      >
+
+      <button type="submit">
+        {{ section.settings.button_text }}
+      </button>
+
+    {% endform %}
+
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "LB Email Capture",
+
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Join The Studio List"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Get updates, resources and project news."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Subscribe"
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "LB Email Capture"
+    }
+  ]
+}
+{% endschema %}

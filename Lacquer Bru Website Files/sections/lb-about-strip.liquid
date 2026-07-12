@@ -1,0 +1,59 @@
+<section class="lb-about-strip">
+
+  <div class="lb-about-strip__content">
+
+    <h2>{{ section.settings.heading }}</h2>
+
+    <div class="lb-about-strip__text">
+      {{ section.settings.content }}
+    </div>
+
+    {% if section.settings.button_text != blank %}
+      <a
+        href="{{ section.settings.button_link }}"
+        class="lb-btn"
+      >
+        {{ section.settings.button_text }}
+      </a>
+    {% endif %}
+
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "LB About Strip",
+
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "About Lacquer Bru"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Learn More"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "LB About Strip"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,51 @@
+<section class="lb-cart-main">
+
+  <header class="lb-cart-main__header">
+    <p class="lb-kicker">Checkout</p>
+    <h1>Your Cart</h1>
+  </header>
+
+  {% if cart.item_count > 0 %}
+    <form action="{{ routes.cart_url }}" method="post" class="lb-cart-main__form">
+      {% for item in cart.items %}
+        <article class="lb-cart-item">
+          {% if item.image %}
+            {{
+              item.image
+              | image_url: width: 300
+              | image_tag: loading: 'lazy'
+            }}
+          {% endif %}
+
+          <div>
+            <h3>{{ item.product.title }}</h3>
+            <p>{{ item.final_line_price | money }}</p>
+            <input
+              type="number"
+              name="updates[]"
+              value="{{ item.quantity }}"
+              min="0"
+              aria-label="Quantity for {{ item.product.title | escape }}"
+            >
+          </div>
+        </article>
+      {% endfor %}
+
+      <div class="lb-cart-main__summary">
+        <p>Total: {{ cart.total_price | money }}</p>
+        <button type="submit" name="update" class="lb-btn lb-btn--ghost">Update</button>
+        <button type="submit" name="checkout" class="lb-btn">Checkout</button>
+      </div>
+    </form>
+  {% else %}
+    <p class="lb-empty-state">Your cart is currently empty.</p>
+  {% endif %}
+
+</section>
+
+{% schema %}
+{
+  "name": "Main Cart",
+  "settings": []
+}
+{% endschema %}

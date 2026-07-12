@@ -1,0 +1,18 @@
+<section class="lb-page-main">
+  <div class="lb-page-main__inner">
+    <h1>{{ page.title }}</h1>
+
+    {% if page.content != blank %}
+      <div class="lb-page-main__content">
+        {{ page.content }}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main Page",
+  "settings": []
+}
+{% endschema %}

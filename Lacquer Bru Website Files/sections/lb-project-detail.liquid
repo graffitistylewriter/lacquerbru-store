@@ -1,0 +1,82 @@
+{% assign project = metaobject %}
+{% assign title = project.title.value | default: project.title %}
+{% assign category = project.category.value | default: project.category %}
+{% assign summary = project.summary.value | default: project.summary %}
+{% assign story = project.story %}
+{% assign client = project.client.value | default: project.client %}
+{% assign completion_date = project.completion_date.value | default: project.completion_date %}
+{% assign featured_image = project.featured_image.value | default: project.featured_image %}
+{% assign gallery = project.gallery.value | default: project.gallery %}
+
+<article class="lb-project-detail">
+
+  <header class="lb-project-detail__hero">
+
+    {% if featured_image != blank %}
+      <div class="lb-project-detail__media">
+        {{
+          featured_image
+          | image_url: width: 2200
+          | image_tag: class: 'lb-project-detail__image', loading: 'eager'
+        }}
+      </div>
+    {% endif %}
+
+    <div class="lb-project-detail__intro">
+
+      {% if category != blank %}
+        <p class="lb-kicker">{{ category }}</p>
+      {% endif %}
+
+      <h1>{{ title }}</h1>
+
+      {% if summary != blank %}
+        <p class="lb-project-detail__summary">{{ summary }}</p>
+      {% endif %}
+
+      <dl class="lb-project-detail__meta">
+        {% if client != blank %}
+          <div>
+            <dt>Client</dt>
+            <dd>{{ client }}</dd>
+          </div>
+        {% endif %}
+
+        {% if completion_date != blank %}
+          <div>
+            <dt>Completed</dt>
+            <dd>{{ completion_date | date: '%B %Y' }}</dd>
+          </div>
+        {% endif %}
+      </dl>
+
+    </div>
+
+  </header>
+
+  {% if story != blank %}
+    <div class="lb-project-detail__story">
+      {{ story | metafield_tag }}
+    </div>
+  {% endif %}
+
+  {% if gallery != blank %}
+    <div class="lb-project-detail__gallery">
+      {% for image in gallery %}
+        {{
+          image
+          | image_url: width: 1400
+          | image_tag: class: 'lb-project-detail__gallery-image', loading: 'lazy'
+        }}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+</article>
+
+{% schema %}
+{
+  "name": "LB Project Detail",
+  "settings": []
+}
+{% endschema %}

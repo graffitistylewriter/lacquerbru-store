@@ -1,0 +1,105 @@
+<section class="lb-blueprint-page lb-blueprint-page--contact">
+
+
+<div class="ct-hero">
+  <div class="ct-hero-bg"></div>
+  <div class="ct-hero-ol"></div>
+  <div class="ct-hero-c">
+    <h1 class="ct-title">Get In Touch</h1>
+    <p class="ct-tag">howzit@lacquerbru.co.za &middot; +27 65 665 6693</p>
+  </div>
+</div>
+
+<div class="marquee-wrap"><div class="marquee-track"><span class="mi">Graffiti Murals</span><span class="ms"> &middot; </span><span class="mi">Digital Art</span><span class="ms"> &middot; </span><span class="mi">Brush Packs</span><span class="ms"> &middot; </span><span class="mi">Textured Finishes</span><span class="ms"> &middot; </span><span class="mi">Commission Work</span><span class="ms"> &middot; </span><span class="mi">Cape Town</span><span class="ms"> &middot; </span><span class="mi">Aerosoul</span><span class="ms"> &middot; </span><span class="mi">16 Years Experience</span><span class="ms"> &middot; </span><span class="mi">Mural Painting</span><span class="ms"> &middot; </span><span class="mi">Illustration</span><span class="ms"> &middot; </span><span class="mi">Graffiti Murals</span><span class="ms"> &middot; </span><span class="mi">Digital Art</span><span class="ms"> &middot; </span><span class="mi">Brush Packs</span><span class="ms"> &middot; </span><span class="mi">Textured Finishes</span><span class="ms"> &middot; </span><span class="mi">Commission Work</span><span class="ms"> &middot; </span><span class="mi">Cape Town</span><span class="ms"> &middot; </span><span class="mi">Aerosoul</span><span class="ms"> &middot; </span><span class="mi">16 Years Experience</span><span class="ms"> &middot; </span><span class="mi">Mural Painting</span><span class="ms"> &middot; </span><span class="mi">Illustration</span><span class="ms"> &middot; </span></div></div>
+
+<div class="ct-body">
+  <div class="ct-info">
+    <span class="section-label">Contact</span>
+    <h2 class="section-h2">Let's Talk</h2>
+    <p>Whether you have a project in mind, a question about our work, or just want to connect &mdash; we would love to hear from you. Based in Cape Town and working with clients locally and internationally.</p>
+    <div class="cinfo-item">
+      <span class="cinfo-icon">Emailï¸</span>
+      <div>
+        <span class="cinfo-label">Email</span>
+        <div class="cinfo-val"><a href="mailto:howzit@lacquerbru.co.za">howzit@lacquerbru.co.za</a></div>
+      </div>
+    </div>
+    <div class="cinfo-item">
+      <span class="cinfo-icon">Phone</span>
+      <div>
+        <span class="cinfo-label">Phone &amp; WhatsApp</span>
+        <div class="cinfo-val"><a href="tel:+27656656693">+27 65 665 6693</a><br><span style="font-size:12px;color:var(--muted)">Available Mon&ndash;Fri, 8am&ndash;6pm SAST</span></div>
+      </div>
+    </div>
+    <div class="cinfo-item">
+      <span class="cinfo-icon">Location</span>
+      <div>
+        <span class="cinfo-label">Location</span>
+        <div class="cinfo-val">Cape Town, Western Cape<br>South Africa</div>
+      </div>
+    </div>
+    <div class="cinfo-item">
+      <span class="cinfo-icon">Timeï¸</span>
+      <div>
+        <span class="cinfo-label">Response Time</span>
+        <div class="cinfo-val">We respond to all messages within 24 to 48 hours.</div>
+      </div>
+    </div>
+    <div class="ct-social">
+      <h4>Follow the Work</h4>
+      <div class="soc-links">
+        <a href="https://instagram.com/lacquer_bru" target="_blank" class="soc-link">
+          <span></span>
+          <div>
+            <div class="soc-handle">@lacquer_bru</div>
+            <div class="soc-desc">Studio work, murals, and new releases</div>
+          </div>
+        </a>
+        <a href="https://instagram.com/graffitistylewriter" target="_blank" class="soc-link">
+          <span></span>
+          <div>
+            <div class="soc-handle">@graffitistylewriter</div>
+            <div class="soc-desc">Personal graffiti work and process</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+  {% form 'contact', class: 'ct-form' %}
+    <div class="ct-form-title">Send a Message</div>
+    <p class="ct-form-sub">Use this form for general inquiries, questions about our services, digital products, or anything else. For commission projects please use our <a href="https://lacquerbru.co.za/commission-inquiry" style="color:var(--blue)">dedicated commission inquiry form</a> for the best experience.</p>
+    <div class="fg-row">
+      <div class="fgrp"><label>First Name *</label><input type="text" name="contact[first_name]" placeholder="Your first name" required></div>
+      <div class="fgrp"><label>Last Name *</label><input type="text" name="contact[last_name]" placeholder="Your last name" required></div>
+    </div>
+    <div class="fgrp"><label>Email Address *</label><input type="email" name="contact[email]" placeholder="your@email.com" required></div>
+    <div class="fgrp"><label>Subject *</label>
+      <select name="contact[subject]">
+        <option value="">What is your message about?</option>
+        <option>Commission Inquiry</option>
+        <option>Digital Products</option>
+        <option>Brush Packs</option>
+        <option>Print or Canvas Order</option>
+        <option>General Question</option>
+        <option>Collaboration</option>
+        <option>Press or Media</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="fgrp"><label>Your Message *</label><textarea name="contact[body]" placeholder="Tell us what's on your mind..." required></textarea></div>
+    <button class="form-sbmt" type="submit">Send Message</button>
+  {% endform %}
+</div>
+
+
+
+
+</section>
+
+{% schema %}
+{
+  "name": "LB Blueprint Contact",
+  "settings": []
+}
+{% endschema %}
+

@@ -1,0 +1,175 @@
+{% assign projects = shop.metaobjects.project.values %}
+
+<section class="lb-project-grid">
+
+  <div class="lb-project-grid__header">
+
+    {% if section.settings.eyebrow != blank %}
+      <p class="lb-kicker">{{ section.settings.eyebrow }}</p>
+    {% endif %}
+
+    <h2>{{ section.settings.heading }}</h2>
+
+    {% if section.settings.copy != blank %}
+      <p>{{ section.settings.copy }}</p>
+    {% endif %}
+
+  </div>
+
+  {% if section.settings.show_filters %}
+    <div class="lb-project-grid__filters" data-lb-project-filters>
+      <button class="lb-filter-button is-active" type="button" data-category="all">
+        All
+      </button>
+
+      {% assign categories_string = '' %}
+      {% for project in projects %}
+        {% assign project_category = project.category.value | default: project.category %}
+        {% if project_category != blank %}
+          {% assign category_token = project_category | strip | append: '||' %}
+          {% unless categories_string contains category_token %}
+            {% assign categories_string = categories_string | append: category_token %}
+          {% endunless %}
+        {% endif %}
+      {% endfor %}
+
+      {% assign categories = categories_string | split: '||' %}
+      {% for category in categories %}
+        {% if category != blank %}
+          <button class="lb-filter-button" type="button" data-category="{{ category | handleize }}">
+            {{ category }}
+          </button>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="lb-project-grid__grid" data-lb-project-grid>
+
+    {% assign visible_count = 0 %}
+
+    {% for project in projects %}
+      {% assign project_featured = project.featured.value | default: project.featured %}
+      {% assign project_category = project.category.value | default: project.category %}
+      {% assign project_title = project.title.value | default: project.title %}
+      {% assign project_summary = project.summary.value | default: project.summary %}
+      {% assign project_image = project.featured_image.value | default: project.featured_image %}
+      {% assign project_url = project.system.url | default: project.url %}
+
+      {% if section.settings.only_featured and project_featured != true and project_featured != 'true' %}
+        {% continue %}
+      {% endif %}
+
+      {% if section.settings.category != blank and project_category != section.settings.category %}
+        {% continue %}
+      {% endif %}
+
+      {% assign visible_count = visible_count | plus: 1 %}
+
+      {% if visible_count <= section.settings.limit %}
+        <article class="lb-project-card" data-project-category="{{ project_category | handleize }}">
+
+          {% if project_url != blank %}
+            <a class="lb-project-card__link" href="{{ project_url }}">
+          {% else %}
+            <div class="lb-project-card__link">
+          {% endif %}
+
+            {% if project_image != blank %}
+              {{
+                project_image
+                | image_url: width: 1200
+                | image_tag: class: 'lb-project-card__image', loading: 'lazy'
+              }}
+            {% endif %}
+
+            <div class="lb-project-card__content">
+              {% if project_category != blank %}
+                <p class="lb-project-card__category">{{ project_category }}</p>
+              {% endif %}
+
+              <h3>{{ project_title }}</h3>
+
+              {% if project_summary != blank %}
+                <p>{{ project_summary }}</p>
+              {% endif %}
+            </div>
+
+          {% if project_url != blank %}
+            </a>
+          {% else %}
+            </div>
+          {% endif %}
+
+        </article>
+      {% endif %}
+
+    {% endfor %}
+
+    {% if visible_count == 0 %}
+      <p class="lb-empty-state">
+        Add Project metaobjects in Shopify Admin to populate this section.
+      </p>
+    {% endif %}
+
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "LB Project Grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Portfolio"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Featured Projects"
+    },
+    {
+      "type": "textarea",
+      "id": "copy",
+      "label": "Intro Copy",
+      "default": "Murals, campaigns, installations, and commercial creative work."
+    },
+    {
+      "type": "checkbox",
+      "id": "only_featured",
+      "label": "Only Show Featured Projects",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "category",
+      "label": "Category Filter",
+      "info": "Optional. Must match the Project Category field exactly."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "label": "Show Category Filter Buttons",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "label": "Projects To Show",
+      "min": 3,
+      "max": 24,
+      "step": 1,
+      "default": 6
+    }
+  ],
+  "presets": [
+    {
+      "name": "LB Project Grid"
+    }
+  ]
+}
+{% endschema %}

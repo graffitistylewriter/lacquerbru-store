@@ -1,0 +1,40 @@
+<section class="lb-collection-main">
+
+  <header class="lb-collection-main__header">
+    <p class="lb-kicker">Shop</p>
+    <h1>{{ collection.title }}</h1>
+
+    {% if collection.description != blank %}
+      <div>{{ collection.description }}</div>
+    {% endif %}
+  </header>
+
+  <div class="lb-collection-main__grid">
+    {% for product in collection.products %}
+      <article class="lb-product-card">
+        <a href="{{ product.url }}">
+          {% if product.featured_image %}
+            {{
+              product.featured_image
+              | image_url: width: 900
+              | image_tag: loading: 'lazy'
+            }}
+          {% endif %}
+
+          <h3>{{ product.title }}</h3>
+          <p>{{ product.price | money }}</p>
+        </a>
+      </article>
+    {% else %}
+      <p class="lb-empty-state">Add products to this collection to populate this page.</p>
+    {% endfor %}
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "Main Collection",
+  "settings": []
+}
+{% endschema %}

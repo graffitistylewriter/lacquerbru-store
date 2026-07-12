@@ -1,0 +1,128 @@
+<section class="lb-marquee" aria-label="{{ section.settings.accessibility_label | escape }}">
+
+  <div class="lb-marquee__track">
+
+    {% for repeat in (1..2) %}
+
+      {% for block in section.blocks %}
+
+        {% if block.settings.text != blank %}
+          <span class="lb-marquee__item" {{ block.shopify_attributes }}>
+            {{ block.settings.text }}
+          </span>
+
+          {% unless forloop.last and repeat == 2 %}
+            <span class="lb-marquee__separator" aria-hidden="true">
+              {{ section.settings.separator }}
+            </span>
+          {% endunless %}
+        {% endif %}
+
+      {% endfor %}
+
+    {% endfor %}
+
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "LB Marquee",
+  "settings": [
+    {
+      "type": "text",
+      "id": "accessibility_label",
+      "label": "Accessibility Label",
+      "default": "Lacquer Bru creative services"
+    },
+    {
+      "type": "text",
+      "id": "separator",
+      "label": "Separator",
+      "default": "&middot;"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "marquee_item",
+      "name": "Marquee Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Graffiti Murals"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "LB Marquee",
+      "blocks": [
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Graffiti Murals"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Digital Art"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Brush Packs"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Textured Finishes"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Commission Work"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Cape Town"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Aerosoul"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "16 Years Experience"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Mural Painting"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Illustration"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
