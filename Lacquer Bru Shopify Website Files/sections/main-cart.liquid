@@ -19,6 +19,19 @@
 
           <div>
             <h3>{{ item.product.title }}</h3>
+            {% unless item.product.has_only_default_variant %}
+              <p>{{ item.variant.title }}</p>
+            {% endunless %}
+            {% if item.properties.size > 0 %}
+              <dl class="lb-cart-item__properties">
+                {% for property in item.properties %}
+                  {% unless property.last == blank or property.first.first == '_' %}
+                    <dt>{{ property.first }}</dt>
+                    <dd>{{ property.last }}</dd>
+                  {% endunless %}
+                {% endfor %}
+              </dl>
+            {% endif %}
             <p>{{ item.final_line_price | money }}</p>
             <input
               type="number"
@@ -27,18 +40,25 @@
               min="0"
               aria-label="Quantity for {{ item.product.title | escape }}"
             >
+            <a class="lb-cart-item__remove" href="{{ item.url_to_remove }}">Remove</a>
           </div>
         </article>
       {% endfor %}
 
       <div class="lb-cart-main__summary">
+        {% if section.settings.cart_note != blank %}
+          <p class="lb-cart-main__reassurance">{{ section.settings.cart_note }}</p>
+        {% endif %}
         <p>Total: {{ cart.total_price | money }}</p>
         <button type="submit" name="update" class="lb-btn lb-btn--ghost">Update</button>
         <button type="submit" name="checkout" class="lb-btn">Checkout</button>
       </div>
     </form>
   {% else %}
-    <p class="lb-empty-state">Your cart is currently empty.</p>
+    <div class="lb-empty-state">
+      <p>Your cart is currently empty.</p>
+      <a href="{{ routes.all_products_collection_url }}" class="lb-btn">Browse Shop</a>
+    </div>
   {% endif %}
 
 </section>
@@ -46,6 +66,13 @@
 {% schema %}
 {
   "name": "Main Cart",
-  "settings": []
+  "settings": [
+    {
+      "type": "text",
+      "id": "cart_note",
+      "label": "Cart Note",
+      "info": "Optional message shown above the cart total — e.g. delivery info, return policy, or shipping reassurance. Leave blank to hide."
+    }
+  ]
 }
 {% endschema %}

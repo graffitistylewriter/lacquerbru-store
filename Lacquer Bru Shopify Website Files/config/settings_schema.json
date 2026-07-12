@@ -35,13 +35,13 @@
         "type": "text",
         "id": "business_name",
         "label": "Business Name",
-        "default": "Lacquer Bru"
+        "default": ""
       },
       {
         "type": "textarea",
         "id": "business_tagline",
         "label": "Business Tagline",
-        "default": "Premium Creative Studio"
+        "default": ""
       }
     ]
   },

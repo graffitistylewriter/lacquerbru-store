@@ -1,40 +1,215 @@
-<section class="lb-collection-main">
+{% liquid
+  assign hero_title = collection.metafields.custom.hero_title.value | default: collection.title
+  assign hero_description = collection.metafields.custom.hero_description.value | default: collection.description
+  assign hero_image = collection.metafields.custom.hero_image.value | default: collection.image
+  assign hero_kicker = collection.metafields.custom.hero_kicker.value | default: section.settings.hero_kicker
+  assign seo_intro = collection.metafields.custom.seo_intro
+  assign nav_menu = section.settings.collection_menu
+%}
 
-  <header class="lb-collection-main__header">
-    <p class="lb-kicker">Shop</p>
-    <h1>{{ collection.title }}</h1>
+<section class="lb-shop-main">
+  {% render 'breadcrumbs' %}
 
-    {% if collection.description != blank %}
-      <div>{{ collection.description }}</div>
+  <header class="lb-shop-hero">
+    {% if hero_image != blank %}
+      <div class="lb-shop-hero__bg">
+        {{
+          hero_image
+          | image_url: width: 2200
+          | image_tag:
+            loading: 'eager',
+            class: 'lb-shop-hero__image',
+            sizes: '100vw'
+        }}
+      </div>
     {% endif %}
+
+    <div class="lb-shop-hero__overlay"></div>
+
+    <div class="lb-shop-hero__content">
+      {% if hero_kicker != blank %}
+        <p class="lb-shop-hero__kicker">{{ hero_kicker }}</p>
+      {% endif %}
+
+      <h1>{{ hero_title }}</h1>
+
+      {% if hero_description != blank %}
+        <div class="lb-shop-hero__text">{{ hero_description }}</div>
+      {% endif %}
+    </div>
   </header>
 
-  <div class="lb-collection-main__grid">
-    {% for product in collection.products %}
-      <article class="lb-product-card">
-        <a href="{{ product.url }}">
-          {% if product.featured_image %}
-            {{
-              product.featured_image
-              | image_url: width: 900
-              | image_tag: loading: 'lazy'
-            }}
+  {% if section.settings.show_search %}
+    <div class="lb-shop-search">
+      <form action="{{ routes.search_url }}" method="get" role="search">
+        <input type="hidden" name="type" value="product">
+        <input type="hidden" name="options[prefix]" value="last">
+
+        <label class="visually-hidden" for="ShopSearch-{{ section.id }}">Search products</label>
+        <input
+          id="ShopSearch-{{ section.id }}"
+          type="search"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder="{{ section.settings.search_placeholder | escape }}"
+        >
+
+        <button type="submit">Search</button>
+      </form>
+    </div>
+  {% endif %}
+
+  {% if section.settings.show_collection_nav %}
+    <nav class="lb-shop-cats" aria-label="Shop categories">
+      <a
+        href="{{ routes.all_products_collection_url }}"
+        class="lb-shop-cat{% if collection.handle == 'all' %} is-active{% endif %}"
+        {% if collection.handle == 'all' %}aria-current="page"{% endif %}
+      >
+        All Products
+      </a>
+
+      {% if nav_menu != blank %}
+        {% for link in linklists[nav_menu].links %}
+          {% assign linked_collection = link.object %}
+
+          <a
+            href="{{ link.url }}"
+            class="lb-shop-cat{% if linked_collection.handle == collection.handle or link.url == collection.url %} is-active{% endif %}"
+            {% if linked_collection.handle == collection.handle or link.url == collection.url %}aria-current="page"{% endif %}
+          >
+            {{ linked_collection.metafields.custom.nav_label.value | default: link.title }}
+          </a>
+        {% endfor %}
+      {% else %}
+        {% for shop_collection in collections %}
+          {% unless shop_collection.handle == 'all' or shop_collection.handle == 'frontpage' or shop_collection.all_products_count == 0 %}
+            <a
+              href="{{ shop_collection.url }}"
+              class="lb-shop-cat{% if shop_collection.handle == collection.handle %} is-active{% endif %}"
+              {% if shop_collection.handle == collection.handle %}aria-current="page"{% endif %}
+            >
+              {{ shop_collection.metafields.custom.nav_label.value | default: shop_collection.title }}
+            </a>
+          {% endunless %}
+        {% endfor %}
+      {% endif %}
+    </nav>
+  {% endif %}
+
+  <div class="lb-shop-products">
+    <div class="lb-shop-products__header">
+      <p class="lb-kicker">{{ section.settings.products_kicker }}</p>
+      <h2>{{ collection.title }}</h2>
+      <p>{{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}</p>
+    </div>
+
+    {% paginate collection.products by section.settings.products_per_page %}
+      <div class="lb-collection-main__grid">
+        {% for product in collection.products %}
+          <article class="lb-product-card">
+            <a href="{{ product.url | within: collection }}">
+              <span class="lb-product-card__media">
+                {% if product.featured_image %}
+                  {{
+                    product.featured_image
+                    | image_url: width: 900
+                    | image_tag:
+                      loading: 'lazy',
+                      alt: product.featured_image.alt | default: product.title,
+                      sizes: '(min-width: 960px) 33vw, (min-width: 640px) 50vw, 100vw'
+                  }}
+                {% else %}
+                  {{ 'product-1' | placeholder_svg_tag: 'lb-product-card__placeholder' }}
+                {% endif %}
+              </span>
+
+              <span class="lb-product-card__content">
+                {% if product.type != blank %}
+                  <span class="lb-product-card__type">{{ product.type }}</span>
+                {% endif %}
+
+                <h3>{{ product.title }}</h3>
+                <span class="lb-product-card__price">{{ product.price | money }}</span>
+              </span>
+            </a>
+          </article>
+        {% else %}
+          <p class="lb-empty-state">Add products to this collection to populate this page.</p>
+        {% endfor %}
+      </div>
+
+      {% if paginate.pages > 1 %}
+        <nav class="lb-pagination" aria-label="Pagination">
+          {% if paginate.previous %}
+            <a href="{{ paginate.previous.url }}">Previous</a>
           {% endif %}
 
-          <h3>{{ product.title }}</h3>
-          <p>{{ product.price | money }}</p>
-        </a>
-      </article>
-    {% else %}
-      <p class="lb-empty-state">Add products to this collection to populate this page.</p>
-    {% endfor %}
+          <span>Page {{ paginate.current_page }} of {{ paginate.pages }}</span>
+
+          {% if paginate.next %}
+            <a href="{{ paginate.next.url }}">Next</a>
+          {% endif %}
+        </nav>
+      {% endif %}
+    {% endpaginate %}
   </div>
 
+  {% if seo_intro != blank %}
+    <div class="lb-shop-seo">
+      {{ seo_intro | metafield_tag }}
+    </div>
+  {% endif %}
 </section>
 
 {% schema %}
 {
   "name": "Main Collection",
-  "settings": []
+  "settings": [
+    {
+      "type": "text",
+      "id": "hero_kicker",
+      "label": "Fallback hero kicker",
+      "default": "Shop"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show product search",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder",
+      "default": "Search products..."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_nav",
+      "label": "Show collection navigation",
+      "default": true
+    },
+    {
+      "type": "link_list",
+      "id": "collection_menu",
+      "label": "Collection navigation menu"
+    },
+    {
+      "type": "text",
+      "id": "products_kicker",
+      "label": "Product grid kicker",
+      "default": "Browse"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 24
+    }
+  ]
 }
 {% endschema %}

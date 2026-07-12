@@ -1,0 +1,65 @@
+{% liquid
+  assign source_collection = collection
+  if source_collection == blank and product.collections.first != blank
+    assign source_collection = product.collections.first
+  endif
+%}
+
+{% if source_collection != blank and source_collection.products_count > 1 %}
+  <section class="lb-product-recommendations">
+    <div class="lb-shop-products__header">
+      <p class="lb-kicker">Keep Building</p>
+      <h2>{{ section.settings.heading }}</h2>
+    </div>
+
+    <div class="lb-collection-main__grid">
+      {% assign shown_products = 0 %}
+      {% for recommended_product in source_collection.products limit: 5 %}
+        {% if recommended_product.id != product.id and shown_products < 4 %}
+          {% assign shown_products = shown_products | plus: 1 %}
+          <article class="lb-product-card">
+            <a href="{{ recommended_product.url | within: source_collection }}">
+              <span class="lb-product-card__media">
+                {% if recommended_product.featured_image %}
+                  {{
+                    recommended_product.featured_image
+                    | image_url: width: 900
+                    | image_tag:
+                      loading: 'lazy',
+                      alt: recommended_product.featured_image.alt | default: recommended_product.title,
+                      sizes: '(min-width: 960px) 25vw, (min-width: 640px) 50vw, 100vw'
+                  }}
+                {% else %}
+                  {{ 'product-1' | placeholder_svg_tag: 'lb-product-card__placeholder' }}
+                {% endif %}
+              </span>
+
+              <span class="lb-product-card__content">
+                {% if recommended_product.type != blank %}
+                  <span class="lb-product-card__type">{{ recommended_product.type }}</span>
+                {% endif %}
+
+                <h3>{{ recommended_product.title }}</h3>
+                <span class="lb-product-card__price">{{ recommended_product.price | money }}</span>
+              </span>
+            </a>
+          </article>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product Recommendations",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Recommended Next"
+    }
+  ]
+}
+{% endschema %}

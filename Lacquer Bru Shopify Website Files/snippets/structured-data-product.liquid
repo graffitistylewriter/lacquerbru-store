@@ -1,0 +1,31 @@
+{% if product %}
+  {% liquid
+    assign current_variant = product.selected_or_first_available_variant
+  %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": {{ product.title | json }},
+      "description": {{ product.description | strip_html | strip_newlines | json }},
+      "sku": {{ current_variant.sku | default: current_variant.id | json }},
+      "brand": {
+        "@type": "Brand",
+        "name": {{ shop.name | json }}
+      },
+      {% if product.featured_image %}
+        {% assign product_image = product.featured_image | image_url: width: 1200 | prepend: 'https:' %}
+        "image": [{{ product_image | json }}],
+      {% endif %}
+      "offers": {
+        "@type": "Offer",
+        "url": {{ canonical_url | json }},
+        "priceCurrency": {{ cart.currency.iso_code | default: shop.currency | json }},
+        "price": {{ current_variant.price | divided_by: 100.0 | json }},
+        "sku": {{ current_variant.sku | default: current_variant.id | json }},
+        "availability": "https://schema.org/{% if current_variant.available %}InStock{% else %}OutOfStock{% endif %}",
+        "itemCondition": "https://schema.org/NewCondition"
+      }
+    }
+  </script>
+{% endif %}

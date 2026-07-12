@@ -1,8 +1,11 @@
 <nav id="nb" class="lb-site-nav">
 
   <a href="{{ routes.root_url }}" class="nav-logo" aria-label="{{ shop.name }}">
-    <span class="nav-logo-top">Lacquer</span>
-    <span class="nav-logo-bot">BRU</span>
+    {% if settings.logo != blank %}
+      {{ settings.logo | image_url: width: 300 | image_tag: alt: shop.name, class: 'nav-logo-img' }}
+    {% else %}
+      <span class="nav-logo-text">{{ settings.business_name | default: shop.name }}</span>
+    {% endif %}
   </a>
 
   <div class="nav-links">
@@ -11,13 +14,9 @@
         <a href="{{ link.url }}">{{ link.title }}</a>
       {% endfor %}
     {% else %}
-      <a href="{{ routes.root_url }}">Home</a>
-      <a href="/pages/gallery">Gallery</a>
-      <a href="/pages/about">About</a>
-      <a href="/pages/featured-projects">Projects</a>
-      <a href="/pages/shop">Shop</a>
-      <a href="/pages/contact">Contact</a>
-      <a href="/pages/commission" class="nav-cta">Commission</a>
+      {% for link in linklists.main-menu.links %}
+        <a href="{{ link.url }}">{{ link.title }}</a>
+      {% endfor %}
     {% endif %}
   </div>
 
@@ -37,13 +36,9 @@
       <a href="{{ link.url }}">{{ link.title }}</a>
     {% endfor %}
   {% else %}
-    <a href="{{ routes.root_url }}">Home</a>
-    <a href="/pages/gallery">Gallery</a>
-    <a href="/pages/about">About</a>
-    <a href="/pages/featured-projects">Projects</a>
-    <a href="/pages/shop">Shop</a>
-    <a href="/pages/contact">Contact</a>
-    <a href="/pages/commission">Commission</a>
+    {% for link in linklists.main-menu.links %}
+      <a href="{{ link.url }}">{{ link.title }}</a>
+    {% endfor %}
   {% endif %}
 </div>
 

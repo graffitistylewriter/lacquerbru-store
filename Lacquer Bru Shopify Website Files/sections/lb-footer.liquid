@@ -2,52 +2,69 @@
   <div class="fg">
     <div>
       <div class="flw">
-        <span class="flt">Lacquer</span>
-        <span class="flb">BRU</span>
+        {% if settings.logo != blank %}
+          {{ settings.logo | image_url: width: 240 | image_tag: alt: shop.name, class: 'footer-logo-img' }}
+        {% else %}
+          <span class="flw-text">{{ settings.business_name | default: shop.name }}</span>
+        {% endif %}
       </div>
-      <p class="ftag">
-        Multidisciplinary creative studio rooted in aerosol culture.<br>
-        Transforming spaces into experiences since 2008.<br>
-        <span>If Not Unique, Why Bother.</span>
-      </p>
+      {% if section.settings.footer_description != blank or settings.business_tagline != blank %}
+        <p class="ftag">
+          {% if section.settings.footer_description != blank %}{{ section.settings.footer_description }}{% endif %}
+          {% if settings.business_tagline != blank %}<br><span>{{ settings.business_tagline }}</span>{% endif %}
+        </p>
+      {% endif %}
       <div class="fsoc">
-        <a href="https://www.instagram.com/lacquer_bru" target="_blank" rel="noopener">Instagram</a>
-        <a href="https://www.tiktok.com/@lacquer_bru" target="_blank" rel="noopener">TikTok</a>
-        <a href="https://www.youtube.com/@LacquerBru" target="_blank" rel="noopener">YouTube</a>
+        {% if settings.instagram != blank %}<a href="{{ settings.instagram }}" target="_blank" rel="noopener">Instagram</a>{% endif %}
+        {% if settings.facebook != blank %}<a href="{{ settings.facebook }}" target="_blank" rel="noopener">Facebook</a>{% endif %}
+        {% if settings.youtube != blank %}<a href="{{ settings.youtube }}" target="_blank" rel="noopener">YouTube</a>{% endif %}
+        {% if settings.tiktok != blank %}<a href="{{ settings.tiktok }}" target="_blank" rel="noopener">TikTok</a>{% endif %}
+        {% if settings.linkedin != blank %}<a href="{{ settings.linkedin }}" target="_blank" rel="noopener">LinkedIn</a>{% endif %}
       </div>
     </div>
 
-    <div class="fc">
-      <h4>Shop</h4>
-      <a href="/collections/all">All Products</a>
-      <a href="/pages/shop">Brush Packs</a>
-      <a href="/pages/shop">Digital Assets</a>
-      <a href="/pages/shop">Limited Prints</a>
-    </div>
+    {% if section.settings.column_1_menu != blank %}
+      <div class="fc">
+        {% if section.settings.column_1_heading != blank %}<h4>{{ section.settings.column_1_heading }}</h4>{% endif %}
+        {% for link in section.settings.column_1_menu.links %}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
 
-    <div class="fc">
-      <h4>Explore</h4>
-      <a href="/pages/gallery">Gallery</a>
-      <a href="/pages/featured-projects">Featured Projects</a>
-      <a href="/pages/about">About</a>
-      <a href="/pages/commission">Commission</a>
-    </div>
+    {% if section.settings.column_2_menu != blank %}
+      <div class="fc">
+        {% if section.settings.column_2_heading != blank %}<h4>{{ section.settings.column_2_heading }}</h4>{% endif %}
+        {% for link in section.settings.column_2_menu.links %}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
 
-    <div class="fc">
-      <h4>Contact</h4>
-      <a href="mailto:howzit@lacquerbru.co.za">howzit@lacquerbru.co.za</a>
-      <a href="tel:+27656656693">+27 65 665 6693</a>
-      <a href="/pages/contact">Contact Page</a>
-      <a href="/pages/commission">Request a Quote</a>
-    </div>
+    {% if section.settings.column_3_menu != blank %}
+      <div class="fc">
+        {% if section.settings.column_3_heading != blank %}<h4>{{ section.settings.column_3_heading }}</h4>{% endif %}
+        {% for link in section.settings.column_3_menu.links %}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if settings.contact_email != blank or settings.contact_phone != blank %}
+      <div class="fc">
+        <h4>Contact</h4>
+        {% if settings.contact_email != blank %}<a href="mailto:{{ settings.contact_email }}">{{ settings.contact_email }}</a>{% endif %}
+        {% if settings.contact_phone != blank %}<a href="tel:{{ settings.contact_phone | remove: ' ' }}">{{ settings.contact_phone }}</a>{% endif %}
+      </div>
+    {% endif %}
   </div>
 
   <div class="fb">
-    <p class="fcp">&copy; {{ 'now' | date: '%Y' }} Lacquer Bru Creative Studio. If Not Unique, Why Bother. All rights reserved.</p>
+    <p class="fcp">&copy; {{ 'now' | date: '%Y' }} {{ settings.business_name | default: shop.name }}. All rights reserved.</p>
     <div class="fleg">
-      <a href="/policies/privacy-policy">Privacy</a>
-      <a href="/policies/refund-policy">Refunds</a>
-      <a href="/policies/terms-of-service">Terms</a>
+      {% if shop.privacy_policy %}<a href="{{ shop.privacy_policy.url }}">{{ shop.privacy_policy.title }}</a>{% endif %}
+      {% if shop.refund_policy %}<a href="{{ shop.refund_policy.url }}">{{ shop.refund_policy.title }}</a>{% endif %}
+      {% if shop.terms_of_service %}<a href="{{ shop.terms_of_service.url }}">{{ shop.terms_of_service.title }}</a>{% endif %}
     </div>
   </div>
 </footer>
@@ -55,6 +72,49 @@
 {% schema %}
 {
   "name": "LB Footer",
-  "settings": []
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "footer_description",
+      "label": "Footer Description",
+      "info": "Optional brand story or description shown under the logo."
+    },
+    {
+      "type": "header",
+      "content": "Footer Columns"
+    },
+    {
+      "type": "text",
+      "id": "column_1_heading",
+      "label": "Column 1 Heading",
+      "default": "Shop"
+    },
+    {
+      "type": "link_list",
+      "id": "column_1_menu",
+      "label": "Column 1 Menu"
+    },
+    {
+      "type": "text",
+      "id": "column_2_heading",
+      "label": "Column 2 Heading",
+      "default": "Explore"
+    },
+    {
+      "type": "link_list",
+      "id": "column_2_menu",
+      "label": "Column 2 Menu"
+    },
+    {
+      "type": "text",
+      "id": "column_3_heading",
+      "label": "Column 3 Heading"
+    },
+    {
+      "type": "link_list",
+      "id": "column_3_menu",
+      "label": "Column 3 Menu"
+    }
+  ]
 }
 {% endschema %}

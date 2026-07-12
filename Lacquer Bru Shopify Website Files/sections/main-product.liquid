@@ -1,20 +1,88 @@
+{% liquid
+  assign fallback_collection = collection
+  if fallback_collection == blank and product.collections.first != blank
+    assign fallback_collection = product.collections.first
+  endif
+
+  assign current_variant = product.selected_or_first_available_variant
+  assign value_prop = product.metafields.custom.short_value_prop
+  assign includes = product.metafields.custom.includes
+  assign compatibility = product.metafields.custom.compatibility
+  assign installation = product.metafields.custom.installation
+  assign license = product.metafields.custom.license
+  assign download_info = product.metafields.custom.download_info
+  assign faq = product.metafields.custom.faq
+%}
+
 <section class="lb-product-main">
+  {% render 'breadcrumbs', fallback_collection: fallback_collection %}
 
   <div class="lb-product-main__media">
-    {% if product.featured_image %}
-      {{
-        product.featured_image
-        | image_url: width: 1600
-        | image_tag: loading: 'eager'
-      }}
-    {% endif %}
+    <div class="lb-product-gallery" data-lb-product-gallery>
+      {% if product.media.size > 0 %}
+        <div class="lb-product-gallery__stage">
+          {% for media in product.media %}
+            {% if media.media_type == 'image' %}
+              {% liquid
+                assign image_loading = 'lazy'
+                if forloop.first
+                  assign image_loading = 'eager'
+                endif
+              %}
+              <img
+                src="{{ media | image_url: width: 1600 }}"
+                alt="{{ media.alt | default: product.title | escape }}"
+                loading="{{ image_loading }}"
+                class="lb-product-gallery__image"
+                data-lb-product-image="{{ forloop.index0 }}"
+              >
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        {% if product.media.size > 1 %}
+          <div class="lb-product-gallery__thumbs" aria-label="Product images">
+            {% for media in product.media %}
+              {% if media.media_type == 'image' %}
+                <button
+                  type="button"
+                  class="lb-product-gallery__thumb{% if forloop.first %} is-active{% endif %}"
+                  aria-label="Show image {{ forloop.index }} for {{ product.title | escape }}"
+                  data-lb-product-thumb="{{ forloop.index0 }}"
+                >
+                  <img
+                    src="{{ media | image_url: width: 180 }}"
+                    alt="{{ media.alt | default: product.title | escape }}"
+                    loading="lazy"
+                  >
+                </button>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% elsif product.featured_image %}
+        {{
+          product.featured_image
+          | image_url: width: 1600
+          | image_tag:
+            loading: 'eager',
+            alt: product.featured_image.alt | default: product.title
+        }}
+      {% endif %}
+    </div>
   </div>
 
   <div class="lb-product-main__content">
-
     <p class="lb-kicker">{{ product.type | default: 'Shop' }}</p>
     <h1>{{ product.title }}</h1>
-    <p class="lb-product-main__price">{{ product.price | money }}</p>
+
+    {% if value_prop != blank %}
+      <div class="lb-product-main__value">
+        {{ value_prop | metafield_tag }}
+      </div>
+    {% endif %}
+
+    <p class="lb-product-main__price">{{ current_variant.price | money }}</p>
 
     {% if product.description != blank %}
       <div class="lb-product-main__description">
@@ -22,15 +90,30 @@
       </div>
     {% endif %}
 
-    {% form 'product', product %}
-      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+    {% form 'product', product, class: 'lb-product-form' %}
+      {% if product.has_only_default_variant == false %}
+        <label class="visually-hidden" for="ProductSelect-{{ section.id }}">Choose an option</label>
+        <select id="ProductSelect-{{ section.id }}" name="id" class="lb-product-form__select">
+          {% for variant in product.variants %}
+            <option
+              value="{{ variant.id }}"
+              {% if variant == current_variant %}selected="selected"{% endif %}
+              {% unless variant.available %}disabled{% endunless %}
+            >
+              {{ variant.title }} - {{ variant.price | money }}{% unless variant.available %} - Sold Out{% endunless %}
+            </option>
+          {% endfor %}
+        </select>
+      {% else %}
+        <input type="hidden" name="id" value="{{ current_variant.id }}">
+      {% endif %}
 
       <button
         type="submit"
         class="lb-btn"
-        {% unless product.available %}disabled{% endunless %}
+        {% unless current_variant.available %}disabled{% endunless %}
       >
-        {% if product.available %}
+        {% if current_variant.available %}
           Add To Cart
         {% else %}
           Sold Out
@@ -38,9 +121,68 @@
       </button>
     {% endform %}
 
-  </div>
+    <div class="lb-product-main__accordions">
+      {% if includes != blank %}
+        <details>
+          <summary>What's Included</summary>
+          <div>{{ includes | metafield_tag }}</div>
+        </details>
+      {% endif %}
 
+      {% if compatibility != blank %}
+        <details>
+          <summary>Compatibility</summary>
+          <div>{{ compatibility | metafield_tag }}</div>
+        </details>
+      {% endif %}
+
+      {% if installation != blank %}
+        <details>
+          <summary>Installation</summary>
+          <div>{{ installation | metafield_tag }}</div>
+        </details>
+      {% endif %}
+
+      {% if license != blank %}
+        <details>
+          <summary>License</summary>
+          <div>{{ license | metafield_tag }}</div>
+        </details>
+      {% endif %}
+
+      {% if download_info != blank %}
+        <details>
+          <summary>Download Info</summary>
+          <div>{{ download_info | metafield_tag }}</div>
+        </details>
+      {% endif %}
+
+      {% if faq != blank %}
+        <details>
+          <summary>FAQ</summary>
+          <div>{{ faq | metafield_tag }}</div>
+        </details>
+      {% endif %}
+    </div>
+  </div>
 </section>
+
+<div class="lb-mobile-purchase" data-lb-mobile-purchase>
+  <div>
+    <strong>{{ product.title }}</strong>
+    <span>{{ current_variant.price | money }}</span>
+  </div>
+  {% form 'product', product %}
+    <input type="hidden" name="id" value="{{ current_variant.id }}">
+    <button
+      type="submit"
+      class="lb-btn"
+      {% unless current_variant.available %}disabled{% endunless %}
+    >
+      {% if current_variant.available %}Add To Cart{% else %}Sold Out{% endif %}
+    </button>
+  {% endform %}
+</div>
 
 {% schema %}
 {
