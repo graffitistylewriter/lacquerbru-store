@@ -1,38 +1,57 @@
 <section class="lb-shop-featured">
 
-  <div class="lb-shop-featured__header">
+  <div class="page-width">
 
-    <h2>{{ section.settings.heading }}</h2>
+    <div class="lb-shop-featured__header">
 
-  </div>
+      {% if section.settings.heading != blank %}
+        <h2>{{ section.settings.heading }}</h2>
+      {% endif %}
 
-  {% assign featured_collection = collections[section.settings.collection] %}
+      {% if section.settings.description != blank %}
+        <div class="lb-shop-featured__description">
+          {{ section.settings.description }}
+        </div>
+      {% endif %}
 
-  <div class="lb-shop-featured__grid">
+    </div>
 
-    {% for product in featured_collection.products limit: section.settings.products_to_show %}
+    {% assign featured_collection = collections[section.settings.collection] %}
 
-      <div class="lb-product-card">
+    {% if featured_collection != blank and featured_collection.products_count > 0 %}
 
-        <a href="{{ product.url }}">
+      <div class="lb-shop-featured__grid">
 
-          {% if product.featured_image %}
-            {{
-              product.featured_image
-              | image_url: width: 900
-              | image_tag
-            }}
-          {% endif %}
+        {% for product in featured_collection.products limit: section.settings.products_to_show %}
 
-          <h3>{{ product.title }}</h3>
+          {% render 'product-card', product: product %}
 
-          <p>{{ product.price | money }}</p>
-
-        </a>
+        {% endfor %}
 
       </div>
 
-    {% endfor %}
+      {% if section.settings.show_view_all %}
+        <div class="lb-shop-featured__footer">
+
+          <a
+            class="button"
+            href="{{ featured_collection.url }}"
+          >
+            {{ section.settings.view_all_label }}
+          </a>
+
+        </div>
+      {% endif %}
+
+    {% else %}
+
+      <div class="lb-shop-featured__empty">
+
+        <p>No products found in this collection.</p>
+
+      </div>
+
+    {% endif %}
 
   </div>
 
@@ -46,7 +65,12 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Shop Resources"
+      "default": "Featured Products"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
     },
     {
       "type": "collection",
@@ -57,10 +81,22 @@
       "type": "range",
       "id": "products_to_show",
       "label": "Products To Show",
-      "min": 3,
+      "min": 2,
       "max": 12,
       "step": 1,
       "default": 6
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show View All Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "Button Label",
+      "default": "View Collection"
     }
   ],
   "presets": [
