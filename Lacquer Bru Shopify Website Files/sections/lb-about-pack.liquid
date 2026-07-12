@@ -1,0 +1,42 @@
+<section class="about-pack">
+  <div class="ap-inner">
+    <div class="ap-img">
+      {% if section.settings.image != blank %}
+        {{ section.settings.image | image_url: width: 1200 | image_tag: class: 'ap-img-main', alt: section.settings.image.alt }}
+      {% endif %}
+      {% if section.settings.image_tag != blank %}
+        <div class="ap-img-tag"><span>{{ section.settings.image_tag }}</span></div>
+      {% endif %}
+    </div>
+    <div class="ap-txt">
+      {% if section.settings.label != blank %}
+        <span class="section-label">{{ section.settings.label }}</span>
+      {% endif %}
+      {% if section.settings.heading != blank %}
+        <h2 class="section-h2">{{ section.settings.heading }}</h2>
+      {% endif %}
+      <div class="ap-body">{{ section.settings.body }}</div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "LB About Pack",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "image_tag", "label": "Image Caption Tag", "default": "16+ Years of Aerosol Culture" },
+    { "type": "text", "id": "label", "label": "Eyebrow Label", "default": "Why These Brushes Are Different" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Built From the Inside Out" },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body Copy",
+      "default": "<p>Most brush packs are built by designers. This pack was built by a working artist &mdash; tested under real deadlines, across real projects, and refined until it felt exactly right.</p>"
+    }
+  ],
+  "presets": [
+    { "name": "LB About Pack" }
+  ]
+}
+{% endschema %}

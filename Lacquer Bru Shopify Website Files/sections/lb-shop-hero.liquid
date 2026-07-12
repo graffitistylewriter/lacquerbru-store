@@ -1,0 +1,56 @@
+<div class="sh-hero">
+  {% if section.settings.bg_image != blank %}
+    <div class="sh-bg" style="background-image:url('{{ section.settings.bg_image | image_url: width: 2000 }}');"></div>
+  {% else %}
+    <div class="sh-bg"></div>
+  {% endif %}
+  <div class="sh-ol"></div>
+  <div class="sh-c">
+    <h1 class="sh-title">{{ section.settings.heading }}</h1>
+    {% if section.settings.tagline != blank %}
+      <span class="sh-tag">{{ section.settings.tagline }}</span>
+    {% endif %}
+
+    {% if section.settings.category_menu != blank %}
+      <div class="sh-cats">
+        {% for link in section.settings.category_menu.links %}
+          <a href="{{ link.url }}" class="sc{% if link.current %} active{% endif %}">{{ link.title }}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "LB Shop Hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Brush Packs"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Built by a working artist. Tested on real work. Made for yours."
+    },
+    {
+      "type": "link_list",
+      "id": "category_menu",
+      "label": "Category Navigation",
+      "info": "Create a menu in Navigation with your shop categories (All Products, Brush Packs, etc.)"
+    }
+  ],
+  "presets": [
+    { "name": "LB Shop Hero" }
+  ]
+}
+{% endschema %}

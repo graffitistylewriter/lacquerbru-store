@@ -1,0 +1,192 @@
+{% assign product = section.settings.featured_product %}
+
+<div class="pack-feature">
+  <div class="pf-visual">
+    <div class="pf-bg-word">{{ section.settings.bg_word | default: product.title | truncate: 12, '' }}</div>
+
+    {% if product.featured_image %}
+      <div class="pf-pack-name" style="font-size:0;">
+        {{ product.featured_image | image_url: width: 500 | image_tag: class: 'pf-pack-img', alt: product.title }}
+      </div>
+    {% else %}
+      <div class="pf-pack-name">{{ product.title }}</div>
+    {% endif %}
+
+    <div class="pf-pack-sub">{{ section.settings.subheading }}</div>
+
+    {% if section.blocks.size > 0 %}
+      <div class="pf-preview">
+        {% for block in section.blocks %}
+          {% if block.type == 'preview_swatch' %}
+            <div class="pf-prev-item" style="background:{{ block.settings.bg_color }};" {{ block.shopify_attributes }}>
+              <div style="width:{{ block.settings.width }}%;height:{{ block.settings.thickness }}px;background:{{ block.settings.stroke_color }};border-radius:3px;"></div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if section.blocks.size > 0 %}
+      <div class="pf-badge-row">
+        {% for block in section.blocks %}
+          {% if block.type == 'badge' %}
+            <span class="pf-badge" {{ block.shopify_attributes }}>{{ block.settings.text }}</span>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="pf-info">
+    {% if section.settings.eyebrow != blank %}
+      <span class="pf-eyebrow">{{ section.settings.eyebrow }}</span>
+    {% endif %}
+
+    <h1 class="pf-name">{{ product.title }}</h1>
+
+    <div class="pf-desc">{{ product.description }}</div>
+
+    {% assign includes_blocks = section.blocks | where: 'type', 'include_item' %}
+    {% if includes_blocks.size > 0 %}
+      <div class="pf-includes">
+        {% if section.settings.includes_heading != blank %}
+          <h4>{{ section.settings.includes_heading }}</h4>
+        {% endif %}
+        <ul class="pf-inc-list">
+          {% for block in includes_blocks %}
+            <li {{ block.shopify_attributes }}>{{ block.settings.text }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    {% assign compat_blocks = section.blocks | where: 'type', 'compat_item' %}
+    {% if compat_blocks.size > 0 %}
+      <div class="pf-compat">
+        {% for block in compat_blocks %}
+          <div class="pf-compat-item{% if block.settings.available %} active{% else %}" style="opacity:0.4;{% endif %}" {{ block.shopify_attributes }}>
+            {{ block.settings.label }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="pf-price-row">
+      <div class="pf-price">{{ product.price | money }}</div>
+      {% if section.settings.license_note != blank %}
+        <div class="pf-license">{{ section.settings.license_note }}</div>
+      {% endif %}
+    </div>
+
+    {% form 'product', product %}
+      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+      <div class="pf-btns">
+        <button type="submit" class="pf-cart" {% unless product.available %}disabled{% endunless %}>
+          {% if product.available %}
+            Add to Cart &mdash; {{ product.price | money }}
+          {% else %}
+            Sold Out
+          {% endif %}
+        </button>
+      </div>
+    {% endform %}
+
+    {% if section.settings.guarantee_text != blank %}
+      <div class="pf-guarantee">{{ section.settings.guarantee_text }}</div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "LB Product Feature",
+  "settings": [
+    {
+      "type": "product",
+      "id": "featured_product",
+      "label": "Featured Product",
+      "info": "Select the Shopify product to feature. Title, price, description and images pull live from this product."
+    },
+    {
+      "type": "text",
+      "id": "bg_word",
+      "label": "Background Watermark Word",
+      "info": "Leave blank to use the product title"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Available Now \u00b7 Digital Download"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Visual Subheading",
+      "default": "Procreate Brush Pack by Lacquer Bru"
+    },
+    {
+      "type": "text",
+      "id": "includes_heading",
+      "label": "Includes List Heading",
+      "default": "What's Included"
+    },
+    {
+      "type": "text",
+      "id": "license_note",
+      "label": "License Note",
+      "default": "Personal license included."
+    },
+    {
+      "type": "text",
+      "id": "guarantee_text",
+      "label": "Guarantee / Checkout Note",
+      "default": "Secure checkout \u00b7 Instant delivery"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "preview_swatch",
+      "name": "Preview Swatch",
+      "settings": [
+        { "type": "color", "id": "bg_color", "label": "Tile Background", "default": "#0d2030" },
+        { "type": "color", "id": "stroke_color", "label": "Stroke Color", "default": "#7DD8E8" },
+        { "type": "range", "id": "width", "label": "Stroke Width %", "min": 30, "max": 100, "default": 80 },
+        { "type": "range", "id": "thickness", "label": "Stroke Thickness (px)", "min": 2, "max": 10, "default": 4 }
+      ]
+    },
+    {
+      "type": "badge",
+      "name": "Feature Badge",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Badge Text", "default": "New Badge" }
+      ]
+    },
+    {
+      "type": "include_item",
+      "name": "Include List Item",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "Included item" }
+      ]
+    },
+    {
+      "type": "compat_item",
+      "name": "Compatibility Item",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Compatible With" },
+        { "type": "checkbox", "id": "available", "label": "Available now", "default": true }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "LB Product Feature",
+      "blocks": [
+        { "type": "badge", "settings": { "text": "Instant Download" } },
+        { "type": "include_item", "settings": { "text": "Delivered instantly after purchase" } },
+        { "type": "compat_item", "settings": { "label": "Procreate 5+", "available": true } }
+      ]
+    }
+  ]
+}
+{% endschema %}

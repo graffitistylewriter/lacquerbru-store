@@ -2,7 +2,6 @@
 <html lang="{{ request.locale.iso_code }}">
 
 <head>
-
   <meta charset="utf-8">
 
   <meta
@@ -26,7 +25,6 @@
   {% endif %}
 
   <title>
-
     {% if page_title %}
       {{ page_title }}
     {% endif %}
@@ -34,7 +32,6 @@
     {% unless page_title contains shop.name %}
       | {{ shop.name }}
     {% endunless %}
-
   </title>
 
   {% if page_description %}
@@ -48,7 +45,11 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  >
 
   {{ 'lb-base.css' | asset_url | stylesheet_tag }}
   {{ 'lb-components.css' | asset_url | stylesheet_tag }}
@@ -57,11 +58,28 @@
 
 </head>
 
-<body>
+<body
+  class="
+    template-{{ template.name }}
+    page-{{ request.page_type }}
+    {% if customer %}customer-logged-in{% endif %}
+  "
+>
+
+  <a
+    class="skip-to-content-link visually-hidden focus-inset"
+    href="#MainContent"
+  >
+    Skip to content
+  </a>
 
   {% section 'lb-header' %}
 
-  <main id="MainContent">
+  <main
+    id="MainContent"
+    role="main"
+    tabindex="-1"
+  >
 
     {{ content_for_layout }}
 

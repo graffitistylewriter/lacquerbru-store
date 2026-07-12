@@ -1,0 +1,37 @@
+<div class="more-coming">
+  <h2 class="mc-h">{{ section.settings.heading }}</h2>
+  {% if section.settings.subheading != blank %}
+    <p class="mc-sub">{{ section.settings.subheading }}</p>
+  {% endif %}
+
+  {% form 'customer' %}
+    <input type="hidden" name="contact[tags]" value="newsletter">
+    <div class="mc-form">
+      <input class="mc-inp" type="email" name="contact[email]" placeholder="{{ section.settings.placeholder }}" required>
+      <button class="mc-btn" type="submit">{{ section.settings.button_text }}</button>
+    </div>
+    {% if form.posted_successfully? %}
+      <p class="mc-note">Thanks — you're on the list.</p>
+    {% endif %}
+  {% endform %}
+
+  {% if section.settings.footnote != blank %}
+    <p class="mc-note">{{ section.settings.footnote }}</p>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "LB Notify Signup",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "More Is Coming" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Be the first to know \u2014 and the first to buy." },
+    { "type": "text", "id": "placeholder", "label": "Input Placeholder", "default": "your@email.com" },
+    { "type": "text", "id": "button_text", "label": "Button Text", "default": "Notify Me" },
+    { "type": "text", "id": "footnote", "label": "Footnote", "default": "No spam. Just new drops. Unsubscribe anytime." }
+  ],
+  "presets": [
+    { "name": "LB Notify Signup" }
+  ]
+}
+{% endschema %}

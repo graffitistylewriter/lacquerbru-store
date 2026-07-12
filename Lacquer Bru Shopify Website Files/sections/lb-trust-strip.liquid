@@ -1,0 +1,43 @@
+<div class="trust-strip">
+  {% for block in section.blocks %}
+    <div class="ts-item" {{ block.shopify_attributes }}>
+      {% if block.settings.icon != blank %}
+        <span class="ts-icon">{{ block.settings.icon }}</span>
+      {% endif %}
+      <div>
+        <div class="ts-label">{{ block.settings.label }}</div>
+        <div class="ts-val">{{ block.settings.value }}</div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "LB Trust Strip",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "trust_item",
+      "name": "Trust Item",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "Icon (emoji or symbol)" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Feature Label" },
+        { "type": "text", "id": "value", "label": "Description", "default": "Short supporting detail" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "LB Trust Strip",
+      "blocks": [
+        { "type": "trust_item", "settings": { "label": "Instant Delivery", "value": "Download link sent immediately after payment" } },
+        { "type": "trust_item", "settings": { "label": "Artist Made", "value": "Built and tested in real workflows" } },
+        { "type": "trust_item", "settings": { "label": "Free Updates", "value": "Updates delivered at no extra cost" } },
+        { "type": "trust_item", "settings": { "label": "Real Support", "value": "We respond within 24\u201348 hours" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
