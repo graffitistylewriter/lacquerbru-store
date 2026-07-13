@@ -1,71 +1,118 @@
-<section class="lb-page-main">
+<section
+  class="lb-page-main"
+  style="
+    background: {{ section.settings.bg_color }};
+    padding: {{ section.settings.padding_top }}px 60px {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div
+    class="lb-page-main__inner"
+    style="
+      max-width: {{ section.settings.content_width }}px;
+      margin: 0 auto;
+      text-align: {{ section.settings.heading_align }};
+    "
+  >
 
-  <div class="lb-page-header">
-    {% if section.settings.show_eyebrow and section.settings.eyebrow_text != blank %}
-      <span class="eyebrow">{{ section.settings.eyebrow_text }}</span>
-    {% endif %}
-    <h1 class="lb-page-title">{{ page.title }}</h1>
-    {% if section.settings.show_divider %}
-      <div class="lb-page-divider"></div>
-    {% endif %}
-  </div>
+    <div class="lb-page-main__header">
+      {% if section.settings.show_eyebrow and section.settings.eyebrow_text != blank %}
+        <span class="lb-page-main__eyebrow" style="color:{{ section.settings.accent_color }};">
+          {{ section.settings.eyebrow_text }}
+        </span>
+      {% endif %}
 
-  {% if page.content != blank %}
-    <div class="lb-page-content rte">
-      {{ page.content }}
+      <h1 class="lb-page-main__title" style="color:{{ section.settings.text_color }};">
+        {{ page.title }}
+      </h1>
+
+      {% if section.settings.show_divider %}
+        <div
+          class="lb-page-main__divider"
+          style="
+            background: {{ section.settings.accent_color }};
+            margin: {% if section.settings.heading_align == 'center' %}1.5rem auto 0{% else %}1.5rem 0 0{% endif %};
+          "
+        ></div>
+      {% endif %}
     </div>
-  {% endif %}
 
+    {% if page.content != blank %}
+      <div
+        class="lb-page-main__content rte"
+        style="
+          color: {{ section.settings.text_color }};
+          text-align: {{ section.settings.content_align }};
+        "
+      >
+        {{ page.content }}
+      </div>
+    {% endif %}
+
+  </div>
 </section>
 
 <style>
-  .lb-page-main {
-    max-width: {{ section.settings.content_width }}px;
-    margin: 0 auto;
-    padding: {{ section.settings.padding_top }}px 2rem {{ section.settings.padding_bottom }}px;
+  .lb-page-main__header { margin-bottom: 2.5rem; }
+
+  .lb-page-main__eyebrow {
+    display: block;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
   }
 
-  .lb-page-header {
-    text-align: {{ section.settings.heading_align }};
-    margin-bottom: 2.5rem;
-  }
-
-  .lb-page-title {
+  .lb-page-main__title {
     font-size: clamp(2rem, 5vw, 3.5rem);
     font-weight: 700;
     letter-spacing: -0.02em;
-    margin: 0.5rem 0 0;
-    color: var(--cream, #f0ede6);
+    line-height: 1.05;
+    margin: 0;
+    text-transform: uppercase;
   }
 
-  .lb-page-divider {
+  .lb-page-main__divider {
     width: 60px;
     height: 3px;
-    background: var(--blue, #3b82f6);
-    margin: {% if section.settings.heading_align == 'center' %}1.5rem auto 0{% else %}1.5rem 0 0{% endif %};
-    border-radius: 2px;
+    margin-top: 1.5rem;
   }
 
-  .lb-page-content {
-    font-size: 1.05rem;
-    line-height: 1.8;
-    color: var(--cream, #f0ede6);
-    text-align: {{ section.settings.content_align }};
+  .lb-page-main__content {
+    font-size: 15px;
+    line-height: 1.85;
+    margin-top: 2.5rem;
   }
 
-  .lb-page-content h2 { font-size: clamp(1.4rem, 3vw, 2rem); margin: 2rem 0 0.75rem; }
-  .lb-page-content h3 { font-size: clamp(1.1rem, 2.5vw, 1.5rem); margin: 1.5rem 0 0.5rem; }
-  .lb-page-content p { margin: 0 0 1.25rem; }
-  .lb-page-content a { color: var(--blue, #3b82f6); text-decoration: underline; }
-  .lb-page-content ul, .lb-page-content ol { padding-left: 1.5rem; margin-bottom: 1.25rem; }
-  .lb-page-content li { margin-bottom: 0.4rem; }
-  .lb-page-content img { max-width: 100%; border-radius: 8px; margin: 1rem 0; }
-  .lb-page-content blockquote {
-    border-left: 3px solid var(--blue, #3b82f6);
+  .lb-page-main__content h2 {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 700;
+    margin: 2rem 0 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+  }
+  .lb-page-main__content h3 {
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    font-weight: 600;
+    margin: 1.5rem 0 0.5rem;
+  }
+  .lb-page-main__content p { margin: 0 0 1.25rem; }
+  .lb-page-main__content a { color: {{ section.settings.accent_color }}; text-decoration: underline; }
+  .lb-page-main__content ul,
+  .lb-page-main__content ol { padding-left: 1.5rem; margin-bottom: 1.25rem; }
+  .lb-page-main__content li { margin-bottom: 0.4rem; }
+  .lb-page-main__content img { max-width: 100%; margin: 1rem 0; display: block; }
+  .lb-page-main__content blockquote {
+    border-left: 3px solid {{ section.settings.accent_color }};
     padding-left: 1.25rem;
     margin: 1.5rem 0;
     font-style: italic;
-    color: var(--concrete, #888);
+    opacity: 0.75;
+  }
+  .lb-page-main__content strong { color: {{ section.settings.text_color }}; font-weight: 700; }
+
+  @media (max-width: 768px) {
+    .lb-page-main { padding-left: 24px !important; padding-right: 24px !important; }
   }
 </style>
 
@@ -73,85 +120,30 @@
 {
   "name": "Main Page",
   "settings": [
-    {
-      "type": "header",
-      "content": "Page Header"
-    },
-    {
-      "type": "select",
-      "id": "heading_align",
-      "label": "Heading Alignment",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" }
-      ],
-      "default": "left"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_eyebrow",
-      "label": "Show Eyebrow Text",
-      "default": false
-    },
-    {
-      "type": "text",
-      "id": "eyebrow_text",
-      "label": "Eyebrow Text"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_divider",
-      "label": "Show Accent Divider",
-      "default": true
-    },
-    {
-      "type": "header",
-      "content": "Content"
-    },
-    {
-      "type": "select",
-      "id": "content_align",
-      "label": "Content Alignment",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" }
-      ],
-      "default": "left"
-    },
-    {
-      "type": "range",
-      "id": "content_width",
-      "label": "Max Content Width",
-      "min": 600,
-      "max": 1400,
-      "step": 50,
-      "default": 900,
-      "unit": "px"
-    },
-    {
-      "type": "header",
-      "content": "Spacing"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "label": "Top Padding",
-      "min": 20,
-      "max": 160,
-      "step": 10,
-      "default": 80,
-      "unit": "px"
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "label": "Bottom Padding",
-      "min": 20,
-      "max": 160,
-      "step": 10,
-      "default": 100,
-      "unit": "px"
-    }
+    { "type": "header", "content": "Page Header" },
+    { "type": "select", "id": "heading_align", "label": "Heading Alignment", "options": [
+      { "value": "left", "label": "Left" },
+      { "value": "center", "label": "Center" }
+    ], "default": "left" },
+    { "type": "checkbox", "id": "show_eyebrow", "label": "Show Eyebrow Text", "default": false },
+    { "type": "text", "id": "eyebrow_text", "label": "Eyebrow Text" },
+    { "type": "checkbox", "id": "show_divider", "label": "Show Accent Divider", "default": true },
+
+    { "type": "header", "content": "Content" },
+    { "type": "select", "id": "content_align", "label": "Content Alignment", "options": [
+      { "value": "left", "label": "Left" },
+      { "value": "center", "label": "Center" }
+    ], "default": "left" },
+    { "type": "range", "id": "content_width", "label": "Max Content Width", "min": 600, "max": 1400, "step": 50, "default": 900, "unit": "px" },
+
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "bg_color", "label": "Background Colour", "default": "#0A0A0A" },
+    { "type": "color", "id": "text_color", "label": "Text Colour", "default": "#FFFFFF" },
+    { "type": "color", "id": "accent_color", "label": "Accent Colour", "default": "#7DD8E8" },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top Padding", "min": 20, "max": 160, "step": 10, "default": 80, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom Padding", "min": 20, "max": 160, "step": 10, "default": 100, "unit": "px" }
   ]
 }
 {% endschema %}
