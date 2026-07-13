@@ -173,23 +173,44 @@
   </div>
 </section>
 
-<div class="lb-mobile-purchase" data-lb-mobile-purchase>
+<div 
+  class="lb-mobile-purchase" 
+  data-lb-mobile-purchase
+  data-product-title="{{ product.title | escape }}"
+>
   <div>
     <strong>{{ product.title }}</strong>
-    <span>{{ current_variant.price | money }}</span>
+
+    <span data-lb-mobile-price>
+      {{ current_variant.price | money }}
+    </span>
   </div>
+
   {% form 'product', product %}
-    <input type="hidden" name="id" value="{{ current_variant.id }}">
+    <input 
+      type="hidden" 
+      name="id" 
+      value="{{ current_variant.id }}"
+      data-lb-mobile-variant-id
+    >
+
     <button
       type="submit"
       class="lb-btn"
+      data-lb-mobile-button
       {% unless current_variant.available %}disabled{% endunless %}
     >
-      {% if current_variant.available %}Add To Cart{% else %}Sold Out{% endif %}
+      {% if current_variant.available %}
+        Add To Cart
+      {% else %}
+        Sold Out
+      {% endif %}
     </button>
+
   {% endform %}
 </div>
 
+{% render 'structured-data-product' %}
 {% schema %}
 {
   "name": "Main Product",

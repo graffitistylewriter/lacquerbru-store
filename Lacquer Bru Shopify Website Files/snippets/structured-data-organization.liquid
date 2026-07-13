@@ -1,9 +1,16 @@
 <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": {{ shop.name | json }},
-    "url": {{ shop.url | json }},
-    "email": {{ shop.email | json }}
-  }
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": {{ shop.name | json }},
+  "url": {{ shop.url | json }},
+  "email": {{ shop.email | json }},
+  "logo": {{ settings.logo | image_url: width: 600 | prepend: "https:" | json }},
+  "sameAs": [
+    {{ settings.social_instagram_link | json }},
+    {{ settings.social_facebook_link | json }},
+    {{ settings.social_youtube_link | json }},
+    {{ settings.social_tiktok_link | json }}
+  ]
+}
 </script>

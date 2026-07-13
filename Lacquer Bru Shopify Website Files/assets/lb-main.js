@@ -53,3 +53,44 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+document.addEventListener('variant:change', function(event) {
+
+  const variant = event.detail.variant;
+
+  if (!variant) return;
+
+  const mobilePurchase = document.querySelector('[data-lb-mobile-purchase]');
+
+  if (!mobilePurchase) return;
+
+
+  const price = mobilePurchase.querySelector('[data-lb-mobile-price]');
+  const variantInput = mobilePurchase.querySelector('[data-lb-mobile-variant-id]');
+  const button = mobilePurchase.querySelector('[data-lb-mobile-button]');
+
+
+  if (price) {
+    price.textContent = Shopify.formatMoney(
+      variant.price,
+      window.moneyFormat
+    );
+  }
+
+
+  if (variantInput) {
+    variantInput.value = variant.id;
+  }
+
+
+  if (button) {
+
+    button.disabled = !variant.available;
+
+    button.textContent = variant.available
+      ? 'Add To Cart'
+      : 'Sold Out';
+
+  }
+
+});
