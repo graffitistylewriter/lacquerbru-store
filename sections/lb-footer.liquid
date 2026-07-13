@@ -1,225 +1,570 @@
-<footer class="lb-footer" style="padding-top:{{ section.settings.padding_top }}px; padding-bottom:{{ section.settings.padding_bottom }}px;">
-  <div class="fg">
+<footer class="lb-footer">
 
-    <div class="fc fc--brand">
-      <div class="flw">
+  {%- comment -%} EMAIL BAR {%- endcomment -%}
+  {% if section.settings.show_email_bar %}
+  <div class="lb-footer__email-bar" style="background:{{ section.settings.email_bar_bg }};color:{{ section.settings.email_bar_color }};">
+    <span class="lb-footer__email-msg">{{ section.settings.email_bar_text }}</span>
+    {% form 'customer', class: 'lb-footer__email-form' %}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <input
+        class="lb-footer__email-inp"
+        type="email"
+        name="contact[email]"
+        placeholder="{{ section.settings.email_placeholder | default: 'your@email.com' }}"
+        required
+        aria-label="Email address"
+      >
+      <button class="lb-footer__email-btn" type="submit">
+        {{ section.settings.email_btn_label | default: 'Subscribe' }}
+      </button>
+    {% endform %}
+  </div>
+  {% endif %}
+
+  {%- comment -%} MAIN COLUMNS {%- endcomment -%}
+  <div class="lb-footer__main">
+
+    {%- comment -%} BRAND COLUMN {%- endcomment -%}
+    <div class="lb-footer__brand">
+      <a href="{{ routes.root_url }}" class="lb-footer__logo" aria-label="{{ shop.name }}">
         {% if settings.logo != blank %}
-          {{ settings.logo | image_url: width: 240 | image_tag: alt: shop.name, class: 'footer-logo-img' }}
+          {{ settings.logo | image_url: width: 240 | image_tag: alt: shop.name, class: 'lb-footer__logo-img' }}
         {% else %}
-          <span class="flw-text">{{ settings.business_name | default: shop.name }}</span>
+          <span class="lb-footer__logo-top">{{ section.settings.logo_top | default: shop.name }}</span>
+          <span class="lb-footer__logo-bot">{{ section.settings.logo_bot }}</span>
+        {% endif %}
+      </a>
+
+      {% if section.settings.brand_desc != blank %}
+        <p class="lb-footer__brand-desc">{{ section.settings.brand_desc }}</p>
+      {% endif %}
+
+      {% if section.settings.brand_tagline != blank %}
+        <span class="lb-footer__brand-tag">{{ section.settings.brand_tagline }}</span>
+      {% endif %}
+
+      <div class="lb-footer__contact">
+        {% if settings.contact_email != blank %}
+          <a href="mailto:{{ settings.contact_email }}">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            {{ settings.contact_email }}
+          </a>
+        {% endif %}
+        {% if settings.contact_phone != blank %}
+          <a href="tel:{{ settings.contact_phone | remove: ' ' }}">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.62 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            {{ settings.contact_phone }}
+          </a>
+        {% endif %}
+        {% if section.settings.location != blank %}
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            {{ section.settings.location }}
+          </span>
         {% endif %}
       </div>
 
-      {% if section.settings.footer_description != blank %}
-        <p class="ftag">{{ section.settings.footer_description }}</p>
-      {% elsif settings.business_tagline != blank %}
-        <p class="ftag">{{ settings.business_tagline }}</p>
-      {% endif %}
-
       {% if section.settings.show_social %}
-        <div class="fsoc">
+        <div class="lb-footer__social">
           {% if settings.instagram != blank %}
             <a href="{{ settings.instagram }}" target="_blank" rel="noopener" aria-label="Instagram">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-              {% if section.settings.show_social_labels %}Instagram{% endif %}
+              {% if section.settings.social_style == 'handles' %}
+                @{{ settings.instagram | split: '/' | last }}
+              {% else %}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              {% endif %}
             </a>
           {% endif %}
           {% if settings.facebook != blank %}
             <a href="{{ settings.facebook }}" target="_blank" rel="noopener" aria-label="Facebook">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-              {% if section.settings.show_social_labels %}Facebook{% endif %}
+              {% if section.settings.social_style == 'handles' %}
+                Facebook
+              {% else %}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              {% endif %}
             </a>
           {% endif %}
           {% if settings.youtube != blank %}
             <a href="{{ settings.youtube }}" target="_blank" rel="noopener" aria-label="YouTube">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
-              {% if section.settings.show_social_labels %}YouTube{% endif %}
+              {% if section.settings.social_style == 'handles' %}
+                YouTube
+              {% else %}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+              {% endif %}
             </a>
           {% endif %}
           {% if settings.tiktok != blank %}
             <a href="{{ settings.tiktok }}" target="_blank" rel="noopener" aria-label="TikTok">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
-              {% if section.settings.show_social_labels %}TikTok{% endif %}
+              {% if section.settings.social_style == 'handles' %}
+                TikTok
+              {% else %}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+              {% endif %}
             </a>
           {% endif %}
           {% if settings.linkedin != blank %}
             <a href="{{ settings.linkedin }}" target="_blank" rel="noopener" aria-label="LinkedIn">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-              {% if section.settings.show_social_labels %}LinkedIn{% endif %}
+              {% if section.settings.social_style == 'handles' %}
+                LinkedIn
+              {% else %}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              {% endif %}
             </a>
           {% endif %}
         </div>
       {% endif %}
     </div>
 
-    {% if section.settings.column_1_menu != blank %}
-      <div class="fc">
-        {% if section.settings.column_1_heading != blank %}<h4>{{ section.settings.column_1_heading }}</h4>{% endif %}
-        {% for link in section.settings.column_1_menu.links %}
-          <a href="{{ link.url }}">{{ link.title }}</a>
-        {% endfor %}
-      </div>
-    {% endif %}
-
-    {% if section.settings.column_2_menu != blank %}
-      <div class="fc">
-        {% if section.settings.column_2_heading != blank %}<h4>{{ section.settings.column_2_heading }}</h4>{% endif %}
-        {% for link in section.settings.column_2_menu.links %}
-          <a href="{{ link.url }}">{{ link.title }}</a>
-        {% endfor %}
-      </div>
-    {% endif %}
-
-    {% if section.settings.column_3_menu != blank %}
-      <div class="fc">
-        {% if section.settings.column_3_heading != blank %}<h4>{{ section.settings.column_3_heading }}</h4>{% endif %}
-        {% for link in section.settings.column_3_menu.links %}
-          <a href="{{ link.url }}">{{ link.title }}</a>
-        {% endfor %}
-      </div>
-    {% endif %}
-
-    {% if settings.contact_email != blank or settings.contact_phone != blank %}
-      <div class="fc">
-        <h4>{{ section.settings.contact_heading | default: 'Contact' }}</h4>
-        {% if settings.contact_email != blank %}
-          <a href="mailto:{{ settings.contact_email }}">{{ settings.contact_email }}</a>
+    {%- comment -%} NAV COLUMNS {%- endcomment -%}
+    {% if section.settings.col1_menu != blank %}
+      <div class="lb-footer__col">
+        {% if section.settings.col1_heading != blank %}
+          <h4 class="lb-footer__col-heading">{{ section.settings.col1_heading }}</h4>
         {% endif %}
-        {% if settings.contact_phone != blank %}
-          <a href="tel:{{ settings.contact_phone | remove: ' ' }}">{{ settings.contact_phone }}</a>
+        {% for link in section.settings.col1_menu.links %}
+          <a href="{{ link.url }}" class="lb-footer__col-link">{{ link.title }}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.col2_menu != blank %}
+      <div class="lb-footer__col">
+        {% if section.settings.col2_heading != blank %}
+          <h4 class="lb-footer__col-heading">{{ section.settings.col2_heading }}</h4>
         {% endif %}
+        {% for link in section.settings.col2_menu.links %}
+          <a href="{{ link.url }}" class="lb-footer__col-link">{{ link.title }}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.col3_menu != blank %}
+      <div class="lb-footer__col">
+        {% if section.settings.col3_heading != blank %}
+          <h4 class="lb-footer__col-heading">{{ section.settings.col3_heading }}</h4>
+        {% endif %}
+        {% for link in section.settings.col3_menu.links %}
+          <a href="{{ link.url }}" class="lb-footer__col-link">{{ link.title }}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.col4_menu != blank %}
+      <div class="lb-footer__col">
+        {% if section.settings.col4_heading != blank %}
+          <h4 class="lb-footer__col-heading">{{ section.settings.col4_heading }}</h4>
+        {% endif %}
+        {% for link in section.settings.col4_menu.links %}
+          <a href="{{ link.url }}" class="lb-footer__col-link">{{ link.title }}</a>
+        {% endfor %}
       </div>
     {% endif %}
 
   </div>
 
-  <div class="fb">
-    <p class="fcp">
+  {%- comment -%} TRUST STRIP {%- endcomment -%}
+  {% if section.settings.show_trust_strip %}
+  <div class="lb-footer__trust">
+    {% for i in (1..4) %}
+      {%- assign icon_key = 'trust_' | append: i | append: '_icon' -%}
+      {%- assign label_key = 'trust_' | append: i | append: '_label' -%}
+      {%- assign val_key = 'trust_' | append: i | append: '_value' -%}
+      {% if section.settings[label_key] != blank %}
+        <div class="lb-footer__trust-item">
+          {% if section.settings[icon_key] != blank %}
+            <span class="lb-footer__trust-icon">{{ section.settings[icon_key] }}</span>
+          {% endif %}
+          <div>
+            <div class="lb-footer__trust-label">{{ section.settings[label_key] }}</div>
+            <div class="lb-footer__trust-val">{{ section.settings[val_key] }}</div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {%- comment -%} BOTTOM BAR {%- endcomment -%}
+  <div class="lb-footer__bottom">
+    <span class="lb-footer__copy">
       &copy; {{ 'now' | date: '%Y' }}
       {% if section.settings.copyright_text != blank %}
         {{ section.settings.copyright_text }}
       {% else %}
         {{ settings.business_name | default: shop.name }}. All rights reserved.
       {% endif %}
-    </p>
-    <div class="fleg">
-      {% if shop.privacy_policy %}<a href="{{ shop.privacy_policy.url }}">{{ shop.privacy_policy.title }}</a>{% endif %}
-      {% if shop.refund_policy %}<a href="{{ shop.refund_policy.url }}">{{ shop.refund_policy.title }}</a>{% endif %}
-      {% if shop.terms_of_service %}<a href="{{ shop.terms_of_service.url }}">{{ shop.terms_of_service.title }}</a>{% endif %}
+    </span>
+
+    <div class="lb-footer__legal">
+      {% if shop.privacy_policy != blank %}
+        <a href="{{ shop.privacy_policy.url }}">{{ shop.privacy_policy.title }}</a>
+      {% endif %}
+      {% if shop.refund_policy != blank %}
+        <a href="{{ shop.refund_policy.url }}">{{ shop.refund_policy.title }}</a>
+      {% endif %}
+      {% if shop.terms_of_service != blank %}
+        <a href="{{ shop.terms_of_service.url }}">{{ shop.terms_of_service.title }}</a>
+      {% endif %}
+      {% if section.settings.extra_legal_menu != blank %}
+        {% for link in section.settings.extra_legal_menu.links %}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {% endfor %}
+      {% endif %}
     </div>
+
+    {% if section.settings.show_payment_badges %}
+      <div class="lb-footer__payments">
+        <span class="lb-footer__payments-label">Payments via</span>
+        {% if section.settings.payment_badge_1 != blank %}
+          <span class="lb-footer__pay-badge">{{ section.settings.payment_badge_1 }}</span>
+        {% endif %}
+        {% if section.settings.payment_badge_2 != blank %}
+          <span class="lb-footer__pay-badge">{{ section.settings.payment_badge_2 }}</span>
+        {% endif %}
+        {% if section.settings.payment_badge_3 != blank %}
+          <span class="lb-footer__pay-badge">{{ section.settings.payment_badge_3 }}</span>
+        {% endif %}
+      </div>
+    {% endif %}
   </div>
+
 </footer>
+
+<style>
+  :root {
+    --lb-footer-bg: {{ section.settings.footer_bg }};
+    --lb-footer-text: {{ section.settings.footer_text }};
+    --lb-footer-accent: {{ section.settings.footer_accent }};
+    --lb-footer-muted: {{ section.settings.footer_muted }};
+    --lb-footer-border: {{ section.settings.footer_border }};
+  }
+
+  .lb-footer {
+    background: var(--lb-footer-bg);
+    color: var(--lb-footer-text);
+    font-family: inherit;
+  }
+
+  /* EMAIL BAR */
+  .lb-footer__email-bar {
+    padding: 20px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .lb-footer__email-msg {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .lb-footer__email-form {
+    display: flex;
+    gap: 0;
+  }
+  .lb-footer__email-inp {
+    padding: 11px 16px;
+    font-size: 12px;
+    background: rgba(0,0,0,0.25);
+    color: inherit;
+    border: none;
+    outline: none;
+    width: 220px;
+    font-family: inherit;
+  }
+  .lb-footer__email-inp::placeholder { opacity: 0.6; }
+  .lb-footer__email-btn {
+    background: rgba(0,0,0,0.3);
+    color: inherit;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 11px 18px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+  .lb-footer__email-btn:hover { background: rgba(0,0,0,0.5); }
+
+  /* MAIN */
+  .lb-footer__main {
+    padding: 60px 60px 48px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    gap: 36px;
+    border-top: 0.5px solid var(--lb-footer-border);
+  }
+
+  /* BRAND */
+  .lb-footer__logo {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    text-decoration: none;
+    margin-bottom: 16px;
+  }
+  .lb-footer__logo-img { height: 40px; width: auto; }
+  .lb-footer__logo-top {
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--lb-footer-text);
+  }
+  .lb-footer__logo-bot {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--lb-footer-accent);
+    text-transform: uppercase;
+  }
+  .lb-footer__brand-desc {
+    font-size: 13px;
+    color: var(--lb-footer-muted);
+    line-height: 1.75;
+    margin-bottom: 12px;
+  }
+  .lb-footer__brand-tag {
+    display: block;
+    font-size: 11px;
+    color: var(--lb-footer-accent);
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+  .lb-footer__contact {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .lb-footer__contact a,
+  .lb-footer__contact span {
+    font-size: 12px;
+    color: var(--lb-footer-muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+  }
+  .lb-footer__contact a:hover { color: var(--lb-footer-accent); }
+
+  /* SOCIAL */
+  .lb-footer__social {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .lb-footer__social a {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--lb-footer-muted);
+    text-decoration: none;
+    border: 0.5px solid var(--lb-footer-border);
+    padding: 7px 12px;
+    transition: color 0.2s, border-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .lb-footer__social a:hover {
+    color: var(--lb-footer-accent);
+    border-color: var(--lb-footer-accent);
+  }
+
+  /* COLUMNS */
+  .lb-footer__col-heading {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--lb-footer-text);
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 0.5px solid var(--lb-footer-border);
+  }
+  .lb-footer__col-link {
+    display: block;
+    font-size: 12px;
+    color: var(--lb-footer-muted);
+    text-decoration: none;
+    margin-bottom: 9px;
+    transition: color 0.2s;
+    line-height: 1.4;
+  }
+  .lb-footer__col-link:hover { color: var(--lb-footer-accent); }
+
+  /* TRUST STRIP */
+  .lb-footer__trust {
+    background: rgba(0,0,0,0.2);
+    border-top: 0.5px solid var(--lb-footer-border);
+    border-bottom: 0.5px solid var(--lb-footer-border);
+    padding: 24px 60px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+  .lb-footer__trust-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 0 20px;
+    border-right: 0.5px solid var(--lb-footer-border);
+  }
+  .lb-footer__trust-item:first-child { padding-left: 0; }
+  .lb-footer__trust-item:last-child { border-right: none; }
+  .lb-footer__trust-icon { font-size: 22px; flex-shrink: 0; }
+  .lb-footer__trust-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--lb-footer-text);
+  }
+  .lb-footer__trust-val {
+    font-size: 11px;
+    color: var(--lb-footer-muted);
+    margin-top: 2px;
+  }
+
+  /* BOTTOM */
+  .lb-footer__bottom {
+    padding: 20px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    border-top: 0.5px solid var(--lb-footer-border);
+  }
+  .lb-footer__copy {
+    font-size: 11px;
+    color: var(--lb-footer-muted);
+  }
+  .lb-footer__legal {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .lb-footer__legal a {
+    font-size: 11px;
+    color: var(--lb-footer-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .lb-footer__legal a:hover { color: var(--lb-footer-accent); }
+  .lb-footer__payments {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .lb-footer__payments-label {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--lb-footer-muted);
+  }
+  .lb-footer__pay-badge {
+    background: rgba(255,255,255,0.08);
+    color: var(--lb-footer-muted);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 960px) {
+    .lb-footer__email-bar { padding: 18px 24px; flex-direction: column; }
+    .lb-footer__email-form { width: 100%; }
+    .lb-footer__email-inp { flex: 1; }
+    .lb-footer__main { grid-template-columns: 1fr 1fr; gap: 28px; padding: 40px 24px 32px; }
+    .lb-footer__brand { grid-column: span 2; }
+    .lb-footer__trust { grid-template-columns: 1fr 1fr; padding: 20px 24px; }
+    .lb-footer__trust-item { padding: 14px 12px; border-right: none; border-bottom: 0.5px solid var(--lb-footer-border); }
+    .lb-footer__trust-item:nth-child(odd) { border-right: 0.5px solid var(--lb-footer-border); }
+    .lb-footer__trust-item:nth-child(3),
+    .lb-footer__trust-item:nth-child(4) { border-bottom: none; }
+    .lb-footer__bottom { padding: 16px 24px; flex-direction: column; text-align: center; }
+    .lb-footer__legal { justify-content: center; }
+  }
+  @media (max-width: 600px) {
+    .lb-footer__main { grid-template-columns: 1fr; }
+    .lb-footer__brand { grid-column: span 1; }
+    .lb-footer__trust { grid-template-columns: 1fr; }
+    .lb-footer__trust-item { border-right: none !important; border-bottom: 0.5px solid var(--lb-footer-border) !important; }
+    .lb-footer__trust-item:last-child { border-bottom: none !important; }
+  }
+</style>
 
 {% schema %}
 {
   "name": "LB Footer",
   "settings": [
-    {
-      "type": "header",
-      "content": "Brand Column"
-    },
-    {
-      "type": "textarea",
-      "id": "footer_description",
-      "label": "Footer Description",
-      "info": "Short brand description shown under the logo. Overrides the global tagline if set."
-    },
-    {
-      "type": "header",
-      "content": "Social Icons"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_social",
-      "label": "Show Social Icons",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_social_labels",
-      "label": "Show Social Labels (text next to icons)",
-      "default": false
-    },
-    {
-      "type": "header",
-      "content": "Footer Columns"
-    },
-    {
-      "type": "text",
-      "id": "column_1_heading",
-      "label": "Column 1 Heading",
-      "default": "Shop"
-    },
-    {
-      "type": "link_list",
-      "id": "column_1_menu",
-      "label": "Column 1 Menu"
-    },
-    {
-      "type": "text",
-      "id": "column_2_heading",
-      "label": "Column 2 Heading",
-      "default": "Explore"
-    },
-    {
-      "type": "link_list",
-      "id": "column_2_menu",
-      "label": "Column 2 Menu"
-    },
-    {
-      "type": "text",
-      "id": "column_3_heading",
-      "label": "Column 3 Heading"
-    },
-    {
-      "type": "link_list",
-      "id": "column_3_menu",
-      "label": "Column 3 Menu"
-    },
-    {
-      "type": "header",
-      "content": "Contact Column"
-    },
-    {
-      "type": "text",
-      "id": "contact_heading",
-      "label": "Contact Column Heading",
-      "default": "Contact"
-    },
-    {
-      "type": "header",
-      "content": "Bottom Bar"
-    },
-    {
-      "type": "text",
-      "id": "copyright_text",
-      "label": "Copyright Text",
-      "info": "Overrides the default. E.g. 'Lacquer Bru. All rights reserved.'"
-    },
-    {
-      "type": "header",
-      "content": "Spacing"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "label": "Top Padding",
-      "min": 20,
-      "max": 120,
-      "step": 10,
-      "default": 60,
-      "unit": "px"
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "label": "Bottom Padding",
-      "min": 20,
-      "max": 120,
-      "step": 10,
-      "default": 40,
-      "unit": "px"
-    }
+    { "type": "header", "content": "Email Signup Bar" },
+    { "type": "checkbox", "id": "show_email_bar", "label": "Show Email Bar", "default": true },
+    { "type": "text", "id": "email_bar_text", "label": "Email Bar Message", "default": "New drops first. Join the Lacquer Bru list." },
+    { "type": "text", "id": "email_placeholder", "label": "Input Placeholder", "default": "your@email.com" },
+    { "type": "text", "id": "email_btn_label", "label": "Subscribe Button Label", "default": "Subscribe" },
+    { "type": "color", "id": "email_bar_bg", "label": "Email Bar Background", "default": "#7DD8E8" },
+    { "type": "color", "id": "email_bar_color", "label": "Email Bar Text Colour", "default": "#0A0A0A" },
+
+    { "type": "header", "content": "Brand Column" },
+    { "type": "text", "id": "logo_top", "label": "Logo Top Line", "default": "Lacquer" },
+    { "type": "text", "id": "logo_bot", "label": "Logo Bottom Line", "default": "BRU" },
+    { "type": "textarea", "id": "brand_desc", "label": "Brand Description", "default": "Multidisciplinary creative studio built on 16+ years of aerosol culture, digital creation, and immersive visual transformation. Based in Cape Town, working worldwide." },
+    { "type": "text", "id": "brand_tagline", "label": "Brand Tagline", "default": "If Not Unique, Why Bother." },
+    { "type": "text", "id": "location", "label": "Location Text", "default": "Cape Town, Western Cape, South Africa" },
+
+    { "type": "header", "content": "Social Icons" },
+    { "type": "checkbox", "id": "show_social", "label": "Show Social Links", "default": true },
+    { "type": "select", "id": "social_style", "label": "Social Display Style", "options": [{ "value": "icons", "label": "Icons" }, { "value": "handles", "label": "Text / Handles" }], "default": "handles" },
+
+    { "type": "header", "content": "Footer Columns" },
+    { "type": "text", "id": "col1_heading", "label": "Column 1 Heading", "default": "Shop" },
+    { "type": "link_list", "id": "col1_menu", "label": "Column 1 Menu" },
+    { "type": "text", "id": "col2_heading", "label": "Column 2 Heading", "default": "Services" },
+    { "type": "link_list", "id": "col2_menu", "label": "Column 2 Menu" },
+    { "type": "text", "id": "col3_heading", "label": "Column 3 Heading", "default": "Explore" },
+    { "type": "link_list", "id": "col3_menu", "label": "Column 3 Menu" },
+    { "type": "text", "id": "col4_heading", "label": "Column 4 Heading", "default": "Support" },
+    { "type": "link_list", "id": "col4_menu", "label": "Column 4 Menu" },
+
+    { "type": "header", "content": "Trust Strip" },
+    { "type": "checkbox", "id": "show_trust_strip", "label": "Show Trust Strip", "default": true },
+    { "type": "text", "id": "trust_1_icon", "label": "Trust 1 Icon (emoji)", "default": "⚡" },
+    { "type": "text", "id": "trust_1_label", "label": "Trust 1 Label", "default": "Instant Download" },
+    { "type": "text", "id": "trust_1_value", "label": "Trust 1 Value", "default": "Files delivered immediately after payment" },
+    { "type": "text", "id": "trust_2_icon", "label": "Trust 2 Icon (emoji)", "default": "🔒" },
+    { "type": "text", "id": "trust_2_label", "label": "Trust 2 Label", "default": "Secure Checkout" },
+    { "type": "text", "id": "trust_2_value", "label": "Trust 2 Value", "default": "PayFast & PayPal protected transactions" },
+    { "type": "text", "id": "trust_3_icon", "label": "Trust 3 Icon (emoji)", "default": "🎨" },
+    { "type": "text", "id": "trust_3_label", "label": "Trust 3 Label", "default": "Made by an Artist" },
+    { "type": "text", "id": "trust_3_value", "label": "Trust 3 Value", "default": "Tested in real workflows before every release" },
+    { "type": "text", "id": "trust_4_icon", "label": "Trust 4 Icon (emoji)", "default": "💬" },
+    { "type": "text", "id": "trust_4_label", "label": "Trust 4 Label", "default": "Real Support" },
+    { "type": "text", "id": "trust_4_value", "label": "Trust 4 Value", "default": "Response within 24-48 hours guaranteed" },
+
+    { "type": "header", "content": "Bottom Bar" },
+    { "type": "text", "id": "copyright_text", "label": "Copyright Text", "info": "Overrides default. E.g. 'Lacquer Bru Creative Studio. All rights reserved.'" },
+    { "type": "link_list", "id": "extra_legal_menu", "label": "Extra Legal Links Menu", "info": "Adds links alongside auto-generated policy links" },
+    { "type": "checkbox", "id": "show_payment_badges", "label": "Show Payment Badges", "default": true },
+    { "type": "text", "id": "payment_badge_1", "label": "Payment Badge 1", "default": "PayFast" },
+    { "type": "text", "id": "payment_badge_2", "label": "Payment Badge 2", "default": "PayPal" },
+    { "type": "text", "id": "payment_badge_3", "label": "Payment Badge 3" },
+
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "footer_bg", "label": "Footer Background", "default": "#1A1A1A" },
+    { "type": "color", "id": "footer_text", "label": "Footer Text", "default": "#FFFFFF" },
+    { "type": "color", "id": "footer_accent", "label": "Footer Accent", "default": "#7DD8E8" },
+    { "type": "color", "id": "footer_muted", "label": "Footer Muted Text", "default": "#AAAAAA" },
+    { "type": "color", "id": "footer_border", "label": "Footer Border Colour", "default": "#2A2A2A" }
   ]
 }
 {% endschema %}
