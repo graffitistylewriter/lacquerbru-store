@@ -1,1 +1,18 @@
-{"sections":{"main":{"type":"main-page","settings":{}}},"order":["main"]}
+{
+  "sections": {
+    "page-hero": {
+      "type": "lb-hero",
+      "settings": {
+        "min_height": 400,
+        "show_scroll_indicator": false,
+        "btn1_label": "",
+        "btn2_label": ""
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "settings": {}
+    }
+  },
+  "order": ["page-hero", "main"]
+}

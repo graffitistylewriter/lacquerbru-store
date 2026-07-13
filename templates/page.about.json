@@ -1,1 +1,35 @@
-{"sections":{"main":{"type":"lb-blueprint-about","settings":{}}},"order":["main"]}
+{
+  "sections": {
+    "hero": {
+      "type": "lb-hero",
+      "settings": {
+        "eyebrow": "The Studio",
+        "heading": "About Lacquer Bru.",
+        "heading_em": "Aerosoul.",
+        "subtext": "Rooted in aerosol culture. Built for premium execution.",
+        "btn1_label": "Start a Commission",
+        "btn2_label": "",
+        "show_scroll_indicator": true,
+        "min_height": 500
+      }
+    },
+    "marquee": {
+      "type": "lb-marquee",
+      "settings": {}
+    },
+    "about": {
+      "type": "lb-about-strip",
+      "settings": {
+        "label": "The Studio",
+        "heading": "Where Urban Expression Meets Premium Craft",
+        "image_side": "left",
+        "show_stats": true
+      }
+    },
+    "trust": {
+      "type": "lb-trust-strip",
+      "settings": {}
+    }
+  },
+  "order": ["hero", "marquee", "about", "trust"]
+}

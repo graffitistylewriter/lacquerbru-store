@@ -1,1 +1,30 @@
-{"sections":{"main":{"type":"lb-blueprint-commission","settings":{}}},"order":["main"]}
+{
+  "sections": {
+    "hero": {
+      "type": "lb-hero",
+      "settings": {
+        "eyebrow": "Work Together",
+        "heading": "Commission Inquiry.",
+        "heading_em": "",
+        "subtext": "Every great piece starts with a conversation.",
+        "btn1_label": "",
+        "btn2_label": "",
+        "show_scroll_indicator": false,
+        "min_height": 400
+      }
+    },
+    "marquee": {
+      "type": "lb-marquee",
+      "settings": {}
+    },
+    "commission": {
+      "type": "lb-blueprint-commission",
+      "settings": {}
+    },
+    "trust": {
+      "type": "lb-trust-strip",
+      "settings": {}
+    }
+  },
+  "order": ["hero", "marquee", "commission", "trust"]
+}

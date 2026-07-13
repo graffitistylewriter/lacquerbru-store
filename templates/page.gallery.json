@@ -1,1 +1,26 @@
-{"sections":{"main":{"type":"lb-blueprint-gallery","settings":{}}},"order":["main"]}
+{
+  "sections": {
+    "hero": {
+      "type": "lb-hero",
+      "settings": {
+        "eyebrow": "The Work",
+        "heading": "Gallery.",
+        "heading_em": "",
+        "subtext": "Murals · Portraits · Wildstyle · Digital · Commissions",
+        "btn1_label": "Start a Commission",
+        "btn2_label": "",
+        "show_scroll_indicator": true,
+        "min_height": 500
+      }
+    },
+    "marquee": {
+      "type": "lb-marquee",
+      "settings": {}
+    },
+    "gallery": {
+      "type": "lb-blueprint-gallery",
+      "settings": {}
+    }
+  },
+  "order": ["hero", "marquee", "gallery"]
+}

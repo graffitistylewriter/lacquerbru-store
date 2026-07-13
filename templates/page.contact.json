@@ -1,1 +1,26 @@
-{"sections":{"main":{"type":"lb-blueprint-contact","settings":{}}},"order":["main"]}
+{
+  "sections": {
+    "hero": {
+      "type": "lb-hero",
+      "settings": {
+        "eyebrow": "Contact",
+        "heading": "Get In Touch.",
+        "heading_em": "",
+        "subtext": "Based in Cape Town. Working locally and internationally.",
+        "btn1_label": "",
+        "btn2_label": "",
+        "show_scroll_indicator": false,
+        "min_height": 400
+      }
+    },
+    "marquee": {
+      "type": "lb-marquee",
+      "settings": {}
+    },
+    "contact": {
+      "type": "lb-blueprint-contact",
+      "settings": {}
+    }
+  },
+  "order": ["hero", "marquee", "contact"]
+}

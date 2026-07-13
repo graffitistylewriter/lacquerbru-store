@@ -1,1 +1,41 @@
-{"sections":{"main":{"type":"lb-blueprint-home","settings":{}}},"order":["main"]}
+{
+  "sections": {
+    "hero": {
+      "type": "lb-hero",
+      "settings": {
+        "eyebrow": "If Not Unique, Why Bother",
+        "heading": "Street Artist.",
+        "heading_em": "Digital Creator.",
+        "subtext": "Graffiti murals, digital art, and creative assets born from 16 years of aerosol culture in Cape Town.",
+        "btn1_label": "Shop the Collection",
+        "btn2_label": "Commission Inquiry",
+        "show_scroll_indicator": true
+      }
+    },
+    "marquee": {
+      "type": "lb-marquee",
+      "settings": {}
+    },
+    "featured": {
+      "type": "lb-featured-products",
+      "settings": {
+        "label": "Available Now",
+        "heading": "The Collection",
+        "subtext": "Digital assets built for working creatives."
+      }
+    },
+    "about": {
+      "type": "lb-about-strip",
+      "settings": {
+        "label": "The Studio",
+        "heading": "Where Urban Expression Meets Premium Craft",
+        "image_side": "left"
+      }
+    },
+    "trust": {
+      "type": "lb-trust-strip",
+      "settings": {}
+    }
+  },
+  "order": ["hero", "marquee", "featured", "about", "trust"]
+}
