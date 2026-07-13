@@ -64,7 +64,7 @@
     {% if compat_blocks.size > 0 %}
       <div class="pf-compat">
         {% for block in compat_blocks %}
-          <div class="pf-compat-item{% if block.settings.available %} active{% else %}" style="opacity:0.4;{% endif %}" {{ block.shopify_attributes }}>
+          <div class="pf-compat-item{% if block.settings.available %} active{% endif %}" style="opacity:0.4;" {{ block.shopify_attributes }}>
             {{ block.settings.label }}
           </div>
         {% endfor %}
