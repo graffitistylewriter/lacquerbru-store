@@ -1,78 +1,327 @@
-<section class="lb-cart-main">
+<section
+  class="lb-cart"
+  style="background:{{ section.settings.bg_color }};padding:{{ section.settings.padding_top }}px 60px {{ section.settings.padding_bottom }}px;"
+>
+  <div class="lb-cart__inner">
 
-  <header class="lb-cart-main__header">
-    <p class="lb-kicker">Checkout</p>
-    <h1>Your Cart</h1>
-  </header>
-
-  {% if cart.item_count > 0 %}
-    <form action="{{ routes.cart_url }}" method="post" class="lb-cart-main__form">
-      {% for item in cart.items %}
-        <article class="lb-cart-item">
-          {% if item.image %}
-            {{
-              item.image
-              | image_url: width: 300
-              | image_tag: loading: 'lazy'
-            }}
-          {% endif %}
-
-          <div>
-            <h3>{{ item.product.title }}</h3>
-            {% unless item.product.has_only_default_variant %}
-              <p>{{ item.variant.title }}</p>
-            {% endunless %}
-            {% if item.properties.size > 0 %}
-              <dl class="lb-cart-item__properties">
-                {% for property in item.properties %}
-                  {% unless property.last == blank or property.first.first == '_' %}
-                    <dt>{{ property.first }}</dt>
-                    <dd>{{ property.last }}</dd>
-                  {% endunless %}
-                {% endfor %}
-              </dl>
-            {% endif %}
-            <p>{{ item.final_line_price | money }}</p>
-            <input
-              type="number"
-              name="updates[]"
-              value="{{ item.quantity }}"
-              min="0"
-              aria-label="Quantity for {{ item.product.title | escape }}"
-            >
-            <a class="lb-cart-item__remove" href="{{ item.url_to_remove }}">Remove</a>
-          </div>
-        </article>
-      {% endfor %}
-
-      <div class="lb-cart-main__summary">
-        {% if section.settings.cart_note != blank %}
-          <p class="lb-cart-main__reassurance">{{ section.settings.cart_note }}</p>
-        {% endif %}
-        <p>Total: {{ cart.total_price | money }}</p>
-        <button type="submit" name="update" class="lb-btn lb-btn--ghost">Update</button>
-        <button type="submit" name="checkout" class="lb-btn">Checkout</button>
-      </div>
-    </form>
-  {% else %}
-    <div class="lb-empty-state">
-      <p>Your cart is currently empty.</p>
-      <a href="{{ routes.all_products_collection_url }}" class="lb-btn">Browse Shop</a>
+    {%- comment -%} PAGE HEADING {%- endcomment -%}
+    <div class="lb-cart__heading">
+      <h1 class="lb-cart__title" style="color:{{ section.settings.text_color }};">
+        {{ section.settings.title | default: 'Your Cart' }}
+      </h1>
+      {% if cart.item_count > 0 %}
+        <span class="lb-cart__count" style="color:{{ section.settings.muted_color }};">
+          {{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }}
+        </span>
+      {% endif %}
     </div>
-  {% endif %}
 
+    {% if cart.item_count > 0 %}
+
+      <form action="{{ routes.cart_url }}" method="post" id="lb-cart-form">
+
+        {%- comment -%} CART ITEMS {%- endcomment -%}
+        <div class="lb-cart__layout">
+          <div class="lb-cart__items">
+
+            <div class="lb-cart__items-header" style="border-color:rgba(255,255,255,0.08);color:{{ section.settings.muted_color }};">
+              <span>Product</span>
+              <span>Quantity</span>
+              <span>Total</span>
+            </div>
+
+            {% for item in cart.items %}
+              <div class="lb-cart__item" style="border-color:rgba(255,255,255,0.08);" id="lb-cart-item-{{ item.index }}">
+
+                <div class="lb-cart__item-product">
+                  <a href="{{ item.url }}" class="lb-cart__item-img-wrap">
+                    {% if item.image %}
+                      {{ item.image | image_url: width: 200 | image_tag:
+                        loading: 'lazy',
+                        alt: item.title,
+                        class: 'lb-cart__item-img',
+                        width: 200, height: 200
+                      }}
+                    {% else %}
+                      {{ 'product-1' | placeholder_svg_tag: 'lb-cart__item-placeholder' }}
+                    {% endif %}
+                  </a>
+                  <div class="lb-cart__item-info">
+                    <a href="{{ item.url }}" class="lb-cart__item-title" style="color:{{ section.settings.text_color }};">
+                      {{ item.product.title }}
+                    </a>
+                    {% unless item.product.has_only_default_variant %}
+                      <span class="lb-cart__item-variant" style="color:{{ section.settings.muted_color }};">
+                        {{ item.variant.title }}
+                      </span>
+                    {% endunless %}
+                    <span class="lb-cart__item-price" style="color:{{ section.settings.muted_color }};">
+                      {{ item.original_price | money }} each
+                    </span>
+                    <a
+                      href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0"
+                      class="lb-cart__item-remove"
+                      style="color:{{ section.settings.muted_color }};"
+                    >Remove</a>
+                  </div>
+                </div>
+
+                <div class="lb-cart__item-qty">
+                  <div class="lb-cart__qty-wrap">
+                    <button type="button" class="lb-cart__qty-btn" data-lb-cart-qty="-1" data-lb-line="{{ forloop.index }}" style="color:{{ section.settings.text_color }};border-color:rgba(255,255,255,0.15);">−</button>
+                    <input
+                      type="number"
+                      name="updates[]"
+                      value="{{ item.quantity }}"
+                      min="0"
+                      class="lb-cart__qty-input"
+                      data-lb-qty-input
+                      style="color:{{ section.settings.text_color }};border-color:rgba(255,255,255,0.15);"
+                      aria-label="Quantity for {{ item.title }}"
+                    >
+                    <button type="button" class="lb-cart__qty-btn" data-lb-cart-qty="1" data-lb-line="{{ forloop.index }}" style="color:{{ section.settings.text_color }};border-color:rgba(255,255,255,0.15);">+</button>
+                  </div>
+                </div>
+
+                <div class="lb-cart__item-total" style="color:{{ section.settings.text_color }};">
+                  {{ item.final_line_price | money }}
+                </div>
+
+              </div>
+            {% endfor %}
+
+          </div>
+
+          {%- comment -%} ORDER SUMMARY {%- endcomment -%}
+          <div class="lb-cart__summary" style="background:{{ section.settings.summary_bg }};">
+
+            <h2 class="lb-cart__summary-title" style="color:{{ section.settings.text_color }};">
+              {{ section.settings.summary_title | default: 'Order Summary' }}
+            </h2>
+
+            <div class="lb-cart__summary-rows">
+              <div class="lb-cart__summary-row">
+                <span style="color:{{ section.settings.muted_color }};">Subtotal</span>
+                <span style="color:{{ section.settings.text_color }};">{{ cart.total_price | money }}</span>
+              </div>
+              {% if cart.total_discounts > 0 %}
+                <div class="lb-cart__summary-row">
+                  <span style="color:{{ section.settings.accent_color }};">Savings</span>
+                  <span style="color:{{ section.settings.accent_color }};">−{{ cart.total_discounts | money }}</span>
+                </div>
+              {% endif %}
+              <div class="lb-cart__summary-row lb-cart__summary-row--shipping" style="color:{{ section.settings.muted_color }};">
+                <span>Shipping</span>
+                <span>Calculated at checkout</span>
+              </div>
+            </div>
+
+            <div class="lb-cart__summary-total" style="border-color:rgba(255,255,255,0.1);">
+              <span style="color:{{ section.settings.text_color }};">Total</span>
+              <span class="lb-cart__total-price" style="color:{{ section.settings.text_color }};">{{ cart.total_price | money }}</span>
+            </div>
+
+            {% if section.settings.show_note %}
+              <div class="lb-cart__note">
+                <label for="lb-cart-note" style="color:{{ section.settings.muted_color }};">
+                  {{ section.settings.note_label | default: 'Order Note' }}
+                </label>
+                <textarea
+                  id="lb-cart-note"
+                  name="note"
+                  class="lb-cart__note-input"
+                  style="color:{{ section.settings.text_color }};border-color:rgba(255,255,255,0.15);background:transparent;"
+                  placeholder="{{ section.settings.note_placeholder | default: 'Any special instructions?' }}"
+                >{{ cart.note }}</textarea>
+              </div>
+            {% endif %}
+
+            <button
+              type="submit"
+              name="checkout"
+              class="lb-cart__checkout-btn"
+              style="background:{{ section.settings.accent_color }};color:#000;"
+            >
+              {{ section.settings.checkout_label | default: 'Proceed to Checkout' }}
+            </button>
+
+            <button
+              type="submit"
+              name="update"
+              class="lb-cart__update-btn"
+              style="color:{{ section.settings.muted_color }};border-color:rgba(255,255,255,0.15);"
+            >
+              {{ section.settings.update_label | default: 'Update Cart' }}
+            </button>
+
+            {% if section.settings.show_continue %}
+              <a
+                href="{{ routes.all_products_collection_url }}"
+                class="lb-cart__continue"
+                style="color:{{ section.settings.accent_color }};"
+              >
+                &larr; {{ section.settings.continue_label | default: 'Continue Shopping' }}
+              </a>
+            {% endif %}
+
+          </div>
+        </div>
+
+      </form>
+
+    {% else %}
+
+      {%- comment -%} EMPTY CART {%- endcomment -%}
+      <div class="lb-cart__empty">
+        <div class="lb-cart__empty-icon">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="color:{{ section.settings.muted_color }};">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+        </div>
+        <h2 style="color:{{ section.settings.text_color }};">{{ section.settings.empty_heading | default: 'Your cart is empty' }}</h2>
+        <p style="color:{{ section.settings.muted_color }};">{{ section.settings.empty_subtext | default: 'Looks like you have not added anything yet.' }}</p>
+        <a href="{{ routes.all_products_collection_url }}" class="lb-btn lb-btn--primary" style="background:{{ section.settings.accent_color }};color:#000;border-color:{{ section.settings.accent_color }};">
+          {{ section.settings.empty_btn_label | default: 'Start Shopping' }}
+        </a>
+      </div>
+
+    {% endif %}
+
+  </div>
 </section>
+
+<style>
+  .lb-cart__inner { max-width: 1400px; margin: 0 auto; }
+  .lb-cart__heading { display: flex; align-items: baseline; gap: 16px; margin-bottom: 40px; }
+  .lb-cart__title { font-size: clamp(28px, 4vw, 52px); font-weight: 700; letter-spacing: -0.02em; text-transform: uppercase; margin: 0; }
+  .lb-cart__count { font-size: 13px; letter-spacing: 0.08em; }
+
+  .lb-cart__layout { display: grid; grid-template-columns: 1fr 380px; gap: 48px; align-items: start; }
+
+  .lb-cart__items-header {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 24px;
+    padding-bottom: 14px;
+    border-bottom: 0.5px solid;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .lb-cart__items-header span:nth-child(2),
+  .lb-cart__items-header span:nth-child(3) { text-align: right; }
+
+  .lb-cart__item {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 24px;
+    align-items: center;
+    padding: 24px 0;
+    border-bottom: 0.5px solid;
+  }
+  .lb-cart__item-product { display: flex; gap: 16px; align-items: flex-start; }
+  .lb-cart__item-img-wrap { width: 80px; height: 80px; flex-shrink: 0; overflow: hidden; display: block; }
+  .lb-cart__item-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .lb-cart__item-placeholder { width: 100%; height: 100%; opacity: 0.1; }
+  .lb-cart__item-info { display: flex; flex-direction: column; gap: 5px; }
+  .lb-cart__item-title { font-size: 14px; font-weight: 600; text-decoration: none; line-height: 1.3; transition: opacity 0.2s; }
+  .lb-cart__item-title:hover { opacity: 0.7; }
+  .lb-cart__item-variant { font-size: 12px; }
+  .lb-cart__item-price { font-size: 12px; }
+  .lb-cart__item-remove { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: underline; cursor: pointer; background: none; border: none; padding: 0; font-family: inherit; transition: opacity 0.2s; }
+  .lb-cart__item-remove:hover { opacity: 0.6; }
+
+  .lb-cart__qty-wrap { display: flex; align-items: center; }
+  .lb-cart__qty-btn { width: 36px; height: 36px; background: transparent; border: 1px solid; font-size: 16px; cursor: pointer; font-family: inherit; transition: opacity 0.2s; }
+  .lb-cart__qty-btn:hover { opacity: 0.7; }
+  .lb-cart__qty-input { width: 48px; height: 36px; text-align: center; background: transparent; border-top: 1px solid rgba(255,255,255,0.15); border-bottom: 1px solid rgba(255,255,255,0.15); border-left: none; border-right: none; font-size: 14px; font-family: inherit; -moz-appearance: textfield; }
+  .lb-cart__qty-input::-webkit-outer-spin-button, .lb-cart__qty-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+  .lb-cart__item-total { font-size: 16px; font-weight: 700; text-align: right; white-space: nowrap; }
+
+  .lb-cart__summary { padding: 32px; position: sticky; top: 100px; }
+  .lb-cart__summary-title { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin: 0 0 24px; }
+  .lb-cart__summary-rows { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+  .lb-cart__summary-row { display: flex; justify-content: space-between; font-size: 13px; }
+  .lb-cart__summary-row--shipping { font-size: 12px; }
+  .lb-cart__summary-total { display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 0.5px solid; margin-bottom: 24px; }
+  .lb-cart__summary-total span:first-child { font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+  .lb-cart__total-price { font-size: 24px; font-weight: 700; }
+
+  .lb-cart__note { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+  .lb-cart__note label { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; }
+  .lb-cart__note-input { padding: 12px; font-size: 13px; font-family: inherit; border: 1px solid; resize: vertical; min-height: 80px; outline: none; }
+
+  .lb-cart__checkout-btn { width: 100%; padding: 18px; font-size: 12px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; border: none; cursor: pointer; font-family: inherit; transition: opacity 0.2s; margin-bottom: 10px; display: block; }
+  .lb-cart__checkout-btn:hover { opacity: 0.85; }
+  .lb-cart__update-btn { width: 100%; padding: 14px; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; background: transparent; border: 1px solid; cursor: pointer; font-family: inherit; transition: opacity 0.2s; margin-bottom: 16px; display: block; }
+  .lb-cart__update-btn:hover { opacity: 0.7; }
+  .lb-cart__continue { display: block; text-align: center; font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; transition: opacity 0.2s; }
+  .lb-cart__continue:hover { opacity: 0.7; }
+
+  .lb-cart__empty { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 80px 0; gap: 20px; }
+  .lb-cart__empty h2 { font-size: clamp(22px, 3vw, 36px); font-weight: 700; text-transform: uppercase; margin: 0; }
+  .lb-cart__empty p { font-size: 15px; margin: 0; }
+
+  .lb-btn { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; padding: 16px 40px; text-decoration: none; display: inline-block; transition: all 0.2s; border: 1.5px solid transparent; }
+  .lb-btn--primary:hover { background: transparent !important; color: {{ section.settings.accent_color }} !important; border-color: {{ section.settings.accent_color }} !important; }
+
+  @media (max-width: 960px) {
+    .lb-cart { padding-left: 24px !important; padding-right: 24px !important; }
+    .lb-cart__layout { grid-template-columns: 1fr; gap: 32px; }
+    .lb-cart__summary { position: static; }
+    .lb-cart__items-header { display: none; }
+    .lb-cart__item { grid-template-columns: 1fr; gap: 16px; }
+    .lb-cart__item-total { text-align: left; }
+  }
+</style>
+
+<script>
+(function() {
+  document.querySelectorAll('[data-lb-cart-qty]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var delta = parseInt(this.dataset.lbCartQty);
+      var input = this.parentElement.querySelector('[data-lb-qty-input]');
+      if (!input) return;
+      var newVal = Math.max(0, parseInt(input.value) + delta);
+      input.value = newVal;
+    });
+  });
+})();
+</script>
 
 {% schema %}
 {
-  "name": "Main Cart",
+  "name": "Cart",
   "settings": [
-    {
-      "type": "text",
-      "id": "cart_note",
-      "label": "Cart Note",
-      "info": "Optional message shown above the cart total — e.g. delivery info, return policy, or shipping reassurance. Leave blank to hide."
-    }
+    { "type": "header", "content": "Labels" },
+    { "type": "text", "id": "title", "label": "Page Title", "default": "Your Cart" },
+    { "type": "text", "id": "summary_title", "label": "Summary Title", "default": "Order Summary" },
+    { "type": "text", "id": "checkout_label", "label": "Checkout Button", "default": "Proceed to Checkout" },
+    { "type": "text", "id": "update_label", "label": "Update Cart Button", "default": "Update Cart" },
+    { "type": "text", "id": "empty_heading", "label": "Empty Cart Heading", "default": "Your cart is empty" },
+    { "type": "text", "id": "empty_subtext", "label": "Empty Cart Subtext", "default": "Looks like you have not added anything yet." },
+    { "type": "text", "id": "empty_btn_label", "label": "Empty Cart Button", "default": "Start Shopping" },
+
+    { "type": "header", "content": "Options" },
+    { "type": "checkbox", "id": "show_note", "label": "Show Order Note Field", "default": true },
+    { "type": "text", "id": "note_label", "label": "Note Label", "default": "Order Note" },
+    { "type": "text", "id": "note_placeholder", "label": "Note Placeholder", "default": "Any special instructions?" },
+    { "type": "checkbox", "id": "show_continue", "label": "Show Continue Shopping Link", "default": true },
+    { "type": "text", "id": "continue_label", "label": "Continue Shopping Label", "default": "Continue Shopping" },
+
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#0A0A0A" },
+    { "type": "color", "id": "summary_bg", "label": "Summary Panel Background", "default": "#1A1A1A" },
+    { "type": "color", "id": "text_color", "label": "Text Colour", "default": "#FFFFFF" },
+    { "type": "color", "id": "muted_color", "label": "Muted Text Colour", "default": "#AAAAAA" },
+    { "type": "color", "id": "accent_color", "label": "Accent Colour", "default": "#7DD8E8" },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top Padding", "min": 20, "max": 160, "step": 10, "default": 60, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom Padding", "min": 20, "max": 160, "step": 10, "default": 100, "unit": "px" }
   ]
 }
 {% endschema %}
