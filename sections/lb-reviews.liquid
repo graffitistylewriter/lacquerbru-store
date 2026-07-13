@@ -1,58 +1,99 @@
-<section class="reviews-sec">
-  {% if section.settings.label != blank %}
-    <span class="section-label">{{ section.settings.label }}</span>
-  {% endif %}
-  {% if section.settings.heading != blank %}
-    <h2 class="section-h2">{{ section.settings.heading }}</h2>
-  {% endif %}
-  {% if section.settings.subheading != blank %}
-    <p class="section-sub">{{ section.settings.subheading }}</p>
+<section
+  class="lb-reviews"
+  style="background:{{ section.settings.bg_color }};padding:{{ section.settings.padding_top }}px 60px {{ section.settings.padding_bottom }}px;"
+>
+  {% if section.settings.label != blank or section.settings.heading != blank %}
+    <div class="lb-reviews__header">
+      {% if section.settings.label != blank %}
+        <span class="lb-reviews__label" style="color:{{ section.settings.accent_color }};">{{ section.settings.label }}</span>
+      {% endif %}
+      {% if section.settings.heading != blank %}
+        <h2 class="lb-reviews__heading" style="color:{{ section.settings.text_color }};">{{ section.settings.heading }}</h2>
+      {% endif %}
+      {% if section.settings.subtext != blank %}
+        <p class="lb-reviews__subtext" style="color:{{ section.settings.muted_color }};">{{ section.settings.subtext }}</p>
+      {% endif %}
+    </div>
   {% endif %}
 
-  <div class="rev-grid">
+  <div class="lb-reviews__grid" style="grid-template-columns:repeat({{ section.settings.columns }},1fr);">
     {% for block in section.blocks %}
-      <div class="rev-card" {{ block.shopify_attributes }}>
-        <div class="rev-stars">
-          {% for i in (1..5) %}{% if i <= block.settings.rating %}&#9733;{% else %}&#9734;{% endif %}{% endfor %}
+      {% if block.type == 'review' %}
+        <div class="lb-reviews__card" style="background:{{ section.settings.card_bg }};" {{ block.shopify_attributes }}>
+          {% if block.settings.rating > 0 %}
+            <div class="lb-reviews__stars" style="color:{{ section.settings.star_color }};">
+              {% for i in (1..block.settings.rating) %}★{% endfor %}{% assign empty = 5 | minus: block.settings.rating %}{% for i in (1..empty) %}☆{% endfor %}
+            </div>
+          {% endif %}
+          {% if block.settings.body != blank %}
+            <p class="lb-reviews__body" style="color:{{ section.settings.muted_color }};">"{{ block.settings.body }}"</p>
+          {% endif %}
+          {% if block.settings.author != blank %}
+            <div class="lb-reviews__author" style="color:{{ section.settings.text_color }};">{{ block.settings.author }}</div>
+          {% endif %}
+          {% if block.settings.verified %}
+            <div class="lb-reviews__verified" style="color:{{ section.settings.accent_color }};">✓ Verified Purchase</div>
+          {% endif %}
         </div>
-        <p class="rev-body">&ldquo;{{ block.settings.body }}&rdquo;</p>
-        <div class="rev-author">{{ block.settings.author }}</div>
-        {% if block.settings.verified %}
-          <div class="rev-verified">Verified Purchase</div>
-        {% endif %}
-      </div>
+      {% endif %}
     {% endfor %}
   </div>
 </section>
 
+<style>
+  .lb-reviews__header { margin-bottom: 48px; }
+  .lb-reviews__label { display: block; font-size: 10px; font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase; margin-bottom: 12px; }
+  .lb-reviews__heading { font-size: clamp(24px, 3.5vw, 44px); font-weight: 700; letter-spacing: -0.01em; margin: 0 0 10px; text-transform: uppercase; }
+  .lb-reviews__subtext { font-size: 14px; line-height: 1.75; margin: 0; max-width: 480px; }
+  .lb-reviews__grid { display: grid; gap: 24px; }
+  .lb-reviews__card { padding: 32px; display: flex; flex-direction: column; gap: 14px; }
+  .lb-reviews__stars { font-size: 18px; letter-spacing: 2px; }
+  .lb-reviews__body { font-size: 14px; line-height: 1.75; margin: 0; font-style: italic; }
+  .lb-reviews__author { font-size: 13px; font-weight: 600; }
+  .lb-reviews__verified { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; }
+  @media (max-width: 860px) {
+    .lb-reviews { padding-left: 24px !important; padding-right: 24px !important; }
+    .lb-reviews__grid { grid-template-columns: 1fr !important; }
+  }
+</style>
+
 {% schema %}
 {
   "name": "LB Reviews",
-  "settings": [
-    { "type": "text", "id": "label", "label": "Eyebrow Label", "default": "From the Community" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "What Artists Are Saying" },
-    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Real feedback from artists using these products every day." }
-  ],
+  "tag": "section",
   "blocks": [
     {
       "type": "review",
       "name": "Review",
       "settings": [
-        { "type": "range", "id": "rating", "label": "Rating", "min": 1, "max": 5, "default": 5 },
-        { "type": "textarea", "id": "body", "label": "Review Text", "default": "This changed how I approach my work." },
-        { "type": "text", "id": "author", "label": "Author", "default": "Customer Name, City" },
-        { "type": "checkbox", "id": "verified", "label": "Show Verified Purchase badge", "default": true }
+        { "type": "range", "id": "rating", "label": "Star Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "textarea", "id": "body", "label": "Review Text" },
+        { "type": "text", "id": "author", "label": "Author", "default": "Happy Customer" },
+        { "type": "checkbox", "id": "verified", "label": "Show Verified Badge", "default": true }
       ]
     }
   ],
-  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "label", "label": "Section Label", "default": "From the Community" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "What Artists Are Saying" },
+    { "type": "textarea", "id": "subtext", "label": "Subtext", "default": "Real feedback from artists using these tools every day." },
+    { "type": "select", "id": "columns", "label": "Columns", "options": [{ "value": "1", "label": "1" }, { "value": "2", "label": "2" }, { "value": "3", "label": "3" }], "default": "3" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#0A0A0A" },
+    { "type": "color", "id": "card_bg", "label": "Card Background", "default": "#1A1A1A" },
+    { "type": "color", "id": "text_color", "label": "Text Colour", "default": "#FFFFFF" },
+    { "type": "color", "id": "muted_color", "label": "Muted Colour", "default": "#AAAAAA" },
+    { "type": "color", "id": "accent_color", "label": "Accent Colour", "default": "#7DD8E8" },
+    { "type": "color", "id": "star_color", "label": "Star Colour", "default": "#F5A623" },
+    { "type": "range", "id": "padding_top", "label": "Top Padding", "min": 40, "max": 160, "step": 10, "default": 100, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom Padding", "min": 40, "max": 160, "step": 10, "default": 100, "unit": "px" }
+  ],
   "presets": [
     {
-      "name": "LB Reviews",
+      "name": "Reviews",
       "blocks": [
-        { "type": "review" },
-        { "type": "review" },
-        { "type": "review" }
+        { "type": "review", "settings": { "body": "Add your first review here.", "author": "Customer Name", "rating": 5 } },
+        { "type": "review", "settings": { "body": "Add another review here.", "author": "Customer Name", "rating": 5 } },
+        { "type": "review", "settings": { "body": "Add a third review here.", "author": "Customer Name", "rating": 5 } }
       ]
     }
   ]

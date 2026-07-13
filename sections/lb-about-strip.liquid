@@ -1,59 +1,120 @@
-<section class="lb-about-strip">
+<section
+  class="lb-about-strip"
+  style="background:{{ section.settings.bg_color }};padding:{{ section.settings.padding_top }}px 60px {{ section.settings.padding_bottom }}px;"
+>
+  <div class="lb-about-strip__inner lb-about-strip__inner--{{ section.settings.image_side }}">
 
-  <div class="lb-about-strip__content">
-
-    <h2>{{ section.settings.heading }}</h2>
-
-    <div class="lb-about-strip__text">
-      {{ section.settings.content }}
+    <div class="lb-about-strip__img-col">
+      {% if section.settings.image != blank %}
+        {{ section.settings.image | image_url: width: 900 | image_tag:
+          loading: 'lazy',
+          alt: section.settings.heading,
+          class: 'lb-about-strip__img',
+          width: 900, height: 900
+        }}
+      {% else %}
+        <div class="lb-about-strip__img-placeholder">
+          {{ 'image' | placeholder_svg_tag: 'lb-about-strip__placeholder-svg' }}
+        </div>
+      {% endif %}
     </div>
 
-    {% if section.settings.button_text != blank %}
-      <a
-        href="{{ section.settings.button_link }}"
-        class="lb-btn"
-      >
-        {{ section.settings.button_text }}
-      </a>
-    {% endif %}
+    <div class="lb-about-strip__txt">
+      {% if section.settings.label != blank %}
+        <span class="lb-about-strip__label" style="color:{{ section.settings.accent_color }};">{{ section.settings.label }}</span>
+      {% endif %}
+      {% if section.settings.heading != blank %}
+        <h2 class="lb-about-strip__heading" style="color:{{ section.settings.text_color }};">{{ section.settings.heading }}</h2>
+      {% endif %}
+      {% if section.settings.body != blank %}
+        <div class="lb-about-strip__body" style="color:{{ section.settings.muted_color }};">{{ section.settings.body }}</div>
+      {% endif %}
+      {% if section.settings.show_stats %}
+        <div class="lb-about-strip__stats">
+          {% for i in (1..4) %}
+            {%- assign num_key = 'stat_' | append: i | append: '_num' -%}
+            {%- assign lbl_key = 'stat_' | append: i | append: '_label' -%}
+            {% if section.settings[num_key] != blank %}
+              <div class="lb-about-strip__stat">
+                <span class="lb-about-strip__stat-num" style="color:{{ section.settings.accent_color }};">{{ section.settings[num_key] }}</span>
+                <span class="lb-about-strip__stat-label" style="color:{{ section.settings.muted_color }};">{{ section.settings[lbl_key] }}</span>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+      {% if section.settings.btn_label != blank %}
+        <a href="{{ section.settings.btn_url }}" class="lb-btn lb-btn--ghost" style="border-color:rgba(255,255,255,0.3);color:{{ section.settings.text_color }};">
+          {{ section.settings.btn_label }}
+        </a>
+      {% endif %}
+    </div>
 
   </div>
-
 </section>
+
+<style>
+  .lb-about-strip__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .lb-about-strip__inner--right .lb-about-strip__img-col { order: 2; }
+  .lb-about-strip__inner--right .lb-about-strip__txt { order: 1; }
+  .lb-about-strip__img { width: 100%; height: auto; display: block; }
+  .lb-about-strip__img-placeholder { aspect-ratio: 1/1; background: rgba(255,255,255,0.04); display: flex; align-items: center; justify-content: center; }
+  .lb-about-strip__placeholder-svg { width: 60%; opacity: 0.1; }
+  .lb-about-strip__txt { display: flex; flex-direction: column; gap: 20px; }
+  .lb-about-strip__label { font-size: 10px; font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase; }
+  .lb-about-strip__heading { font-size: clamp(24px, 3.5vw, 44px); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; margin: 0; text-transform: uppercase; }
+  .lb-about-strip__body { font-size: 15px; line-height: 1.8; }
+  .lb-about-strip__stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .lb-about-strip__stat { display: flex; flex-direction: column; gap: 4px; }
+  .lb-about-strip__stat-num { font-size: 32px; font-weight: 700; line-height: 1; }
+  .lb-about-strip__stat-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+  @media (max-width: 860px) {
+    .lb-about-strip { padding-left: 24px !important; padding-right: 24px !important; }
+    .lb-about-strip__inner { grid-template-columns: 1fr; gap: 40px; }
+    .lb-about-strip__inner--right .lb-about-strip__img-col { order: 0; }
+    .lb-about-strip__inner--right .lb-about-strip__txt { order: 0; }
+  }
+</style>
 
 {% schema %}
 {
   "name": "LB About Strip",
-
+  "tag": "section",
   "settings": [
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "About Lacquer Bru"
-    },
-    {
-      "type": "richtext",
-      "id": "content",
-      "label": "Content"
-    },
-    {
-      "type": "text",
-      "id": "button_text",
-      "label": "Button Text",
-      "default": "Learn More"
-    },
-    {
-      "type": "url",
-      "id": "button_link",
-      "label": "Button Link"
-    }
+    { "type": "header", "content": "Image" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "select", "id": "image_side", "label": "Image Position", "options": [{ "value": "left", "label": "Left" }, { "value": "right", "label": "Right" }], "default": "left" },
+    { "type": "header", "content": "Text" },
+    { "type": "text", "id": "label", "label": "Eyebrow Label", "default": "The Studio" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Where Urban Expression Meets Premium Craft" },
+    { "type": "richtext", "id": "body", "label": "Body Text" },
+    { "type": "text", "id": "btn_label", "label": "Button Label", "default": "Read the Full Story" },
+    { "type": "url", "id": "btn_url", "label": "Button URL" },
+    { "type": "header", "content": "Stats" },
+    { "type": "checkbox", "id": "show_stats", "label": "Show Stats", "default": true },
+    { "type": "text", "id": "stat_1_num", "label": "Stat 1 Number", "default": "16+" },
+    { "type": "text", "id": "stat_1_label", "label": "Stat 1 Label", "default": "Years Active" },
+    { "type": "text", "id": "stat_2_num", "label": "Stat 2 Number", "default": "3+" },
+    { "type": "text", "id": "stat_2_label", "label": "Stat 2 Label", "default": "Countries" },
+    { "type": "text", "id": "stat_3_num", "label": "Stat 3 Number", "default": "100+" },
+    { "type": "text", "id": "stat_3_label", "label": "Stat 3 Label", "default": "Projects" },
+    { "type": "text", "id": "stat_4_num", "label": "Stat 4 Number", "default": "∞" },
+    { "type": "text", "id": "stat_4_label", "label": "Stat 4 Label", "default": "Surfaces" },
+    { "type": "header", "content": "Colours & Spacing" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#0A0A0A" },
+    { "type": "color", "id": "text_color", "label": "Text Colour", "default": "#FFFFFF" },
+    { "type": "color", "id": "muted_color", "label": "Muted Colour", "default": "#AAAAAA" },
+    { "type": "color", "id": "accent_color", "label": "Accent Colour", "default": "#7DD8E8" },
+    { "type": "range", "id": "padding_top", "label": "Top Padding", "min": 40, "max": 160, "step": 10, "default": 100, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom Padding", "min": 40, "max": 160, "step": 10, "default": 100, "unit": "px" }
   ],
-
-  "presets": [
-    {
-      "name": "LB About Strip"
-    }
-  ]
+  "presets": [{ "name": "About Strip" }]
 }
 {% endschema %}

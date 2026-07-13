@@ -1,46 +1,119 @@
-<section class="faq-sec">
-  {% if section.settings.label != blank %}
-    <span class="section-label">{{ section.settings.label }}</span>
-  {% endif %}
-  {% if section.settings.heading != blank %}
-    <h2 class="section-h2">{{ section.settings.heading }}</h2>
+<section
+  class="lb-faq"
+  style="background:{{ section.settings.bg_color }};padding:{{ section.settings.padding_top }}px 60px {{ section.settings.padding_bottom }}px;"
+>
+  {% if section.settings.label != blank or section.settings.heading != blank %}
+    <div class="lb-faq__header">
+      {% if section.settings.label != blank %}
+        <span class="lb-faq__label" style="color:{{ section.settings.accent_color }};">{{ section.settings.label }}</span>
+      {% endif %}
+      {% if section.settings.heading != blank %}
+        <h2 class="lb-faq__heading" style="color:{{ section.settings.text_color }};">{{ section.settings.heading }}</h2>
+      {% endif %}
+    </div>
   {% endif %}
 
-  <div class="faq-grid">
+  <div class="lb-faq__list">
     {% for block in section.blocks %}
-      <div class="faq-item" {{ block.shopify_attributes }}>
-        <div class="faq-q">{{ block.settings.question }}</div>
-        <div class="faq-a">{{ block.settings.answer }}</div>
-      </div>
+      {% if block.type == 'faq_item' %}
+        <div class="lb-faq__item" {{ block.shopify_attributes }} style="border-color:{{ section.settings.border_color }};">
+          <button
+            class="lb-faq__question"
+            style="color:{{ section.settings.text_color }};"
+            aria-expanded="false"
+            data-lb-faq-btn
+          >
+            {{ block.settings.question }}
+            <span class="lb-faq__icon" aria-hidden="true">+</span>
+          </button>
+          <div class="lb-faq__answer" style="color:{{ section.settings.muted_color }};" hidden>
+            <div class="lb-faq__answer-inner">{{ block.settings.answer }}</div>
+          </div>
+        </div>
+      {% endif %}
     {% endfor %}
   </div>
 </section>
 
+<style>
+  .lb-faq__header { text-align: {{ section.settings.header_align }}; margin-bottom: 48px; }
+  .lb-faq__label { display: block; font-size: 10px; font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase; margin-bottom: 12px; }
+  .lb-faq__heading { font-size: clamp(24px, 3.5vw, 44px); font-weight: 700; letter-spacing: -0.01em; margin: 0; text-transform: uppercase; }
+  .lb-faq__list { max-width: {{ section.settings.max_width }}px; margin: 0 auto; }
+  .lb-faq__item { border-bottom: 0.5px solid; }
+  .lb-faq__item:first-child { border-top: 0.5px solid {{ section.settings.border_color }}; }
+  .lb-faq__question {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 22px 0;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: color 0.2s;
+  }
+  .lb-faq__question:hover { color: {{ section.settings.accent_color }} !important; }
+  .lb-faq__icon { font-size: 20px; font-weight: 300; flex-shrink: 0; transition: transform 0.3s; line-height: 1; }
+  .lb-faq__item--open .lb-faq__icon { transform: rotate(45deg); }
+  .lb-faq__answer { overflow: hidden; }
+  .lb-faq__answer-inner { padding: 0 0 22px; font-size: 14px; line-height: 1.8; }
+  .lb-faq__answer-inner a { color: {{ section.settings.accent_color }}; }
+  @media (max-width: 768px) { .lb-faq { padding-left: 24px !important; padding-right: 24px !important; } }
+</style>
+
+<script>
+document.querySelectorAll('[data-lb-faq-btn]').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var item = this.closest('.lb-faq__item');
+    var answer = item.querySelector('.lb-faq__answer');
+    var isOpen = item.classList.contains('lb-faq__item--open');
+    item.classList.toggle('lb-faq__item--open', !isOpen);
+    this.setAttribute('aria-expanded', !isOpen);
+    if (isOpen) { answer.hidden = true; } else { answer.hidden = false; }
+  });
+});
+</script>
+
 {% schema %}
 {
   "name": "LB FAQ",
-  "settings": [
-    { "type": "text", "id": "label", "label": "Eyebrow Label", "default": "Support" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Frequently Asked Questions" }
-  ],
+  "tag": "section",
   "blocks": [
     {
       "type": "faq_item",
       "name": "FAQ Item",
       "settings": [
-        { "type": "text", "id": "question", "label": "Question", "default": "Your question here?" },
-        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Your answer here.</p>" }
+        { "type": "text", "id": "question", "label": "Question", "default": "What is your question?" },
+        { "type": "richtext", "id": "answer", "label": "Answer" }
       ]
     }
   ],
-  "max_blocks": 12,
+  "settings": [
+    { "type": "text", "id": "label", "label": "Section Label", "default": "Support" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Frequently Asked Questions" },
+    { "type": "select", "id": "header_align", "label": "Header Alignment", "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }], "default": "left" },
+    { "type": "range", "id": "max_width", "label": "Max Content Width", "min": 500, "max": 1200, "step": 50, "default": 900, "unit": "px" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#0A0A0A" },
+    { "type": "color", "id": "text_color", "label": "Question Colour", "default": "#FFFFFF" },
+    { "type": "color", "id": "muted_color", "label": "Answer Colour", "default": "#AAAAAA" },
+    { "type": "color", "id": "accent_color", "label": "Accent Colour", "default": "#7DD8E8" },
+    { "type": "color", "id": "border_color", "label": "Divider Colour", "default": "#2A2A2A" },
+    { "type": "range", "id": "padding_top", "label": "Top Padding", "min": 40, "max": 160, "step": 10, "default": 100, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom Padding", "min": 40, "max": 160, "step": 10, "default": 100, "unit": "px" }
+  ],
   "presets": [
     {
-      "name": "LB FAQ",
+      "name": "FAQ Section",
       "blocks": [
-        { "type": "faq_item" },
-        { "type": "faq_item" },
-        { "type": "faq_item" }
+        { "type": "faq_item", "settings": { "question": "What is included with my purchase?", "answer": "<p>Add your answer here.</p>" } },
+        { "type": "faq_item", "settings": { "question": "How do I get support?", "answer": "<p>Add your answer here.</p>" } },
+        { "type": "faq_item", "settings": { "question": "What is your refund policy?", "answer": "<p>Add your answer here.</p>" } }
       ]
     }
   ]

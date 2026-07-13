@@ -1,250 +1,483 @@
-{% liquid
-  assign fallback_collection = collection
-  if fallback_collection == blank and product.collections.first != blank
-    assign fallback_collection = product.collections.first
-  endif
+<section class="lb-product" style="background:{{ section.settings.bg_color }};">
+  <div class="lb-product__inner">
 
-  assign current_variant = product.selected_or_first_available_variant
-  assign value_prop = product.metafields.custom.short_value_prop
-  assign includes = product.metafields.custom.includes
-  assign compatibility = product.metafields.custom.compatibility
-  assign installation = product.metafields.custom.installation
-  assign license = product.metafields.custom.license
-  assign download_info = product.metafields.custom.download_info
-  assign faq = product.metafields.custom.faq
-%}
-
-<section class="lb-product-main">
-  {% render 'breadcrumbs', fallback_collection: fallback_collection %}
-
-  <div class="lb-product-main__media">
-    <div class="lb-product-gallery" data-lb-product-gallery>
-      {% if product.media.size > 0 %}
-        <div class="lb-product-gallery__stage">
-          {% for media in product.media %}
-            {% if media.media_type == 'image' %}
-              {% liquid
-                assign image_loading = 'lazy'
-                if forloop.first
-                  assign image_loading = 'eager'
-                endif
-              %}
-              {% assign img_height = 1600.0 | divided_by: media.aspect_ratio | round %}
-              <img
-                src="{{ media | image_url: width: 1600 }}"
-                alt="{{ media.alt | default: product.title | escape }}"
-                loading="{{ image_loading }}"
-                width="1600"
-                height="{{ img_height }}"
-                class="lb-product-gallery__image"
-                data-lb-product-image="{{ forloop.index0 }}"
-              >
-            {% endif %}
-          {% endfor %}
+    {%- comment -%} MEDIA COLUMN {%- endcomment -%}
+    <div class="lb-product__media">
+      {% if product.images.size > 0 %}
+        <div class="lb-product__main-img-wrap" id="lb-main-img">
+          {{ product.featured_image | image_url: width: 1200 | image_tag:
+            class: 'lb-product__main-img',
+            loading: 'eager',
+            fetchpriority: 'high',
+            alt: product.title,
+            id: 'lb-product-main-img',
+            width: 1200,
+            height: 1200
+          }}
         </div>
-
-        {% if product.media.size > 1 %}
-          <div class="lb-product-gallery__thumbs" aria-label="Product images">
-            {% for media in product.media %}
-              {% if media.media_type == 'image' %}
-                <button
-                  type="button"
-                  class="lb-product-gallery__thumb{% if forloop.first %} is-active{% endif %}"
-                  aria-label="Show image {{ forloop.index }} for {{ product.title | escape }}"
-                  data-lb-product-thumb="{{ forloop.index0 }}"
-                >
-                  {% assign thumb_height = 180.0 | divided_by: media.aspect_ratio | round %}
-                  <img
-                    src="{{ media | image_url: width: 180 }}"
-                    alt="{{ media.alt | default: product.title | escape }}"
-                    loading="lazy"
-                    width="180"
-                    height="{{ thumb_height }}"
-                  >
-                </button>
-              {% endif %}
+        {% if product.images.size > 1 %}
+          <div class="lb-product__thumbs">
+            {% for image in product.images limit: 8 %}
+              <button
+                class="lb-product__thumb{% if forloop.first %} lb-product__thumb--active{% endif %}"
+                data-lb-thumb
+                data-src="{{ image | image_url: width: 1200 }}"
+                data-alt="{{ image.alt | default: product.title }}"
+                aria-label="View image {{ forloop.index }}"
+              >
+                {{ image | image_url: width: 200 | image_tag:
+                  loading: 'lazy',
+                  alt: image.alt | default: product.title,
+                  width: 200,
+                  height: 200
+                }}
+              </button>
             {% endfor %}
           </div>
         {% endif %}
-      {% elsif product.featured_image %}
-        {{
-          product.featured_image
-          | image_url: width: 1600
-          | image_tag:
-            loading: 'eager',
-            alt: product.featured_image.alt | default: product.title
-        }}
+      {% else %}
+        <div class="lb-product__main-img-wrap">
+          {{ 'product-1' | placeholder_svg_tag: 'lb-product__placeholder' }}
+        </div>
       {% endif %}
     </div>
-  </div>
 
-  <div class="lb-product-main__content">
-    <p class="lb-kicker">{{ product.type | default: 'Shop' }}</p>
-    <h1>{{ product.title }}</h1>
+    {%- comment -%} INFO COLUMN {%- endcomment -%}
+    <div class="lb-product__info">
 
-    {% if value_prop != blank %}
-      <div class="lb-product-main__value">
-        {{ value_prop | metafield_tag }}
+      {% if section.settings.show_breadcrumb %}
+        <nav class="lb-product__breadcrumb" aria-label="Breadcrumb">
+          <a href="{{ routes.root_url }}" style="color:{{ section.settings.muted_color }};">Home</a>
+          <span style="color:{{ section.settings.muted_color }};">/</span>
+          {% if collection %}
+            <a href="{{ collection.url }}" style="color:{{ section.settings.muted_color }};">{{ collection.title }}</a>
+            <span style="color:{{ section.settings.muted_color }};">/</span>
+          {% endif %}
+          <span style="color:{{ section.settings.accent_color }};">{{ product.title }}</span>
+        </nav>
+      {% endif %}
+
+      {% if product.type != blank %}
+        <span class="lb-product__type" style="color:{{ section.settings.accent_color }};">{{ product.type }}</span>
+      {% endif %}
+
+      <h1 class="lb-product__title" style="color:{{ section.settings.text_color }};">{{ product.title }}</h1>
+
+      <div class="lb-product__price" id="lb-product-price">
+        <span class="lb-product__price-current" style="color:{{ section.settings.text_color }};">
+          {{ product.selected_or_first_available_variant.price | money }}
+        </span>
+        {% if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price %}
+          <span class="lb-product__price-compare" style="color:{{ section.settings.muted_color }};">
+            {{ product.selected_or_first_available_variant.compare_at_price | money }}
+          </span>
+          <span class="lb-product__price-badge" style="background:{{ section.settings.accent_color }};color:#000;">
+            Save {{ product.selected_or_first_available_variant.compare_at_price | minus: product.selected_or_first_available_variant.price | money }}
+          </span>
+        {% endif %}
       </div>
-    {% endif %}
 
-    <p class="lb-product-main__price">{{ current_variant.price | money }}</p>
-
-    {% if product.description != blank %}
-      <div class="lb-product-main__description">
-        {{ product.description }}
-      </div>
-    {% endif %}
-
-    {% form 'product', product, class: 'lb-product-form' %}
-      {% if product.has_only_default_variant == false %}
-        <label class="visually-hidden" for="ProductSelect-{{ section.id }}">Choose an option</label>
-        <select id="ProductSelect-{{ section.id }}" name="id" class="lb-product-form__select">
-          {% for variant in product.variants %}
-            <option
-              value="{{ variant.id }}"
-              {% if variant == current_variant %}selected="selected"{% endif %}
-              {% unless variant.available %}disabled{% endunless %}
-            >
-              {{ variant.title }} - {{ variant.price | money }}{% unless variant.available %} - Sold Out{% endunless %}
-            </option>
+      {% if product.variants.size > 1 %}
+        <div class="lb-product__variants">
+          {% for option in product.options_with_values %}
+            <div class="lb-product__option">
+              <label class="lb-product__option-label" style="color:{{ section.settings.muted_color }};">
+                {{ option.name }}:
+                <span class="lb-product__option-selected" id="lb-option-{{ forloop.index0 }}" style="color:{{ section.settings.text_color }};">
+                  {{ option.selected_value }}
+                </span>
+              </label>
+              <div class="lb-product__option-btns">
+                {% for value in option.values %}
+                  <button
+                    class="lb-product__opt-btn"
+                    data-lb-option="{{ forloop.parentloop.index0 }}"
+                    data-lb-value="{{ value }}"
+                    style="
+                      border-color: {% if value == option.selected_value %}{{ section.settings.accent_color }}{% else %}rgba(255,255,255,0.15){% endif %};
+                      color: {% if value == option.selected_value %}{{ section.settings.accent_color }}{% else %}{{ section.settings.muted_color }}{% endif %};
+                    "
+                    {% if value == option.selected_value %}aria-pressed="true"{% endif %}
+                  >{{ value }}</button>
+                {% endfor %}
+              </div>
+            </div>
           {% endfor %}
-        </select>
-      {% else %}
-        <input type="hidden" name="id" value="{{ current_variant.id }}">
+        </div>
       {% endif %}
 
-            <button
-        type="submit"
-        class="lb-btn"
-        {% unless current_variant.available %}disabled{% endunless %}
-      >
-        {% if current_variant.available %}
-          Add To Cart
-        {% else %}
-          Sold Out
-        {% endif %}
-      </button>
+      {%- comment -%} ADD TO CART FORM {%- endcomment -%}
+      {% form 'product', product, id: 'lb-product-form', data-lb-product-form: '' %}
+        <input type="hidden" name="id" id="lb-variant-id" value="{{ product.selected_or_first_available_variant.id }}">
 
-      <div class="lb-product-trust" aria-label="Product benefits">
-        <div class="lb-product-trust__item">
-          <span aria-hidden="true">✓</span>
-          <span>Secure Checkout</span>
-        </div>
-
-        {% if product.tags contains 'digital' %}
-          <div class="lb-product-trust__item">
-            <span aria-hidden="true">✓</span>
-            <span>Instant Digital Delivery</span>
+        {% if section.settings.show_quantity %}
+          <div class="lb-product__qty">
+            <label class="lb-product__option-label" style="color:{{ section.settings.muted_color }};">Quantity</label>
+            <div class="lb-product__qty-wrap">
+              <button type="button" class="lb-product__qty-btn" data-lb-qty="-1" aria-label="Decrease quantity">−</button>
+              <input
+                class="lb-product__qty-input"
+                type="number"
+                name="quantity"
+                value="1"
+                min="1"
+                id="lb-qty-input"
+                style="color:{{ section.settings.text_color }};border-color:rgba(255,255,255,0.15);"
+              >
+              <button type="button" class="lb-product__qty-btn" data-lb-qty="1" aria-label="Increase quantity">+</button>
+            </div>
           </div>
+        {% else %}
+          <input type="hidden" name="quantity" value="1">
         {% endif %}
 
-        <div class="lb-product-trust__item">
-          <span aria-hidden="true">✓</span>
-          <span>Commercial Licence Included</span>
+        <div class="lb-product__actions">
+          <button
+            type="submit"
+            id="lb-add-to-cart"
+            class="lb-product__atc"
+            style="background:{{ section.settings.accent_color }};color:#000;"
+            {% unless product.available %}disabled{% endunless %}
+          >
+            {% if product.available %}
+              {{ section.settings.atc_label | default: 'Add to Cart' }}
+            {% else %}
+              {{ section.settings.sold_out_label | default: 'Sold Out' }}
+            {% endif %}
+          </button>
+          {% if section.settings.show_buy_now %}
+            {{ form | payment_button }}
+          {% endif %}
         </div>
 
-        <div class="lb-product-trust__item">
-          <span aria-hidden="true">✓</span>
-          <span>Professional Creative Assets</span>
+      {% endform %}
+
+      {% if section.settings.show_description and product.description != blank %}
+        <div class="lb-product__desc rte" style="color:{{ section.settings.muted_color }};">
+          {{ product.description }}
         </div>
-      </div>
-
-    {% endform %}
-    
-    <div class="lb-product-main__accordions">
-      {% if includes != blank %}
-        <details>
-          <summary>What's Included</summary>
-          <div>{{ includes | metafield_tag }}</div>
-        </details>
       {% endif %}
 
-      {% if compatibility != blank %}
-        <details>
-          <summary>Compatibility</summary>
-          <div>{{ compatibility | metafield_tag }}</div>
-        </details>
+      {% if section.settings.show_meta %}
+        <div class="lb-product__meta">
+          {% if product.vendor != blank %}
+            <div class="lb-product__meta-row" style="color:{{ section.settings.muted_color }};">
+              <span>Vendor:</span>
+              <span style="color:{{ section.settings.text_color }};">{{ product.vendor }}</span>
+            </div>
+          {% endif %}
+          {% if product.type != blank %}
+            <div class="lb-product__meta-row" style="color:{{ section.settings.muted_color }};">
+              <span>Type:</span>
+              <span style="color:{{ section.settings.text_color }};">{{ product.type }}</span>
+            </div>
+          {% endif %}
+          {% unless product.selected_or_first_available_variant.sku == blank %}
+            <div class="lb-product__meta-row" style="color:{{ section.settings.muted_color }};">
+              <span>SKU:</span>
+              <span style="color:{{ section.settings.text_color }};" id="lb-sku">{{ product.selected_or_first_available_variant.sku }}</span>
+            </div>
+          {% endunless %}
+        </div>
       {% endif %}
 
-      {% if installation != blank %}
-        <details>
-          <summary>Installation</summary>
-          <div>{{ installation | metafield_tag }}</div>
-        </details>
+      {% if section.settings.show_share %}
+        <div class="lb-product__share">
+          <a href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url }}{{ product.url }}" target="_blank" rel="noopener" class="lb-product__share-btn" style="color:{{ section.settings.muted_color }};">Share</a>
+          <a href="https://twitter.com/intent/tweet?url={{ shop.url }}{{ product.url }}&text={{ product.title | url_encode }}" target="_blank" rel="noopener" class="lb-product__share-btn" style="color:{{ section.settings.muted_color }};">Tweet</a>
+        </div>
       {% endif %}
 
-      {% if license != blank %}
-        <details>
-          <summary>License</summary>
-          <div>{{ license | metafield_tag }}</div>
-        </details>
-      {% endif %}
-
-      {% if download_info != blank %}
-        <details>
-          <summary>Download Info</summary>
-          <div>{{ download_info | metafield_tag }}</div>
-        </details>
-      {% endif %}
-
-      {% if faq != blank %}
-        <details>
-          <summary>FAQ</summary>
-          <div>{{ faq | metafield_tag }}</div>
-        </details>
-      {% endif %}
     </div>
   </div>
 </section>
 
-<div 
-  class="lb-mobile-purchase" 
-  data-lb-mobile-purchase
-  data-product-title="{{ product.title | escape }}"
->
-  <div>
-    <strong>{{ product.title }}</strong>
+<style>
+  .lb-product {
+    padding: {{ section.settings.padding_top }}px 60px {{ section.settings.padding_bottom }}px;
+  }
+  .lb-product__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: {{ section.settings.column_gap }}px;
+    max-width: 1400px;
+    margin: 0 auto;
+    align-items: start;
+  }
+  .lb-product__main-img-wrap {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: rgba(255,255,255,0.03);
+  }
+  .lb-product__main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.3s;
+  }
+  .lb-product__placeholder { width: 100%; height: 100%; opacity: 0.1; }
+  .lb-product__thumbs {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .lb-product__thumb {
+    width: 72px;
+    height: 72px;
+    overflow: hidden;
+    cursor: pointer;
+    background: none;
+    border: 1.5px solid transparent;
+    padding: 0;
+    transition: border-color 0.2s;
+  }
+  .lb-product__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .lb-product__thumb--active { border-color: {{ section.settings.accent_color }}; }
 
-    <span data-lb-mobile-price>
-      {{ current_variant.price | money }}
-    </span>
-  </div>
+  .lb-product__info { display: flex; flex-direction: column; gap: 20px; }
+  .lb-product__breadcrumb {
+    display: flex;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    flex-wrap: wrap;
+  }
+  .lb-product__breadcrumb a { text-decoration: none; transition: opacity 0.2s; }
+  .lb-product__breadcrumb a:hover { opacity: 0.7; }
+  .lb-product__type {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+  }
+  .lb-product__title {
+    font-size: clamp(24px, 3.5vw, 44px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .lb-product__price {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .lb-product__price-current { font-size: 26px; font-weight: 700; }
+  .lb-product__price-compare { font-size: 16px; text-decoration: line-through; }
+  .lb-product__price-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+  }
 
-  {% form 'product', product %}
-    <input 
-      type="hidden" 
-      name="id" 
-      value="{{ current_variant.id }}"
-      data-lb-mobile-variant-id
-    >
+  .lb-product__option { display: flex; flex-direction: column; gap: 10px; }
+  .lb-product__option-label { font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; }
+  .lb-product__option-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+  .lb-product__opt-btn {
+    padding: 8px 18px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    background: transparent;
+    border: 1px solid;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .lb-product__opt-btn:hover { border-color: {{ section.settings.accent_color }} !important; color: {{ section.settings.accent_color }} !important; }
 
-    <button
-      type="submit"
-      class="lb-btn"
-      data-lb-mobile-button
-      {% unless current_variant.available %}disabled{% endunless %}
-    >
-      {% if current_variant.available %}
-        Add To Cart
-      {% else %}
-        Sold Out
-      {% endif %}
-    </button>
+  .lb-product__qty { display: flex; flex-direction: column; gap: 10px; }
+  .lb-product__qty-wrap { display: flex; align-items: center; gap: 0; width: fit-content; }
+  .lb-product__qty-btn {
+    width: 40px; height: 40px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: inherit;
+    font-size: 18px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.2s;
+  }
+  .lb-product__qty-btn:hover { border-color: {{ section.settings.accent_color }}; }
+  .lb-product__qty-input {
+    width: 56px; height: 40px;
+    text-align: center;
+    background: transparent;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    border-left: none; border-right: none;
+    font-size: 14px;
+    font-family: inherit;
+    -moz-appearance: textfield;
+  }
+  .lb-product__qty-input::-webkit-outer-spin-button,
+  .lb-product__qty-input::-webkit-inner-spin-button { -webkit-appearance: none; }
 
-  {% endform %}
-</div>
+  .lb-product__actions { display: flex; flex-direction: column; gap: 12px; }
+  .lb-product__atc {
+    width: 100%;
+    padding: 18px 32px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: opacity 0.2s;
+  }
+  .lb-product__atc:hover:not(:disabled) { opacity: 0.85; }
+  .lb-product__atc:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .lb-product__desc { font-size: 14px; line-height: 1.8; }
+  .lb-product__desc h2, .lb-product__desc h3 { margin: 1rem 0 0.5rem; }
+  .lb-product__desc p { margin: 0 0 1rem; }
+  .lb-product__desc a { color: {{ section.settings.accent_color }}; }
+  .lb-product__desc ul, .lb-product__desc ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+
+  .lb-product__meta { display: flex; flex-direction: column; gap: 8px; padding-top: 8px; border-top: 0.5px solid rgba(255,255,255,0.1); }
+  .lb-product__meta-row { display: flex; gap: 8px; font-size: 12px; }
+
+  .lb-product__share { display: flex; gap: 16px; }
+  .lb-product__share-btn { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: opacity 0.2s; }
+  .lb-product__share-btn:hover { opacity: 0.7; }
+
+  @media (max-width: 860px) {
+    .lb-product { padding: 40px 24px 60px !important; }
+    .lb-product__inner { grid-template-columns: 1fr; gap: 32px; }
+  }
+</style>
 
 <script>
-  window.lbProductVariants = {{ product.variants | json }};
+(function() {
+  var product = {{ product | json }};
+  var variants = product.variants;
+
+  // THUMBNAIL SWITCHER
+  document.querySelectorAll('[data-lb-thumb]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var img = document.getElementById('lb-product-main-img');
+      if (img) {
+        img.style.opacity = '0';
+        img.src = this.dataset.src;
+        img.alt = this.dataset.alt;
+        img.onload = function() { img.style.opacity = '1'; };
+      }
+      document.querySelectorAll('[data-lb-thumb]').forEach(function(b) {
+        b.classList.remove('lb-product__thumb--active');
+      });
+      this.classList.add('lb-product__thumb--active');
+    });
+  });
+
+  // VARIANT SELECTOR
+  var selectedOptions = {{ product.selected_or_first_available_variant.options | json }};
+
+  document.querySelectorAll('[data-lb-option]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var optionIndex = parseInt(this.dataset.lbOption);
+      var value = this.dataset.lbValue;
+      selectedOptions[optionIndex] = value;
+
+      // Update button states
+      document.querySelectorAll('[data-lb-option="' + optionIndex + '"]').forEach(function(b) {
+        var isSelected = b.dataset.lbValue === value;
+        b.style.borderColor = isSelected ? '{{ section.settings.accent_color }}' : 'rgba(255,255,255,0.15)';
+        b.style.color = isSelected ? '{{ section.settings.accent_color }}' : '{{ section.settings.muted_color }}';
+        b.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+      });
+
+      // Update label
+      var label = document.getElementById('lb-option-' + optionIndex);
+      if (label) label.textContent = value;
+
+      // Find matching variant
+      var matchedVariant = variants.find(function(v) {
+        return v.options.every(function(opt, i) { return opt === selectedOptions[i]; });
+      });
+
+      if (matchedVariant) {
+        // Update hidden input
+        var variantInput = document.getElementById('lb-variant-id');
+        if (variantInput) variantInput.value = matchedVariant.id;
+
+        // Update price
+        var priceEl = document.querySelector('.lb-product__price-current');
+        if (priceEl) priceEl.textContent = formatMoney(matchedVariant.price);
+
+        // Update SKU
+        var skuEl = document.getElementById('lb-sku');
+        if (skuEl) skuEl.textContent = matchedVariant.sku || '';
+
+        // Update ATC button
+        var atcBtn = document.getElementById('lb-add-to-cart');
+        if (atcBtn) {
+          atcBtn.disabled = !matchedVariant.available;
+          atcBtn.textContent = matchedVariant.available ? '{{ section.settings.atc_label | default: "Add to Cart" }}' : '{{ section.settings.sold_out_label | default: "Sold Out" }}';
+        }
+
+        // Update image if variant has one
+        if (matchedVariant.featured_image) {
+          var mainImg = document.getElementById('lb-product-main-img');
+          if (mainImg) {
+            mainImg.style.opacity = '0';
+            mainImg.src = matchedVariant.featured_image.src;
+            mainImg.onload = function() { mainImg.style.opacity = '1'; };
+          }
+        }
+      }
+    });
+  });
+
+  // QUANTITY BUTTONS
+  document.querySelectorAll('[data-lb-qty]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var input = document.getElementById('lb-qty-input');
+      if (!input) return;
+      var current = parseInt(input.value) || 1;
+      var delta = parseInt(this.dataset.lbQty);
+      input.value = Math.max(1, current + delta);
+    });
+  });
+
+  function formatMoney(cents) {
+    return 'R' + (cents / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+})();
 </script>
 
-{% render 'structured-data-product' %}
-
 {% schema %}
-
 {
-  "name": "Main Product",
-  "settings": []
+  "name": "Product",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "column_gap", "label": "Column Gap", "min": 20, "max": 120, "step": 10, "default": 60, "unit": "px" },
+    { "type": "range", "id": "padding_top", "label": "Top Padding", "min": 20, "max": 160, "step": 10, "default": 60, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom Padding", "min": 20, "max": 160, "step": 10, "default": 100, "unit": "px" },
+
+    { "type": "header", "content": "Content Options" },
+    { "type": "checkbox", "id": "show_breadcrumb", "label": "Show Breadcrumb", "default": true },
+    { "type": "checkbox", "id": "show_quantity", "label": "Show Quantity Selector", "default": true },
+    { "type": "checkbox", "id": "show_buy_now", "label": "Show Buy Now Button", "default": true },
+    { "type": "checkbox", "id": "show_description", "label": "Show Description", "default": true },
+    { "type": "checkbox", "id": "show_meta", "label": "Show Vendor / SKU / Type", "default": true },
+    { "type": "checkbox", "id": "show_share", "label": "Show Share Links", "default": false },
+
+    { "type": "header", "content": "Button Labels" },
+    { "type": "text", "id": "atc_label", "label": "Add to Cart Label", "default": "Add to Cart" },
+    { "type": "text", "id": "sold_out_label", "label": "Sold Out Label", "default": "Sold Out" },
+
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#0A0A0A" },
+    { "type": "color", "id": "text_color", "label": "Text Colour", "default": "#FFFFFF" },
+    { "type": "color", "id": "muted_color", "label": "Muted Text Colour", "default": "#AAAAAA" },
+    { "type": "color", "id": "accent_color", "label": "Accent Colour", "default": "#7DD8E8" }
+  ]
 }
 {% endschema %}

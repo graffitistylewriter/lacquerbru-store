@@ -1,938 +1,246 @@
-{% comment %}
-  ------------------------------------------------------------------------
-  Section: Main Collection
-  File: sections/main-collection.liquid
+<section class="lb-collection" style="background:{{ section.settings.bg_color }};">
 
-  Renders the collection template. Fully schema-driven — every string,
-  layout choice, and behaviour toggle is a merchant setting. Nothing in
-  this file is hardcoded to a specific collection, product, or copy.
-
-  Reuses existing global classes so the rest of the theme keeps working:
-    .lb-collection-main, .lb-collection-main__header,
-    .lb-collection-main__grid, .lb-product-card, .lb-kicker,
-    .lb-btn / .lb-btn--ghost, .lb-empty-state
-
-  New behaviour (filtering, sorting, pagination, badges, hover image) is
-  scoped under .lb-collection-{{ section.id }} via a {% style %} block so
-  it cannot collide with other sections.
-  ------------------------------------------------------------------------
-{% endcomment %}
-
-{%- liquid
-  assign columns_desktop = section.settings.columns_desktop
-  assign columns_mobile = section.settings.columns_mobile | plus: 0
-
-  case section.settings.image_ratio
-    when 'portrait'
-      assign aspect_ratio = '3/4'
-    when 'landscape'
-      assign aspect_ratio = '4/3'
-    when 'natural'
-      assign aspect_ratio = 'auto'
-    else
-      assign aspect_ratio = '1/1'
-  endcase
-
-  assign has_filters = false
-  if section.settings.enable_filtering and collection.filters.size > 0
-    assign has_filters = true
-  endif
-
-  assign has_active_filters = false
-  for filter in collection.filters
-    if filter.active_values.size > 0
-      assign has_active_filters = true
-    endif
-    if filter.type == 'price_range' and filter.min_value.value != nil or filter.type == 'price_range' and filter.max_value.value != nil
-      assign has_active_filters = true
-    endif
-  endfor
--%}
-
-<section
-  class="lb-collection-main lb-collection-{{ section.id }}"
-  data-section-id="{{ section.id }}"
-  data-section-type="main-collection"
->
-
-  {%- comment %} ---------------- Header ---------------- {% endcomment -%}
-  <header class="lb-collection-main__header lb-collection-header">
-
-    {%- if section.settings.show_collection_image and collection.image != blank -%}
-      <div class="lb-collection-banner">
-        {{
-          collection.image
-          | image_url: width: 1600
-          | image_tag: loading: 'eager', class: 'lb-collection-banner__img', alt: collection.image.alt | default: collection.title
-        }}
-      </div>
-    {%- endif -%}
-
-    {%- if section.settings.eyebrow != blank -%}
-      <p class="lb-kicker">{{ section.settings.eyebrow }}</p>
-    {%- endif -%}
-
-    <h1>{{ collection.title }}</h1>
-
-    {%- if section.settings.show_description and collection.description != blank -%}
-      <div class="lb-collection-main__description">{{ collection.description }}</div>
-    {%- endif -%}
-
-  </header>
-
-  {%- comment %} ---------------- Filter + Sort form ---------------- {% endcomment -%}
-  <form
-    id="lb-collection-form-{{ section.id }}"
-    class="lb-collection-toolbar-form"
-    method="get"
-    action="{{ collection.url }}"
-  >
-
-    <div class="lb-collection-toolbar">
-
-      {%- if has_filters -%}
-        <button
-          type="button"
-          class="lb-filter-toggle"
-          id="lb-filter-toggle-{{ section.id }}"
-          aria-expanded="false"
-          aria-controls="lb-filters-{{ section.id }}"
-        >
-          {{ section.settings.filters_heading | default: 'Filter' }}
-          {%- if has_active_filters -%}
-            <span class="lb-filter-toggle__count">•</span>
-          {%- endif -%}
-        </button>
-      {%- endif -%}
-
-      <p class="lb-results-count">
-        {{ collection.products_count }}
-        {%- if collection.products_count == 1 %} product{% else %} products{% endif -%}
-      </p>
-
-      {%- if section.settings.enable_sorting -%}
-        <div class="lb-sort">
-          <label for="lb-sort-{{ section.id }}" class="lb-sort__label">
-            {{ section.settings.sort_label | default: 'Sort by' }}
-          </label>
-          <select
-            name="sort_by"
-            id="lb-sort-{{ section.id }}"
-            class="lb-sort__select"
-            data-lb-auto-submit
-          >
-            {%- for option in collection.sort_options -%}
-              <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>
-                {{ option.name }}
-              </option>
-            {%- endfor -%}
-          </select>
+  {%- comment -%} PAGE HEADER {%- endcomment -%}
+  <div class="lb-collection__header" style="background:{{ section.settings.header_bg }};">
+    <div class="lb-collection__header-inner">
+      {% if section.settings.show_eyebrow %}
+        <span class="lb-collection__eyebrow" style="color:{{ section.settings.accent_color }};">
+          {{ section.settings.eyebrow | default: collection.title }}
+        </span>
+      {% endif %}
+      <h1 class="lb-collection__title" style="color:{{ section.settings.text_color }};">
+        {{ collection.title }}
+      </h1>
+      {% if collection.description != blank and section.settings.show_description %}
+        <div class="lb-collection__desc" style="color:{{ section.settings.muted_color }};">
+          {{ collection.description }}
         </div>
-      {%- endif -%}
-
+      {% endif %}
+      <p class="lb-collection__count" style="color:{{ section.settings.muted_color }};">
+        {{ collection.products_count }}
+        {{ collection.products_count | pluralize: 'product', 'products' }}
+      </p>
     </div>
+  </div>
 
-    {%- comment %} ---------------- Active filter chips ---------------- {% endcomment -%}
-    {%- if has_active_filters -%}
-      <div class="lb-active-filters" aria-live="polite">
-        {%- for filter in collection.filters -%}
-          {%- for value in filter.active_values -%}
-            <a href="{{ value.url_to_remove }}" class="lb-active-filter">
-              {{ filter.label }}: {{ value.label }}
-              <span aria-hidden="true">&times;</span>
+  {%- comment -%} TOOLBAR {%- endcomment -%}
+  {% if section.settings.show_sort or section.settings.show_filter_count %}
+  <div class="lb-collection__toolbar" style="border-color:rgba(255,255,255,0.08);">
+    {% if section.settings.show_filter_count %}
+      <span class="lb-collection__filter-count" style="color:{{ section.settings.muted_color }};">
+        Showing {{ collection.products_count }} results
+      </span>
+    {% endif %}
+    {% if section.settings.show_sort %}
+      <div class="lb-collection__sort">
+        <label for="lb-sort" style="color:{{ section.settings.muted_color }};">Sort by</label>
+        <select id="lb-sort" class="lb-collection__sort-select" style="color:{{ section.settings.text_color }};border-color:rgba(255,255,255,0.15);background:{{ section.settings.bg_color }};" onchange="window.location.href=this.value">
+          <option value="{{ collection.url }}?sort_by=manual"{% if collection.sort_by == 'manual' %} selected{% endif %}>Featured</option>
+          <option value="{{ collection.url }}?sort_by=best-selling"{% if collection.sort_by == 'best-selling' %} selected{% endif %}>Best Selling</option>
+          <option value="{{ collection.url }}?sort_by=price-ascending"{% if collection.sort_by == 'price-ascending' %} selected{% endif %}>Price: Low to High</option>
+          <option value="{{ collection.url }}?sort_by=price-descending"{% if collection.sort_by == 'price-descending' %} selected{% endif %}>Price: High to Low</option>
+          <option value="{{ collection.url }}?sort_by=created-descending"{% if collection.sort_by == 'created-descending' %} selected{% endif %}>Newest</option>
+          <option value="{{ collection.url }}?sort_by=title-ascending"{% if collection.sort_by == 'title-ascending' %} selected{% endif %}>A–Z</option>
+        </select>
+      </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  {%- comment -%} PRODUCT GRID {%- endcomment -%}
+  <div
+    class="lb-collection__grid"
+    style="
+      padding: {{ section.settings.padding_top }}px 60px {{ section.settings.padding_bottom }}px;
+      grid-template-columns: repeat({{ section.settings.columns }}, 1fr);
+      gap: {{ section.settings.grid_gap }}px;
+    "
+  >
+    {% paginate collection.products by section.settings.products_per_page %}
+
+      {% for product in collection.products %}
+        {% render 'lb-product-card',
+          product: product,
+          accent_color: section.settings.accent_color,
+          card_bg: section.settings.card_bg,
+          text_color: section.settings.text_color,
+          muted_color: section.settings.muted_color,
+          show_vendor: section.settings.show_vendor,
+          show_badge: section.settings.show_badge
+        %}
+      {% else %}
+        <div class="lb-collection__empty" style="color:{{ section.settings.muted_color }};">
+          <p>{{ section.settings.empty_text | default: 'No products found in this collection.' }}</p>
+        </div>
+      {% endfor %}
+
+      {%- comment -%} PAGINATION {%- endcomment -%}
+      {% if paginate.pages > 1 %}
+        <div class="lb-collection__pagination">
+          {% if paginate.previous %}
+            <a href="{{ paginate.previous.url }}" class="lb-pagination__btn" style="color:{{ section.settings.text_color }};border-color:rgba(255,255,255,0.15);">
+              &larr; Previous
             </a>
-          {%- endfor -%}
-          {%- if filter.type == 'price_range' -%}
-            {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
-              <a href="{{ filter.url_to_remove }}" class="lb-active-filter">
-                {{ filter.label }}
-                <span aria-hidden="true">&times;</span>
-              </a>
-            {%- endif -%}
-          {%- endif -%}
-        {%- endfor -%}
+          {% endif %}
+          {% for part in paginate.parts %}
+            {% if part.is_link %}
+              <a href="{{ part.url }}" class="lb-pagination__btn" style="color:{{ section.settings.muted_color }};border-color:rgba(255,255,255,0.1);">{{ part.title }}</a>
+            {% elsif part.title == paginate.current_page %}
+              <span class="lb-pagination__btn lb-pagination__btn--active" style="background:{{ section.settings.accent_color }};color:#000;border-color:{{ section.settings.accent_color }};">{{ part.title }}</span>
+            {% else %}
+              <span class="lb-pagination__ellipsis" style="color:{{ section.settings.muted_color }};">{{ part.title }}</span>
+            {% endif %}
+          {% endfor %}
+          {% if paginate.next %}
+            <a href="{{ paginate.next.url }}" class="lb-pagination__btn" style="color:{{ section.settings.text_color }};border-color:rgba(255,255,255,0.15);">
+              Next &rarr;
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
 
-        <a href="{{ collection.url }}?sort_by={{ collection.sort_by }}" class="lb-active-filter lb-active-filter--clear">
-          {{ section.settings.clear_filters_text | default: 'Clear All' }}
-        </a>
-      </div>
-    {%- endif -%}
-
-    <div class="lb-collection-layout">
-
-      {%- comment %} ---------------- Filters panel ---------------- {% endcomment -%}
-      {%- if has_filters -%}
-        <aside
-          class="lb-filters"
-          id="lb-filters-{{ section.id }}"
-          data-lb-filters
-          hidden
-        >
-          {%- for filter in collection.filters -%}
-            <div class="lb-filter-group">
-              <h3 class="lb-filter-group__title">{{ filter.label }}</h3>
-
-              {%- case filter.type -%}
-
-                {%- when 'list' or 'boolean' -%}
-                  <ul class="lb-filter-values">
-                    {%- for value in filter.values -%}
-                      {%- if value.count > 0 or value.active -%}
-                        <li class="lb-filter-value">
-                          <label
-                            for="lb-filter-{{ section.id }}-{{ filter.label | handleize }}-{{ forloop.index }}"
-                            class="lb-filter-value__label {% if value.count == 0 and value.active == false %}is-disabled{% endif %}"
-                          >
-                            <input
-                              type="checkbox"
-                              id="lb-filter-{{ section.id }}-{{ filter.label | handleize }}-{{ forloop.index }}"
-                              name="{{ value.param_name }}"
-                              value="{{ value.value }}"
-                              {% if value.active %}checked{% endif %}
-                              {% if value.count == 0 and value.active == false %}disabled{% endif %}
-                              data-lb-auto-submit
-                            >
-                            <span>{{ value.label }}</span>
-                            <span class="lb-filter-value__count">({{ value.count }})</span>
-                          </label>
-                        </li>
-                      {%- endif -%}
-                    {%- endfor -%}
-                  </ul>
-
-                {%- when 'price_range' -%}
-                  <div class="lb-filter-price">
-                    <label class="lb-filter-price__field">
-                      <span>Min</span>
-                      <input
-                        type="number"
-                        name="{{ filter.min_value.param_name }}"
-                        value="{{ filter.min_value.value }}"
-                        placeholder="{{ filter.range_min | money_without_currency | default: 0 }}"
-                        min="0"
-                      >
-                    </label>
-                    <span class="lb-filter-price__sep" aria-hidden="true">&ndash;</span>
-                    <label class="lb-filter-price__field">
-                      <span>Max</span>
-                      <input
-                        type="number"
-                        name="{{ filter.max_value.param_name }}"
-                        value="{{ filter.max_value.value }}"
-                        placeholder="{{ filter.range_max | money_without_currency }}"
-                        min="0"
-                      >
-                    </label>
-                  </div>
-
-              {%- endcase -%}
-            </div>
-          {%- endfor -%}
-
-          <button type="submit" class="lb-btn lb-filters__apply">
-            {{ section.settings.apply_filters_text | default: 'Apply Filters' }}
-          </button>
-        </aside>
-      {%- endif -%}
-
-      {%- comment %} ---------------- Product grid + pagination ---------------- {% endcomment -%}
-      <div class="lb-collection-results">
-
-        {%- paginate collection.products by section.settings.products_per_page -%}
-          
-          {% render 'collection-toolbar' %}
-
-          {%- if collection.products.size > 0 -%}
-            <div
-              class="lb-collection-main__grid"
-              style="--lb-columns-desktop: {{ columns_desktop }}; --lb-columns-mobile: {{ columns_mobile }};"
-            >
-              {%- for product in collection.products -%}
-                <article class="lb-product-card">
-                  <a href="{{ product.url }}" class="lb-product-card__link">
-
-                    <div class="lb-product-card__media" style="aspect-ratio: {{ aspect_ratio }};">
-
-                      {%- if product.featured_image -%}
-                        {{
-                          product.featured_image
-                          | image_url: width: 900
-                          | image_tag: loading: 'lazy', class: 'lb-product-card__img lb-product-card__img--primary', alt: product.featured_image.alt | default: product.title
-                        }}
-                      {%- else -%}
-                        <div class="lb-product-card__placeholder"></div>
-                      {%- endif -%}
-
-                      {%- if section.settings.show_secondary_image and product.media[1] -%}
-                        {{
-                          product.media[1]
-                          | image_url: width: 900
-                          | image_tag: loading: 'lazy', class: 'lb-product-card__img lb-product-card__img--secondary', alt: ''
-                        }}
-                      {%- endif -%}
-
-                      <div class="lb-product-card__badges">
-                        {%- if product.available == false -%}
-                          <span class="lb-badge lb-badge--sold-out">
-                            {{ section.settings.sold_out_text | default: 'Sold Out' }}
-                          </span>
-                        {%- elsif product.compare_at_price > product.price -%}
-                          <span class="lb-badge lb-badge--sale">
-                            {{ section.settings.sale_badge_text | default: 'Sale' }}
-                          </span>
-                        {%- endif -%}
-                      </div>
-
-                    </div>
-
-                    <div class="lb-product-card__info">
-
-                      {%- if section.settings.show_vendor and product.vendor != blank -%}
-                        <p class="lb-product-card__vendor">{{ product.vendor }}</p>
-                      {%- endif -%}
-
-                      <h3>{{ product.title }}</h3>
-
-                      <p class="lb-product-card__price">
-                        {%- if product.price_varies -%}
-                          {{ 'products.general.from_text' | default: 'From' }} {{ product.price_min | money }}
-                        {%- else -%}
-                          {{ product.price | money }}
-                        {%- endif -%}
-
-                        {%- if product.compare_at_price > product.price -%}
-                          <s class="lb-product-card__compare-price">{{ product.compare_at_price | money }}</s>
-                        {%- endif -%}
-                      </p>
-
-                    </div>
-
-                  </a>
-                </article>
-              {%- endfor -%}
-            </div>
-          {%- else -%}
-            <p class="lb-empty-state">
-              {{ section.settings.empty_state_text | default: 'Add products to this collection to populate this page.' }}
-            </p>
-          {%- endif -%}
-
-          {%- if paginate.pages > 1 -%}
-            <nav class="lb-pagination" role="navigation" aria-label="Pagination">
-              <ul class="lb-pagination__list">
-
-                {%- if paginate.previous -%}
-                  <li>
-                    <a href="{{ paginate.previous.url }}" class="lb-pagination__link lb-pagination__link--prev" rel="prev">
-                      &larr; {{ 'general.pagination.previous' | default: 'Previous' }}
-                    </a>
-                  </li>
-                {%- endif -%}
-
-                {%- for part in paginate.parts -%}
-                  <li>
-                    {%- if part.is_link -%}
-                      <a href="{{ part.url }}" class="lb-pagination__link">{{ part.title }}</a>
-                    {%- else -%}
-                      {%- if part.title == paginate.current_page -%}
-                        <span class="lb-pagination__link is-current" aria-current="page">{{ part.title }}</span>
-                      {%- else -%}
-                        <span class="lb-pagination__link lb-pagination__link--gap">{{ part.title }}</span>
-                      {%- endif -%}
-                    {%- endif -%}
-                  </li>
-                {%- endfor -%}
-
-                {%- if paginate.next -%}
-                  <li>
-                    <a href="{{ paginate.next.url }}" class="lb-pagination__link lb-pagination__link--next" rel="next">
-                      {{ 'general.pagination.next' | default: 'Next' }} &rarr;
-                    </a>
-                  </li>
-                {%- endif -%}
-
-              </ul>
-            </nav>
-          {%- endif -%}
-
-        {%- endpaginate -%}
-
-      </div>
-
-    </div>
-
-  </form>
+    {% endpaginate %}
+  </div>
 
 </section>
 
-{% style %}
-  .lb-collection-{{ section.id }} .lb-collection-header {
-    display: grid;
-    max-width: var(--lb-page-width);
-    gap: 16px;
-    margin: 0 auto 34px;
+<style>
+  .lb-collection__header {
+    padding: {{ section.settings.header_padding }}px 60px;
+    border-bottom: 0.5px solid rgba(255,255,255,0.08);
   }
-
-  .lb-collection-{{ section.id }} .lb-collection-banner {
-    margin-bottom: 12px;
-  }
-
-  .lb-collection-{{ section.id }} .lb-collection-banner__img {
-    width: 100%;
-    max-height: 420px;
-    object-fit: cover;
-  }
-
-  .lb-collection-{{ section.id }} .lb-collection-main__description {
-    color: var(--lb-muted);
-    font-size: 15px;
-    line-height: 1.8;
-  }
-
-  .lb-collection-{{ section.id }} .lb-collection-toolbar-form {
-    max-width: var(--lb-page-width);
-    margin: 0 auto;
-  }
-
-  .lb-collection-{{ section.id }} .lb-collection-toolbar {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--lb-wall);
-    margin-bottom: 24px;
-  }
-
-  .lb-collection-{{ section.id }} .lb-filter-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: transparent;
-    border: 1px solid var(--lb-wall);
-    color: var(--lb-white);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    padding: 10px 18px;
-    cursor: pointer;
-    transition: border-color .2s ease, color .2s ease;
-  }
-
-  .lb-collection-{{ section.id }} .lb-filter-toggle:hover,
-  .lb-collection-{{ section.id }} .lb-filter-toggle[aria-expanded="true"] {
-    border-color: var(--lb-blue);
-    color: var(--lb-blue);
-  }
-
-  .lb-collection-{{ section.id }} .lb-filter-toggle__count {
-    color: var(--lb-blue);
-  }
-
-  .lb-collection-{{ section.id }} .lb-results-count {
-    color: var(--lb-muted);
-    font-size: 12px;
-    letter-spacing: .04em;
-    margin: 0;
-  }
-
-  .lb-collection-{{ section.id }} .lb-sort {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-left: auto;
-  }
-
-  .lb-collection-{{ section.id }} .lb-sort__label {
+  .lb-collection__header-inner { max-width: 800px; }
+  .lb-collection__eyebrow {
+    display: block;
     font-size: 10px;
     font-weight: 500;
-    letter-spacing: .16em;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
-    color: var(--lb-muted);
+    margin-bottom: 10px;
   }
-
-  .lb-collection-{{ section.id }} .lb-sort__select {
-    background: var(--lb-ink);
-    color: var(--lb-white);
-    border: 1px solid var(--lb-wall);
-    padding: 10px 14px;
-    font-size: 12px;
-    font-family: 'Inter', sans-serif;
+  .lb-collection__title {
+    font-size: clamp(28px, 5vw, 60px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.0;
+    margin: 0 0 14px;
+    text-transform: uppercase;
   }
-
-  .lb-collection-{{ section.id }} .lb-active-filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    max-width: var(--lb-page-width);
-    margin: -8px auto 24px;
+  .lb-collection__desc {
+    font-size: 15px;
+    line-height: 1.75;
+    max-width: 560px;
+    margin-bottom: 12px;
   }
-
-  .lb-collection-{{ section.id }} .lb-active-filter {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--lb-ink);
-    border: 1px solid var(--lb-wall);
-    color: var(--lb-muted);
+  .lb-collection__count {
     font-size: 11px;
-    letter-spacing: .04em;
-    padding: 6px 12px;
-    transition: color .2s ease, border-color .2s ease;
-  }
-
-  .lb-collection-{{ section.id }} .lb-active-filter:hover {
-    color: var(--lb-blue);
-    border-color: var(--lb-blue);
-  }
-
-  .lb-collection-{{ section.id }} .lb-active-filter--clear {
-    color: var(--lb-blue);
-    border-color: var(--lb-blue);
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: .12em;
-  }
-
-  .lb-collection-{{ section.id }} .lb-collection-layout {
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    gap: 40px;
-    max-width: var(--lb-page-width);
-    margin: 0 auto;
-    align-items: start;
-  }
-
-  .lb-collection-{{ section.id }} .lb-collection-layout:has(.lb-collection-results:only-child) {
-    grid-template-columns: 1fr;
-  }
-
-  .lb-collection-{{ section.id }} .lb-filters {
-    display: grid;
-    gap: 28px;
-    position: sticky;
-    top: 96px;
-  }
-
-  .lb-collection-{{ section.id }} .lb-filters[hidden] {
-    display: none;
-  }
-
-  .lb-collection-{{ section.id }} .lb-filter-group__title {
-    font-family: 'Oswald', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--lb-white);
-    margin-bottom: 14px;
-    padding-bottom: 10px;
-    border-bottom: 0.5px solid var(--lb-wall);
-  }
-
-  .lb-collection-{{ section.id }} .lb-filter-values {
-    list-style: none;
-    display: grid;
-    gap: 10px;
     margin: 0;
-    padding: 0;
   }
 
-  .lb-collection-{{ section.id }} .lb-filter-value__label {
+  .lb-collection__toolbar {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 10px;
-    font-size: 13px;
-    color: var(--lb-muted);
+    padding: 14px 60px;
+    border-bottom: 0.5px solid;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .lb-collection__filter-count { font-size: 12px; letter-spacing: 0.06em; }
+  .lb-collection__sort { display: flex; align-items: center; gap: 10px; }
+  .lb-collection__sort label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .lb-collection__sort-select {
+    font-size: 12px;
+    padding: 8px 12px;
+    border: 1px solid;
+    font-family: inherit;
     cursor: pointer;
+    outline: none;
   }
 
-  .lb-collection-{{ section.id }} .lb-filter-value__label.is-disabled {
-    opacity: .35;
-    cursor: not-allowed;
-  }
-
-  .lb-collection-{{ section.id }} .lb-filter-value__count {
-    color: var(--lb-concrete);
-    font-size: 11px;
-  }
-
-  .lb-collection-{{ section.id }} .lb-filter-price {
-    display: flex;
-    align-items: flex-end;
-    gap: 10px;
-  }
-
-  .lb-collection-{{ section.id }} .lb-filter-price__field {
+  .lb-collection__grid {
     display: grid;
-    gap: 6px;
-    font-size: 10px;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--lb-muted);
-    flex: 1;
+  }
+  .lb-collection__empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 0;
+    font-size: 15px;
   }
 
-  .lb-collection-{{ section.id }} .lb-filter-price__field input {
-    background: var(--lb-ink);
-    border: 1px solid var(--lb-wall);
-    color: var(--lb-white);
-    padding: 10px;
-    width: 100%;
-  }
-
-  .lb-collection-{{ section.id }} .lb-filters__apply {
-    width: 100%;
-  }
-
-  .lb-collection-{{ section.id }} .lb-collection-main__grid {
-    grid-template-columns: repeat(var(--lb-columns-desktop, 3), minmax(0, 1fr));
-  }
-
-  .lb-collection-{{ section.id }} .lb-product-card__link {
-    display: grid;
-    gap: 14px;
-  }
-
-  .lb-collection-{{ section.id }} .lb-product-card__media {
-    position: relative;
-    overflow: hidden;
-    background: var(--lb-ink);
-  }
-
-  .lb-collection-{{ section.id }} .lb-product-card__img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .lb-collection-{{ section.id }} .lb-product-card__img--primary,
-  .lb-collection-{{ section.id }} .lb-product-card__img--secondary {
-    position: absolute;
-    inset: 0;
-    transition: opacity .35s ease;
-  }
-
-  .lb-collection-{{ section.id }} .lb-product-card__img--secondary {
-    opacity: 0;
-  }
-
-  .lb-collection-{{ section.id }} .lb-product-card:hover .lb-product-card__img--secondary {
-    opacity: 1;
-  }
-
-  .lb-collection-{{ section.id }} .lb-product-card__placeholder {
-    width: 100%;
-    height: 100%;
-    background: var(--lb-wall);
-  }
-
-  .lb-collection-{{ section.id }} .lb-product-card__badges {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    z-index: 2;
+  .lb-collection__pagination {
+    grid-column: 1 / -1;
     display: flex;
-    gap: 6px;
-  }
-
-  .lb-collection-{{ section.id }} .lb-badge {
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    padding: 5px 10px;
-  }
-
-  .lb-collection-{{ section.id }} .lb-badge--sale {
-    background: var(--lb-blue);
-    color: var(--lb-void);
-  }
-
-  .lb-collection-{{ section.id }} .lb-badge--sold-out {
-    background: var(--lb-concrete);
-    color: var(--lb-white);
-  }
-
-  .lb-collection-{{ section.id }} .lb-product-card__vendor {
-    color: var(--lb-concrete);
-    font-size: 10px;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    margin: 0;
-  }
-
-  .lb-collection-{{ section.id }} .lb-product-card__price {
-    display: flex;
+    justify-content: center;
     align-items: center;
     gap: 8px;
-  }
-
-  .lb-collection-{{ section.id }} .lb-product-card__compare-price {
-    color: var(--lb-concrete);
-    font-weight: 400;
-    font-size: 12px;
-  }
-
-  .lb-collection-{{ section.id }} .lb-pagination {
-    margin-top: 48px;
-  }
-
-  .lb-collection-{{ section.id }} .lb-pagination__list {
-    display: flex;
+    padding-top: 40px;
     flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
   }
-
-  .lb-collection-{{ section.id }} .lb-pagination__link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 38px;
-    min-height: 38px;
-    padding: 0 12px;
-    border: 1px solid var(--lb-wall);
-    color: var(--lb-muted);
+  .lb-pagination__btn {
+    padding: 10px 18px;
     font-size: 12px;
-    transition: border-color .2s ease, color .2s ease;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    border: 1px solid;
+    transition: all 0.2s;
+    display: inline-block;
   }
-
-  .lb-collection-{{ section.id }} .lb-pagination__link:hover {
-    border-color: var(--lb-blue);
-    color: var(--lb-blue);
-  }
-
-  .lb-collection-{{ section.id }} .lb-pagination__link.is-current {
-    background: var(--lb-blue);
-    border-color: var(--lb-blue);
-    color: var(--lb-void);
-  }
-
-  .lb-collection-{{ section.id }} .lb-pagination__link--gap {
-    border: none;
-    color: var(--lb-concrete);
-  }
+  .lb-pagination__btn:hover { opacity: 0.75; }
+  .lb-pagination__btn--active { font-weight: 700; }
+  .lb-pagination__ellipsis { padding: 10px 6px; font-size: 12px; }
 
   @media (max-width: 960px) {
-    .lb-collection-{{ section.id }} .lb-collection-layout {
-      grid-template-columns: 1fr;
-    }
-
-    .lb-collection-{{ section.id }} .lb-filters {
-      position: fixed;
-      inset: 0;
-      z-index: 200;
-      background: var(--lb-void);
-      padding: 90px 24px 24px;
-      overflow-y: auto;
-      top: 0;
-    }
-
-    .lb-collection-{{ section.id }} .lb-sort {
-      margin-left: 0;
-    }
+    .lb-collection__header { padding: 40px 24px; }
+    .lb-collection__toolbar { padding: 12px 24px; }
+    .lb-collection__grid { padding-left: 24px !important; padding-right: 24px !important; grid-template-columns: repeat(2, 1fr) !important; }
   }
-
-  @media (max-width: 640px) {
-    .lb-collection-{{ section.id }} .lb-collection-main__grid {
-      grid-template-columns: repeat(var(--lb-columns-mobile, 2), minmax(0, 1fr));
-    }
-
-    .lb-collection-{{ section.id }} .lb-collection-toolbar {
-      flex-direction: column;
-      align-items: flex-start;
-    }
+  @media (max-width: 540px) {
+    .lb-collection__grid { grid-template-columns: 1fr !important; }
   }
-{% endstyle %}
-
-<script>
-  (function () {
-    var root = document.querySelector('[data-section-id="{{ section.id }}"]');
-    if (!root) return;
-
-    var toggle = root.querySelector('#lb-filter-toggle-{{ section.id }}');
-    var panel = root.querySelector('#lb-filters-{{ section.id }}');
-
-    if (toggle && panel) {
-      toggle.addEventListener('click', function () {
-        var isOpen = toggle.getAttribute('aria-expanded') === 'true';
-        toggle.setAttribute('aria-expanded', String(!isOpen));
-        if (isOpen) {
-          panel.setAttribute('hidden', '');
-        } else {
-          panel.removeAttribute('hidden');
-        }
-      });
-    }
-
-    // Progressive enhancement: auto-submit the form when a filter or sort
-    // control changes, so the page updates without requiring the manual
-    // "Apply Filters" button. The button remains functional without JS.
-    var form = root.querySelector('#lb-collection-form-{{ section.id }}');
-    if (form) {
-      form.querySelectorAll('[data-lb-auto-submit]').forEach(function (input) {
-        input.addEventListener('change', function () {
-          form.requestSubmit ? form.requestSubmit() : form.submit();
-        });
-      });
-    }
-  })();
-</script>
+</style>
 
 {% schema %}
 {
-  "name": "Main Collection",
+  "name": "Collection",
+  "tag": "section",
   "settings": [
-    {
-      "type": "header",
-      "content": "Header"
-    },
-    {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Eyebrow Text",
-      "default": "Shop"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_description",
-      "label": "Show Collection Description",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_collection_image",
-      "label": "Show Collection Banner Image",
-      "info": "Uses the image set on the collection in Shopify admin.",
-      "default": false
-    },
-    {
-      "type": "header",
-      "content": "Grid Layout"
-    },
-    {
-      "type": "range",
-      "id": "columns_desktop",
-      "label": "Desktop Columns",
-      "min": 2,
-      "max": 5,
-      "step": 1,
-      "default": 3
-    },
-    {
-      "type": "select",
-      "id": "columns_mobile",
-      "label": "Mobile Columns",
-      "options": [
-        { "value": "1", "label": "1 column" },
-        { "value": "2", "label": "2 columns" }
-      ],
-      "default": "2"
-    },
-    {
-      "type": "select",
-      "id": "image_ratio",
-      "label": "Product Image Ratio",
-      "options": [
-        { "value": "square", "label": "Square (1:1)" },
-        { "value": "portrait", "label": "Portrait (3:4)" },
-        { "value": "landscape", "label": "Landscape (4:3)" },
-        { "value": "natural", "label": "Natural (original ratio)" }
-      ],
-      "default": "square"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_secondary_image",
-      "label": "Show Second Image on Hover",
-      "info": "Uses the product's second media item, if one exists.",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_vendor",
-      "label": "Show Product Vendor",
-      "default": false
-    },
-    {
-      "type": "range",
-      "id": "products_per_page",
-      "label": "Products Per Page",
-      "min": 8,
-      "max": 48,
-      "step": 4,
-      "default": 24
-    },
-    {
-      "type": "header",
-      "content": "Filtering & Sorting"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_filtering",
-      "label": "Enable Filtering",
-      "info": "Filter options are pulled automatically from your product data (price, availability, variants, tags). Install the Search & Discovery app in Shopify admin to customize which filters appear.",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_sorting",
-      "label": "Enable Sorting",
-      "default": true
-    },
-    {
-      "type": "header",
-      "content": "Labels & Copy"
-    },
-    {
-      "type": "text",
-      "id": "filters_heading",
-      "label": "Filter Button Label",
-      "default": "Filter"
-    },
-    {
-      "type": "text",
-      "id": "apply_filters_text",
-      "label": "Apply Filters Button Text",
-      "default": "Apply Filters"
-    },
-    {
-      "type": "text",
-      "id": "clear_filters_text",
-      "label": "Clear Filters Text",
-      "default": "Clear All"
-    },
-    {
-      "type": "text",
-      "id": "sort_label",
-      "label": "Sort Label",
-      "default": "Sort by"
-    },
-    {
-      "type": "text",
-      "id": "sale_badge_text",
-      "label": "Sale Badge Text",
-      "default": "Sale"
-    },
-    {
-      "type": "text",
-      "id": "sold_out_text",
-      "label": "Sold Out Badge Text",
-      "default": "Sold Out"
-    },
-    {
-      "type": "text",
-      "id": "empty_state_text",
-      "label": "Empty Collection Message",
-      "default": "Add products to this collection to populate this page."
-    }
+    { "type": "header", "content": "Page Header" },
+    { "type": "checkbox", "id": "show_eyebrow", "label": "Show Eyebrow Label", "default": true },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow Text", "info": "Leave blank to use collection title" },
+    { "type": "checkbox", "id": "show_description", "label": "Show Collection Description", "default": true },
+    { "type": "range", "id": "header_padding", "label": "Header Padding", "min": 20, "max": 120, "step": 10, "default": 60, "unit": "px" },
+
+    { "type": "header", "content": "Toolbar" },
+    { "type": "checkbox", "id": "show_sort", "label": "Show Sort Dropdown", "default": true },
+    { "type": "checkbox", "id": "show_filter_count", "label": "Show Product Count", "default": true },
+
+    { "type": "header", "content": "Grid" },
+    { "type": "select", "id": "columns", "label": "Columns (desktop)", "options": [
+      { "value": "2", "label": "2 Columns" },
+      { "value": "3", "label": "3 Columns" },
+      { "value": "4", "label": "4 Columns" }
+    ], "default": "3" },
+    { "type": "range", "id": "products_per_page", "label": "Products Per Page", "min": 6, "max": 48, "step": 6, "default": 12 },
+    { "type": "range", "id": "grid_gap", "label": "Grid Gap", "min": 8, "max": 48, "step": 4, "default": 24, "unit": "px" },
+    { "type": "checkbox", "id": "show_vendor", "label": "Show Product Type", "default": true },
+    { "type": "checkbox", "id": "show_badge", "label": "Show Sale / New Badges", "default": true },
+    { "type": "text", "id": "empty_text", "label": "Empty Collection Message", "default": "No products found in this collection." },
+
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "bg_color", "label": "Page Background", "default": "#0A0A0A" },
+    { "type": "color", "id": "header_bg", "label": "Header Background", "default": "#111111" },
+    { "type": "color", "id": "card_bg", "label": "Card Background", "default": "#1A1A1A" },
+    { "type": "color", "id": "text_color", "label": "Text Colour", "default": "#FFFFFF" },
+    { "type": "color", "id": "muted_color", "label": "Muted Text Colour", "default": "#AAAAAA" },
+    { "type": "color", "id": "accent_color", "label": "Accent Colour", "default": "#7DD8E8" },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Grid Top Padding", "min": 20, "max": 120, "step": 10, "default": 40, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Grid Bottom Padding", "min": 20, "max": 160, "step": 10, "default": 100, "unit": "px" }
   ]
 }
 {% endschema %}
