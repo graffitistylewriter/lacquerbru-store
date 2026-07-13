@@ -1,59 +1,144 @@
-<section class="lb-email-capture">
+<section
+  class="lb-email-capture"
+  style="background:{{ section.settings.bg_color }};padding:{{ section.settings.padding_top }}px 60px {{ section.settings.padding_bottom }}px;"
+>
+  <div class="lb-email-capture__inner lb-email-capture__inner--{{ section.settings.layout }}">
 
-  <div class="lb-email-capture__inner">
+    <div class="lb-email-capture__text">
+      {% if section.settings.label != blank %}
+        <span class="lb-email-capture__label" style="color:{{ section.settings.accent_color }};">{{ section.settings.label }}</span>
+      {% endif %}
+      <h2 class="lb-email-capture__heading" style="color:{{ section.settings.text_color }};">{{ section.settings.heading }}</h2>
+      {% if section.settings.subtext != blank %}
+        <p class="lb-email-capture__subtext" style="color:{{ section.settings.muted_color }};">{{ section.settings.subtext }}</p>
+      {% endif %}
+    </div>
 
-    <h2>{{ section.settings.heading }}</h2>
-
-    <p>{{ section.settings.subheading }}</p>
-
-    {% form 'customer' %}
-
-      <input
-        type="email"
-        name="contact[email]"
-        placeholder="Enter your email"
-        required
-      >
-
-      <button type="submit">
-        {{ section.settings.button_text }}
-      </button>
-
-    {% endform %}
+    <div class="lb-email-capture__form-wrap">
+      {% form 'customer', class: 'lb-email-capture__form' %}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        {% if form.posted_successfully? %}
+          <p class="lb-email-capture__success" style="color:{{ section.settings.accent_color }};">
+            {{ section.settings.success_msg | default: 'You are in! Thanks for subscribing.' }}
+          </p>
+        {% else %}
+          <div class="lb-email-capture__input-wrap">
+            <input
+              type="email"
+              name="contact[email]"
+              class="lb-email-capture__input"
+              placeholder="{{ section.settings.placeholder | default: 'your@email.com' }}"
+              required
+              aria-label="Email address"
+              style="color:{{ section.settings.text_color }};border-color:{{ section.settings.input_border }};background:{{ section.settings.input_bg }};"
+            >
+            <button
+              type="submit"
+              class="lb-email-capture__btn"
+              style="background:{{ section.settings.btn_bg }};color:{{ section.settings.btn_color }};"
+            >
+              {{ section.settings.btn_label | default: 'Subscribe' }}
+            </button>
+          </div>
+          {% if section.settings.disclaimer != blank %}
+            <p class="lb-email-capture__disclaimer" style="color:{{ section.settings.muted_color }};">{{ section.settings.disclaimer }}</p>
+          {% endif %}
+        {% endif %}
+      {% endform %}
+    </div>
 
   </div>
-
 </section>
+
+<style>
+  .lb-email-capture__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .lb-email-capture__inner--side-by-side {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+  .lb-email-capture__inner--stacked {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 32px;
+  }
+  .lb-email-capture__inner--stacked .lb-email-capture__form-wrap { width: 100%; max-width: 520px; }
+
+  .lb-email-capture__label { display: block; font-size: 10px; font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase; margin-bottom: 10px; }
+  .lb-email-capture__heading { font-size: clamp(22px, 3vw, 38px); font-weight: 700; text-transform: uppercase; letter-spacing: -0.01em; margin: 0 0 8px; }
+  .lb-email-capture__subtext { font-size: 14px; line-height: 1.7; margin: 0; }
+
+  .lb-email-capture__input-wrap { display: flex; gap: 0; }
+  .lb-email-capture__input {
+    flex: 1;
+    padding: 14px 18px;
+    font-size: 13px;
+    font-family: inherit;
+    border: 1px solid;
+    border-right: none;
+    outline: none;
+  }
+  .lb-email-capture__input::placeholder { opacity: 0.5; }
+  .lb-email-capture__btn {
+    padding: 14px 24px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+  }
+  .lb-email-capture__btn:hover { opacity: 0.85; }
+  .lb-email-capture__disclaimer { font-size: 11px; margin-top: 10px; opacity: 0.6; }
+  .lb-email-capture__success { font-size: 14px; font-weight: 500; padding: 14px 0; }
+
+  @media (max-width: 768px) {
+    .lb-email-capture { padding-left: 24px !important; padding-right: 24px !important; }
+    .lb-email-capture__inner--side-by-side { flex-direction: column; }
+    .lb-email-capture__input-wrap { flex-direction: column; }
+    .lb-email-capture__input { border-right: 1px solid; border-bottom: none; }
+    .lb-email-capture__btn { width: 100%; }
+  }
+</style>
 
 {% schema %}
 {
   "name": "LB Email Capture",
-
+  "tag": "section",
   "settings": [
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Join The Studio List"
-    },
-    {
-      "type": "text",
-      "id": "subheading",
-      "label": "Subheading",
-      "default": "Get updates, resources and project news."
-    },
-    {
-      "type": "text",
-      "id": "button_text",
-      "label": "Button Text",
-      "default": "Subscribe"
-    }
+    { "type": "select", "id": "layout", "label": "Layout", "options": [
+      { "value": "side-by-side", "label": "Side by Side" },
+      { "value": "stacked", "label": "Stacked / Centered" }
+    ], "default": "side-by-side" },
+    { "type": "text", "id": "label", "label": "Eyebrow Label" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "New drops first. Join the list." },
+    { "type": "textarea", "id": "subtext", "label": "Subtext", "default": "No spam. Just new releases, behind the scenes, and early access." },
+    { "type": "text", "id": "placeholder", "label": "Input Placeholder", "default": "your@email.com" },
+    { "type": "text", "id": "btn_label", "label": "Button Label", "default": "Subscribe" },
+    { "type": "text", "id": "success_msg", "label": "Success Message", "default": "You are in! Thanks for subscribing." },
+    { "type": "text", "id": "disclaimer", "label": "Disclaimer Text", "default": "No spam. Unsubscribe anytime." },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#111111" },
+    { "type": "color", "id": "text_color", "label": "Text Colour", "default": "#FFFFFF" },
+    { "type": "color", "id": "muted_color", "label": "Muted Colour", "default": "#AAAAAA" },
+    { "type": "color", "id": "accent_color", "label": "Accent Colour", "default": "#7DD8E8" },
+    { "type": "color", "id": "input_bg", "label": "Input Background", "default": "#0A0A0A" },
+    { "type": "color", "id": "input_border", "label": "Input Border", "default": "#3D3D3D" },
+    { "type": "color", "id": "btn_bg", "label": "Button Background", "default": "#7DD8E8" },
+    { "type": "color", "id": "btn_color", "label": "Button Text", "default": "#0A0A0A" },
+    { "type": "range", "id": "padding_top", "label": "Top Padding", "min": 20, "max": 160, "step": 10, "default": 80, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom Padding", "min": 20, "max": 160, "step": 10, "default": 80, "unit": "px" }
   ],
-
-  "presets": [
-    {
-      "name": "LB Email Capture"
-    }
-  ]
+  "presets": [{ "name": "Email Capture" }]
 }
 {% endschema %}

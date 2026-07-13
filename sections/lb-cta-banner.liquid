@@ -1,0 +1,91 @@
+<section
+  class="lb-cta-banner"
+  style="
+    background:{{ section.settings.bg_color }};
+    padding:{{ section.settings.padding_v }}px 60px;
+    {% if section.settings.bg_image != blank %}position:relative;overflow:hidden;{% endif %}
+  "
+>
+  {% if section.settings.bg_image != blank %}
+    <div class="lb-cta-banner__bg">
+      {{ section.settings.bg_image | image_url: width: 1920 | image_tag: loading: 'lazy', class: 'lb-cta-banner__bg-img', alt: '' }}
+    </div>
+    {% if section.settings.show_overlay %}
+      <div class="lb-cta-banner__overlay" style="background:{{ section.settings.overlay_color }};opacity:{{ section.settings.overlay_opacity | divided_by: 100.0 }};"></div>
+    {% endif %}
+  {% endif %}
+
+  <div class="lb-cta-banner__inner lb-cta-banner__inner--{{ section.settings.align }}">
+    {% if section.settings.label != blank %}
+      <span class="lb-cta-banner__label" style="color:{{ section.settings.accent_color }};">{{ section.settings.label }}</span>
+    {% endif %}
+    <h2 class="lb-cta-banner__heading" style="color:{{ section.settings.text_color }};">{{ section.settings.heading }}</h2>
+    {% if section.settings.subtext != blank %}
+      <p class="lb-cta-banner__subtext" style="color:{{ section.settings.subtext_color }};">{{ section.settings.subtext }}</p>
+    {% endif %}
+    <div class="lb-cta-banner__btns">
+      {% if section.settings.btn1_label != blank %}
+        <a href="{{ section.settings.btn1_url }}" class="lb-btn lb-btn--primary" style="background:{{ section.settings.accent_color }};color:#000;border-color:{{ section.settings.accent_color }};">
+          {{ section.settings.btn1_label }}
+        </a>
+      {% endif %}
+      {% if section.settings.btn2_label != blank %}
+        <a href="{{ section.settings.btn2_url }}" class="lb-btn lb-btn--ghost" style="color:{{ section.settings.text_color }};border-color:rgba(255,255,255,0.3);">
+          {{ section.settings.btn2_label }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .lb-cta-banner__bg { position: absolute; inset: 0; z-index: 0; }
+  .lb-cta-banner__bg-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .lb-cta-banner__overlay { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+  .lb-cta-banner__inner { position: relative; z-index: 2; max-width: 800px; display: flex; flex-direction: column; gap: 18px; }
+  .lb-cta-banner__inner--left { margin-right: auto; }
+  .lb-cta-banner__inner--center { margin: 0 auto; align-items: center; text-align: center; }
+  .lb-cta-banner__inner--right { margin-left: auto; align-items: flex-end; text-align: right; }
+  .lb-cta-banner__label { font-size: 10px; font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase; }
+  .lb-cta-banner__heading { font-size: clamp(26px, 4vw, 54px); font-weight: 700; text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.05; margin: 0; }
+  .lb-cta-banner__subtext { font-size: 15px; line-height: 1.75; margin: 0; max-width: 520px; }
+  .lb-cta-banner__btns { display: flex; gap: 14px; flex-wrap: wrap; }
+  .lb-btn { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; padding: 16px 40px; text-decoration: none; display: inline-block; transition: all 0.2s; border: 1.5px solid transparent; }
+  .lb-btn--primary:hover { background: transparent !important; color: {{ section.settings.accent_color }} !important; border-color: {{ section.settings.accent_color }} !important; }
+  .lb-btn--ghost:hover { border-color: {{ section.settings.accent_color }} !important; color: {{ section.settings.accent_color }} !important; }
+  @media (max-width: 768px) {
+    .lb-cta-banner { padding-left: 24px !important; padding-right: 24px !important; }
+    .lb-cta-banner__inner--right { align-items: flex-start; text-align: left; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "LB CTA Banner",
+  "tag": "section",
+  "settings": [
+    { "type": "image_picker", "id": "bg_image", "label": "Background Image (optional)" },
+    { "type": "checkbox", "id": "show_overlay", "label": "Show Overlay", "default": true },
+    { "type": "color", "id": "overlay_color", "label": "Overlay Colour", "default": "#000000" },
+    { "type": "range", "id": "overlay_opacity", "label": "Overlay Opacity", "min": 0, "max": 90, "step": 5, "default": 60, "unit": "%" },
+    { "type": "text", "id": "label", "label": "Eyebrow Label" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Ready to Create Something Unique?" },
+    { "type": "textarea", "id": "subtext", "label": "Subtext", "default": "Every great project starts with a conversation. Tell us what you have in mind." },
+    { "type": "text", "id": "btn1_label", "label": "Button 1 Label", "default": "Start a Commission" },
+    { "type": "url", "id": "btn1_url", "label": "Button 1 URL" },
+    { "type": "text", "id": "btn2_label", "label": "Button 2 Label" },
+    { "type": "url", "id": "btn2_url", "label": "Button 2 URL" },
+    { "type": "select", "id": "align", "label": "Content Alignment", "options": [
+      { "value": "left", "label": "Left" },
+      { "value": "center", "label": "Center" },
+      { "value": "right", "label": "Right" }
+    ], "default": "left" },
+    { "type": "color", "id": "bg_color", "label": "Background Colour", "default": "#111111" },
+    { "type": "color", "id": "text_color", "label": "Text Colour", "default": "#FFFFFF" },
+    { "type": "color", "id": "subtext_color", "label": "Subtext Colour", "default": "#AAAAAA" },
+    { "type": "color", "id": "accent_color", "label": "Accent Colour", "default": "#7DD8E8" },
+    { "type": "range", "id": "padding_v", "label": "Vertical Padding", "min": 40, "max": 200, "step": 10, "default": 100, "unit": "px" }
+  ],
+  "presets": [{ "name": "CTA Banner", "settings": { "heading": "Ready to Create Something Unique?", "btn1_label": "Start a Commission" } }]
+}
+{% endschema %}

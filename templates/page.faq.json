@@ -1,0 +1,37 @@
+{
+  "sections": {
+    "hero": {
+      "type": "lb-hero",
+      "settings": {
+        "eyebrow": "Support",
+        "heading": "FAQ.",
+        "heading_em": "",
+        "subtext": "Everything you need to know about our products, services, and process.",
+        "btn1_label": "",
+        "btn2_label": "",
+        "show_scroll_indicator": false,
+        "min_height": 380
+      }
+    },
+    "marquee": {
+      "type": "lb-marquee",
+      "settings": {}
+    },
+    "faq": {
+      "type": "lb-faq",
+      "settings": {
+        "label": "Support",
+        "heading": "Frequently Asked Questions"
+      }
+    },
+    "cta": {
+      "type": "lb-cta-banner",
+      "settings": {
+        "heading": "Still Have Questions?",
+        "subtext": "Get in touch and we will get back to you within 24 to 48 hours.",
+        "btn1_label": "Contact Us"
+      }
+    }
+  },
+  "order": ["hero", "marquee", "faq", "cta"]
+}
