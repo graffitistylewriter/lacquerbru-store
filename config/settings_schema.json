@@ -1,1 +1,124 @@
-[]
+[
+  {
+    "name": "Brand",
+    "settings": [
+      {
+        "type": "text",
+        "id": "business_name",
+        "label": "Business Name",
+        "default": "Lacquer Bru"
+      },
+      {
+        "type": "text",
+        "id": "business_tagline",
+        "label": "Tagline / Slogan"
+      }
+    ]
+  },
+  {
+    "name": "Logo & Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Page Background",
+        "default": "#111111"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Body Text",
+        "default": "#f0ede6"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent / Blue",
+        "default": "#3b82f6"
+      },
+      {
+        "type": "color",
+        "id": "color_muted",
+        "label": "Muted Text",
+        "default": "#888888"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "label": "Heading Font",
+        "default": "sans-serif"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "label": "Body Font",
+        "default": "sans-serif"
+      }
+    ]
+  },
+  {
+    "name": "Social Media",
+    "settings": [
+      {
+        "type": "url",
+        "id": "instagram",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "url",
+        "id": "facebook",
+        "label": "Facebook URL"
+      },
+      {
+        "type": "url",
+        "id": "youtube",
+        "label": "YouTube URL"
+      },
+      {
+        "type": "url",
+        "id": "tiktok",
+        "label": "TikTok URL"
+      },
+      {
+        "type": "url",
+        "id": "linkedin",
+        "label": "LinkedIn URL"
+      }
+    ]
+  },
+  {
+    "name": "Contact",
+    "settings": [
+      {
+        "type": "text",
+        "id": "contact_email",
+        "label": "Email Address"
+      },
+      {
+        "type": "text",
+        "id": "contact_phone",
+        "label": "Phone Number"
+      }
+    ]
+  }
+]
