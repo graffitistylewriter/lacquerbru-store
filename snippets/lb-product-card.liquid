@@ -1,0 +1,54 @@
+{%- comment -%}
+  Renders a product card.
+  Usage: {% render 'lb-product-card', product: product, accent_color: '#7DD8E8', ... %}
+{%- endcomment -%}
+
+<a href="{{ product.url }}" class="lb-product-card" style="background:{{ card_bg }};">
+
+  <div class="lb-product-card__img-wrap">
+    {% if product.featured_image != blank %}
+      {{ product.featured_image | image_url: width: 800 | image_tag:
+        class: 'lb-product-card__img',
+        loading: 'lazy',
+        alt: product.title,
+        width: 800,
+        height: 800
+      }}
+    {% else %}
+      {{ 'product-1' | placeholder_svg_tag: 'lb-product-card__placeholder-svg' }}
+    {% endif %}
+
+    {% if show_badge %}
+      {% if product.available == false %}
+        <span class="lb-product-card__badge" style="background:#E8442A;">Sold Out</span>
+      {% elsif product.compare_at_price > product.price %}
+        <span class="lb-product-card__badge" style="background:{{ accent_color }};color:#000;">Sale</span>
+      {% elsif product.created_at > 'now' | date: '%s' | minus: 2592000 | date: '%Y-%m-%dT%H:%M:%SZ' %}
+        <span class="lb-product-card__badge" style="background:{{ accent_color }};color:#000;">New</span>
+      {% endif %}
+    {% endif %}
+  </div>
+
+  <div class="lb-product-card__info">
+    {% if show_vendor and product.type != blank %}
+      <span class="lb-product-card__type" style="color:{{ muted_color }};">{{ product.type }}</span>
+    {% endif %}
+    <div class="lb-product-card__title" style="color:{{ text_color }};">{{ product.title }}</div>
+    <div class="lb-product-card__footer">
+      <div>
+        <span class="lb-product-card__price" style="color:{{ text_color }};">
+          {{ product.price | money }}
+        </span>
+        {% if product.compare_at_price > product.price %}
+          <span class="lb-product-card__price--compare" style="color:{{ muted_color }};">
+            {{ product.compare_at_price | money }}
+          </span>
+        {% endif %}
+      </div>
+      <span class="lb-product-card__btn" style="background:{{ accent_color }};color:#000;">
+        {% if product.available %}Add to Cart{% else %}Sold Out{% endif %}
+      </span>
+    </div>
+  </div>
+
+</a>
