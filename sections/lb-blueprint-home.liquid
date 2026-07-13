@@ -1,149 +1,283 @@
 <section class="lb-blueprint-page lb-blueprint-page--home">
 
-
 <section class="hero">
-  <div class="hero-bg"></div>
+  <div class="hero-bg">
+    {% if section.settings.hero_bg_image != blank %}
+      {{ section.settings.hero_bg_image | image_url: width: 1920 | image_tag: class: 'hero-bg-img', loading: 'eager' }}
+    {% endif %}
+  </div>
   <div class="hero-ol"></div>
   <div class="hero-c">
-    <span class="eyebrow">If Not Unique, Why Bother</span>
-    <h1 class="hero-h1">Street Artist.<em>Digital Creator.</em></h1>
-    <p class="hero-sub">Graffiti murals, digital art, and creative assets born from 16 years of aerosol culture in Cape Town. Brush packs, limited prints, and commissioned work worldwide.</p>
+    {% if section.settings.hero_eyebrow != blank %}
+      <span class="eyebrow">{{ section.settings.hero_eyebrow }}</span>
+    {% endif %}
+    <h1 class="hero-h1">{{ section.settings.hero_heading }}<em>{{ section.settings.hero_heading_em }}</em></h1>
+    <p class="hero-sub">{{ section.settings.hero_subtext }}</p>
     <div class="hero-btns">
-      <a href="https://lacquerbru.co.za/shop" class="btn-primary">Shop the Collection</a>
-      <a href="https://lacquerbru.co.za/commission-inquiry" class="btn-ghost">Commission Inquiry</a>
+      {% if section.settings.hero_btn1_label != blank %}
+        <a href="{{ section.settings.hero_btn1_url }}" class="btn-primary">{{ section.settings.hero_btn1_label }}</a>
+      {% endif %}
+      {% if section.settings.hero_btn2_label != blank %}
+        <a href="{{ section.settings.hero_btn2_url }}" class="btn-ghost">{{ section.settings.hero_btn2_label }}</a>
+      {% endif %}
     </div>
   </div>
   <div class="scroll-ind"><div class="scroll-line"></div><span>Scroll</span></div>
 </section>
 
-<div class="marquee-wrap"><div class="marquee-track"><span class="mi">Graffiti Murals</span><span class="ms"> &middot; </span><span class="mi">Digital Art</span><span class="ms"> &middot; </span><span class="mi">Brush Packs</span><span class="ms"> &middot; </span><span class="mi">Textured Finishes</span><span class="ms"> &middot; </span><span class="mi">Commission Work</span><span class="ms"> &middot; </span><span class="mi">Cape Town</span><span class="ms"> &middot; </span><span class="mi">Aerosoul</span><span class="ms"> &middot; </span><span class="mi">16 Years Experience</span><span class="ms"> &middot; </span><span class="mi">Mural Painting</span><span class="ms"> &middot; </span><span class="mi">Illustration</span><span class="ms"> &middot; </span><span class="mi">Graffiti Murals</span><span class="ms"> &middot; </span><span class="mi">Digital Art</span><span class="ms"> &middot; </span><span class="mi">Brush Packs</span><span class="ms"> &middot; </span><span class="mi">Textured Finishes</span><span class="ms"> &middot; </span><span class="mi">Commission Work</span><span class="ms"> &middot; </span><span class="mi">Cape Town</span><span class="ms"> &middot; </span><span class="mi">Aerosoul</span><span class="ms"> &middot; </span><span class="mi">16 Years Experience</span><span class="ms"> &middot; </span><span class="mi">Mural Painting</span><span class="ms"> &middot; </span><span class="mi">Illustration</span><span class="ms"> &middot; </span></div></div>
+{% if section.settings.marquee_text != blank %}
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    {% assign marquee_items = section.settings.marquee_text | split: ',' %}
+    {% for item in marquee_items %}{% for i in (1..2) %}
+      <span class="mi">{{ item | strip }}</span><span class="ms"> &middot; </span>
+    {% endfor %}{% endfor %}
+  </div>
+</div>
+{% endif %}
 
 <div class="gg">
-  <a href="https://lacquerbru.co.za/gallery" class="gi tall">
-    <img src="{{ 'lb-blueprint-home-003.jpg' | asset_url }}" alt="Lacquer Bru mural artwork" loading="lazy" width="1200" height="800">
-    <div class="gi-ov"><span class="gi-lbl">View Gallery &rarr;</span></div>
+  {% if section.settings.gallery_img1 != blank %}
+  <a href="{{ section.settings.gallery_img1_url }}" class="gi tall">
+    {{ section.settings.gallery_img1 | image_url: width: 1200 | image_tag: alt: section.settings.gallery_img1_alt, loading: 'lazy', width: 1200, height: 800 }}
+    <div class="gi-ov"><span class="gi-lbl">{{ section.settings.gallery_img1_label }}</span></div>
   </a>
-  <a href="https://lacquerbru.co.za/gallery" class="gi">
-    <img src="{{ 'lb-blueprint-home-004.jpg' | asset_url }}" alt="Graffiti wildstyle" loading="lazy" width="1200" height="800">
-    <div class="gi-ov"><span class="gi-lbl">Wildstyle</span></div>
+  {% endif %}
+  {% if section.settings.gallery_img2 != blank %}
+  <a href="{{ section.settings.gallery_img2_url }}" class="gi">
+    {{ section.settings.gallery_img2 | image_url: width: 1200 | image_tag: alt: section.settings.gallery_img2_alt, loading: 'lazy', width: 1200, height: 800 }}
+    <div class="gi-ov"><span class="gi-lbl">{{ section.settings.gallery_img2_label }}</span></div>
   </a>
-  <a href="https://lacquerbru.co.za/gallery" class="gi">
-    <img src="{{ 'lb-blueprint-home-005.jpg' | asset_url }}" alt="Portrait mural" loading="lazy" width="1200" height="800">
-    <div class="gi-ov"><span class="gi-lbl">Portrait Work</span></div>
+  {% endif %}
+  {% if section.settings.gallery_img3 != blank %}
+  <a href="{{ section.settings.gallery_img3_url }}" class="gi">
+    {{ section.settings.gallery_img3 | image_url: width: 1200 | image_tag: alt: section.settings.gallery_img3_alt, loading: 'lazy', width: 1200, height: 800 }}
+    <div class="gi-ov"><span class="gi-lbl">{{ section.settings.gallery_img3_label }}</span></div>
   </a>
+  {% endif %}
 </div>
+{% if section.settings.gallery_cta_label != blank %}
 <div class="gallery-cta">
-  <a href="https://lacquerbru.co.za/gallery" class="btn-blue">Explore the Full Gallery</a>
+  <a href="{{ section.settings.gallery_cta_url }}" class="btn-blue">{{ section.settings.gallery_cta_label }}</a>
 </div>
+{% endif %}
 
 <div class="shop-sec">
   <div class="shop-hd">
     <div>
-      <span class="section-label">Available Now</span>
-      <h2 class="section-h2">The Collection</h2>
-      <p class="section-sub">Digital assets built for working creatives. More drops coming.</p>
+      {% if section.settings.shop_label != blank %}<span class="section-label">{{ section.settings.shop_label }}</span>{% endif %}
+      <h2 class="section-h2">{{ section.settings.shop_heading }}</h2>
+      <p class="section-sub">{{ section.settings.shop_subtext }}</p>
     </div>
-    <a href="https://lacquerbru.co.za/shop" class="shop-lnk">View All Products &rarr;</a>
+    {% if section.settings.shop_link_label != blank %}
+      <a href="{{ section.settings.shop_link_url }}" class="shop-lnk">{{ section.settings.shop_link_label }} &rarr;</a>
+    {% endif %}
   </div>
   <div class="pg">
-    <div class="pc">
-      <span class="pb">Digital Download</span>
-      <div class="piw"><span class="pp">FLARE</span></div>
-      <div class="pinfo">
-        <span class="pcat">Brush Packs &middot; Procreate</span>
-        <div class="pname">The Flare Pack</div>
-        <div class="pdesc">40 custom Procreate brushes built for authentic flare, energy, and raw expression. Instant ZIP download after purchase.</div>
-        <div class="pfoot">
-          <span class="pprice">R649</span>
-          <a href="https://lacquerbru.co.za/product/the-flare-pack-procreate-brush-pack-lacquer-bru" class="pbtn">Add to Cart</a>
+    {% if section.settings.product_1 != blank %}
+      {% assign prod1 = all_products[section.settings.product_1] %}
+      <div class="pc">
+        <span class="pb">{{ prod1.type }}</span>
+        <div class="piw">
+          {% if prod1.featured_image != blank %}
+            {{ prod1.featured_image | image_url: width: 600 | image_tag: alt: prod1.title, class: 'prod-img' }}
+          {% else %}
+            <span class="pp">{{ prod1.title | upcase | truncate: 8, '' }}</span>
+          {% endif %}
+        </div>
+        <div class="pinfo">
+          <span class="pcat">{{ prod1.type }}</span>
+          <div class="pname">{{ prod1.title }}</div>
+          <div class="pdesc">{{ prod1.description | strip_html | truncate: 160 }}</div>
+          <div class="pfoot">
+            <span class="pprice">{{ prod1.price | money }}</span>
+            <a href="{{ prod1.url }}" class="pbtn">Add to Cart</a>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="pc">
-      <div class="piw"><span class="pp" style="color:var(--wall);font-size:40px;letter-spacing:2px;">SOON</span></div>
-      <div class="pinfo">
-        <span class="pcat" style="color:var(--concrete)">Coming Soon</span>
-        <div class="pname" style="color:var(--concrete)">Next Drop</div>
-        <div class="pdesc" style="color:var(--wall)">The next brush pack is in development. Join the mailing list to get first access before public release.</div>
-        <div class="pfoot">
-          <span class="pprice" style="color:var(--wall)">&mdash;</span>
-          <a href="https://lacquerbru.co.za/contact" class="pbtn gh">Notify Me</a>
+    {% endif %}
+    {% if section.settings.product_2 != blank %}
+      {% assign prod2 = all_products[section.settings.product_2] %}
+      <div class="pc">
+        <div class="piw">
+          {% if prod2.featured_image != blank %}
+            {{ prod2.featured_image | image_url: width: 600 | image_tag: alt: prod2.title, class: 'prod-img' }}
+          {% else %}
+            <span class="pp">{{ prod2.title | upcase | truncate: 8, '' }}</span>
+          {% endif %}
+        </div>
+        <div class="pinfo">
+          <span class="pcat">{{ prod2.type }}</span>
+          <div class="pname">{{ prod2.title }}</div>
+          <div class="pdesc">{{ prod2.description | strip_html | truncate: 160 }}</div>
+          <div class="pfoot">
+            <span class="pprice">{{ prod2.price | money }}</span>
+            <a href="{{ prod2.url }}" class="pbtn">Add to Cart</a>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="pc">
-      <div class="piw"><span class="pp" style="color:var(--wall);font-size:40px;letter-spacing:2px;">SOON</span></div>
-      <div class="pinfo">
-        <span class="pcat" style="color:var(--concrete)">Coming Soon</span>
-        <div class="pname" style="color:var(--concrete)">Limited Print</div>
-        <div class="pdesc" style="color:var(--wall)">Limited edition fine art prints from the Lacquer Bru original series. Archival quality. Signed and numbered.</div>
-        <div class="pfoot">
-          <span class="pprice" style="color:var(--wall)">&mdash;</span>
-          <a href="https://lacquerbru.co.za/contact" class="pbtn gh">Notify Me</a>
+    {% endif %}
+    {% if section.settings.product_3 != blank %}
+      {% assign prod3 = all_products[section.settings.product_3] %}
+      <div class="pc">
+        <div class="piw">
+          {% if prod3.featured_image != blank %}
+            {{ prod3.featured_image | image_url: width: 600 | image_tag: alt: prod3.title, class: 'prod-img' }}
+          {% else %}
+            <span class="pp">{{ prod3.title | upcase | truncate: 8, '' }}</span>
+          {% endif %}
+        </div>
+        <div class="pinfo">
+          <span class="pcat">{{ prod3.type }}</span>
+          <div class="pname">{{ prod3.title }}</div>
+          <div class="pdesc">{{ prod3.description | strip_html | truncate: 160 }}</div>
+          <div class="pfoot">
+            <span class="pprice">{{ prod3.price | money }}</span>
+            <a href="{{ prod3.url }}" class="pbtn">Add to Cart</a>
+          </div>
         </div>
       </div>
-    </div>
+    {% endif %}
   </div>
 </div>
 
 <div class="about-strip">
-  <div class="as-img"></div>
-  <div class="as-txt">
-    <span class="section-label">The Studio</span>
-    <div class="as-q">Equal parts<em> Street</em> and<em> Screen.</em></div>
-    <p class="as-body">Lacquer Bru is a multidisciplinary creative studio built on over 16 years of professional experience. Rooted in aerosol culture and evolved through real-world execution &mdash; the work exists at the intersection of urban expression and premium craftsmanship.<br><br>At the heart of everything we create is what we call <strong style="color:var(--blue)">Aerosoul</strong> &mdash; the fusion of surface, atmosphere, movement, and expression.</p>
-    <div class="as-stats">
-      <div><span class="stn">16+</span><span class="stl">Years Active</span></div>
-      <div><span class="stn">3+</span><span class="stl">Countries</span></div>
-      <div><span class="stn">100+</span><span class="stl">Projects</span></div>
+  {% if section.settings.about_image != blank %}
+    <div class="as-img">
+      {{ section.settings.about_image | image_url: width: 900 | image_tag: alt: 'About Lacquer Bru', loading: 'lazy' }}
     </div>
-    <a href="https://lacquerbru.co.za/about" class="btn-ghost" style="align-self:flex-start">Read the Full Story</a>
+  {% else %}
+    <div class="as-img"></div>
+  {% endif %}
+  <div class="as-txt">
+    {% if section.settings.about_label != blank %}<span class="section-label">{{ section.settings.about_label }}</span>{% endif %}
+    <div class="as-q">{{ section.settings.about_quote_plain }}<em> {{ section.settings.about_quote_em }}</em></div>
+    <div class="as-body">{{ section.settings.about_body }}</div>
+    <div class="as-stats">
+      <div><span class="stn">{{ section.settings.stat1_number }}</span><span class="stl">{{ section.settings.stat1_label }}</span></div>
+      <div><span class="stn">{{ section.settings.stat2_number }}</span><span class="stl">{{ section.settings.stat2_label }}</span></div>
+      <div><span class="stn">{{ section.settings.stat3_number }}</span><span class="stl">{{ section.settings.stat3_label }}</span></div>
+    </div>
+    {% if section.settings.about_btn_label != blank %}
+      <a href="{{ section.settings.about_btn_url }}" class="btn-ghost" style="align-self:flex-start">{{ section.settings.about_btn_label }}</a>
+    {% endif %}
   </div>
 </div>
 
 <section class="comm-sec">
   <div class="comm-in">
     <div>
-      <span class="section-label">Work Together</span>
-      <h2 class="section-h2">Commission a Piece</h2>
-      <p class="section-sub">From building-scale murals to intimate canvas works. Every commission starts with a conversation.</p>
-      <ul class="cl">
-        <li>Large scale exterior and interior murals</li>
-        <li>Textured feature walls and surface finishes</li>
-        <li>Brand spaces and commercial environments</li>
-        <li>Event live painting</li>
-        <li>Digital illustration and design</li>
-        <li>Limited edition print runs</li>
-      </ul>
-      <a href="https://lacquerbru.co.za/commission-inquiry" class="btn-primary">Start Your Inquiry</a>
+      {% if section.settings.comm_label != blank %}<span class="section-label">{{ section.settings.comm_label }}</span>{% endif %}
+      <h2 class="section-h2">{{ section.settings.comm_heading }}</h2>
+      <p class="section-sub">{{ section.settings.comm_subtext }}</p>
+      {% if section.settings.comm_list != blank %}
+        <ul class="cl">
+          {% assign comm_items = section.settings.comm_list | split: '|' %}
+          {% for item in comm_items %}
+            <li>{{ item | strip }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+      {% if section.settings.comm_btn_label != blank %}
+        <a href="{{ section.settings.comm_btn_url }}" class="btn-primary">{{ section.settings.comm_btn_label }}</a>
+      {% endif %}
     </div>
     <div class="cig">
-      <img src="{{ 'lb-blueprint-home-006.jpg' | asset_url }}" alt="Commission mural" loading="lazy" width="1200" height="800">
-      <img src="{{ 'lb-blueprint-home-007.jpg' | asset_url }}" alt="Portrait commission" loading="lazy" width="1200" height="800">
-      <img src="{{ 'lb-blueprint-home-008.jpg' | asset_url }}" alt="Wildstyle commission" loading="lazy" width="1200" height="800">
-      <img src="{{ 'lb-blueprint-home-009.jpg' | asset_url }}" alt="Large mural" loading="lazy" width="1200" height="800">
+      {% if section.settings.comm_img1 != blank %}{{ section.settings.comm_img1 | image_url: width: 1200 | image_tag: alt: 'Commission work', loading: 'lazy', width: 1200, height: 800 }}{% endif %}
+      {% if section.settings.comm_img2 != blank %}{{ section.settings.comm_img2 | image_url: width: 1200 | image_tag: alt: 'Commission work', loading: 'lazy', width: 1200, height: 800 }}{% endif %}
+      {% if section.settings.comm_img3 != blank %}{{ section.settings.comm_img3 | image_url: width: 1200 | image_tag: alt: 'Commission work', loading: 'lazy', width: 1200, height: 800 }}{% endif %}
+      {% if section.settings.comm_img4 != blank %}{{ section.settings.comm_img4 | image_url: width: 1200 | image_tag: alt: 'Commission work', loading: 'lazy', width: 1200, height: 800 }}{% endif %}
     </div>
   </div>
 </section>
 
 <div class="email-sec">
-  <h2 class="email-h">First Access to New Drops</h2>
-  <p class="email-sub">New brush packs, limited prints, and exclusive releases &mdash; straight to your inbox before anywhere else.</p>
+  <h2 class="email-h">{{ section.settings.email_heading }}</h2>
+  <p class="email-sub">{{ section.settings.email_subtext }}</p>
   <div class="eform">
-    <input class="einp" type="email" placeholder="Your email address">
-    <button class="esbm">Subscribe</button>
+    <input class="einp" type="email" placeholder="{{ section.settings.email_placeholder | default: 'Your email address' }}">
+    <button class="esbm">{{ section.settings.email_btn_label | default: 'Subscribe' }}</button>
   </div>
 </div>
-
-
-
 
 </section>
 
 {% schema %}
 {
   "name": "LB Blueprint Home",
-  "settings": []
+  "settings": [
+    { "type": "header", "content": "Hero Section" },
+    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow Text", "default": "If Not Unique, Why Bother" },
+    { "type": "text", "id": "hero_heading", "label": "Heading", "default": "Street Artist." },
+    { "type": "text", "id": "hero_heading_em", "label": "Heading (italic part)", "default": "Digital Creator." },
+    { "type": "textarea", "id": "hero_subtext", "label": "Subtext", "default": "Graffiti murals, digital art, and creative assets born from 16 years of aerosol culture in Cape Town." },
+    { "type": "image_picker", "id": "hero_bg_image", "label": "Background Image" },
+    { "type": "text", "id": "hero_btn1_label", "label": "Button 1 Label", "default": "Shop the Collection" },
+    { "type": "url", "id": "hero_btn1_url", "label": "Button 1 URL" },
+    { "type": "text", "id": "hero_btn2_label", "label": "Button 2 Label", "default": "Commission Inquiry" },
+    { "type": "url", "id": "hero_btn2_url", "label": "Button 2 URL" },
+
+    { "type": "header", "content": "Marquee Strip" },
+    { "type": "textarea", "id": "marquee_text", "label": "Marquee Items (comma separated)", "default": "Graffiti Murals, Digital Art, Brush Packs, Textured Finishes, Commission Work, Cape Town, Aerosoul, 16 Years Experience, Mural Painting, Illustration" },
+
+    { "type": "header", "content": "Gallery Grid" },
+    { "type": "image_picker", "id": "gallery_img1", "label": "Gallery Image 1 (tall)" },
+    { "type": "text", "id": "gallery_img1_alt", "label": "Image 1 Alt Text", "default": "Lacquer Bru mural artwork" },
+    { "type": "text", "id": "gallery_img1_label", "label": "Image 1 Overlay Label", "default": "View Gallery →" },
+    { "type": "url", "id": "gallery_img1_url", "label": "Image 1 Link" },
+    { "type": "image_picker", "id": "gallery_img2", "label": "Gallery Image 2" },
+    { "type": "text", "id": "gallery_img2_alt", "label": "Image 2 Alt Text", "default": "Graffiti wildstyle" },
+    { "type": "text", "id": "gallery_img2_label", "label": "Image 2 Overlay Label", "default": "Wildstyle" },
+    { "type": "url", "id": "gallery_img2_url", "label": "Image 2 Link" },
+    { "type": "image_picker", "id": "gallery_img3", "label": "Gallery Image 3" },
+    { "type": "text", "id": "gallery_img3_alt", "label": "Image 3 Alt Text", "default": "Portrait mural" },
+    { "type": "text", "id": "gallery_img3_label", "label": "Image 3 Overlay Label", "default": "Portrait Work" },
+    { "type": "url", "id": "gallery_img3_url", "label": "Image 3 Link" },
+    { "type": "text", "id": "gallery_cta_label", "label": "Gallery CTA Button Label", "default": "Explore the Full Gallery" },
+    { "type": "url", "id": "gallery_cta_url", "label": "Gallery CTA Button URL" },
+
+    { "type": "header", "content": "Shop / Products Section" },
+    { "type": "text", "id": "shop_label", "label": "Section Label", "default": "Available Now" },
+    { "type": "text", "id": "shop_heading", "label": "Section Heading", "default": "The Collection" },
+    { "type": "text", "id": "shop_subtext", "label": "Section Subtext", "default": "Digital assets built for working creatives. More drops coming." },
+    { "type": "text", "id": "shop_link_label", "label": "View All Link Label", "default": "View All Products" },
+    { "type": "url", "id": "shop_link_url", "label": "View All Link URL" },
+    { "type": "product", "id": "product_1", "label": "Featured Product 1" },
+    { "type": "product", "id": "product_2", "label": "Featured Product 2" },
+    { "type": "product", "id": "product_3", "label": "Featured Product 3" },
+
+    { "type": "header", "content": "About Strip" },
+    { "type": "image_picker", "id": "about_image", "label": "About Image" },
+    { "type": "text", "id": "about_label", "label": "Section Label", "default": "The Studio" },
+    { "type": "text", "id": "about_quote_plain", "label": "Quote (plain part)", "default": "Equal parts" },
+    { "type": "text", "id": "about_quote_em", "label": "Quote (italic part)", "default": "Street and Screen." },
+    { "type": "richtext", "id": "about_body", "label": "About Body Text" },
+    { "type": "text", "id": "stat1_number", "label": "Stat 1 Number", "default": "16+" },
+    { "type": "text", "id": "stat1_label", "label": "Stat 1 Label", "default": "Years Active" },
+    { "type": "text", "id": "stat2_number", "label": "Stat 2 Number", "default": "3+" },
+    { "type": "text", "id": "stat2_label", "label": "Stat 2 Label", "default": "Countries" },
+    { "type": "text", "id": "stat3_number", "label": "Stat 3 Number", "default": "100+" },
+    { "type": "text", "id": "stat3_label", "label": "Stat 3 Label", "default": "Projects" },
+    { "type": "text", "id": "about_btn_label", "label": "About Button Label", "default": "Read the Full Story" },
+    { "type": "url", "id": "about_btn_url", "label": "About Button URL" },
+
+    { "type": "header", "content": "Commission Section" },
+    { "type": "text", "id": "comm_label", "label": "Section Label", "default": "Work Together" },
+    { "type": "text", "id": "comm_heading", "label": "Heading", "default": "Commission a Piece" },
+    { "type": "textarea", "id": "comm_subtext", "label": "Subtext", "default": "From building-scale murals to intimate canvas works. Every commission starts with a conversation." },
+    { "type": "textarea", "id": "comm_list", "label": "Services List (separate with |)", "default": "Large scale exterior and interior murals|Textured feature walls and surface finishes|Brand spaces and commercial environments|Event live painting|Digital illustration and design|Limited edition print runs" },
+    { "type": "text", "id": "comm_btn_label", "label": "Button Label", "default": "Start Your Inquiry" },
+    { "type": "url", "id": "comm_btn_url", "label": "Button URL" },
+    { "type": "image_picker", "id": "comm_img1", "label": "Commission Image 1" },
+    { "type": "image_picker", "id": "comm_img2", "label": "Commission Image 2" },
+    { "type": "image_picker", "id": "comm_img3", "label": "Commission Image 3" },
+    { "type": "image_picker", "id": "comm_img4", "label": "Commission Image 4" },
+
+    { "type": "header", "content": "Email Signup Section" },
+    { "type": "text", "id": "email_heading", "label": "Heading", "default": "First Access to New Drops" },
+    { "type": "textarea", "id": "email_subtext", "label": "Subtext", "default": "New brush packs, limited prints, and exclusive releases — straight to your inbox before anywhere else." },
+    { "type": "text", "id": "email_placeholder", "label": "Input Placeholder", "default": "Your email address" },
+    { "type": "text", "id": "email_btn_label", "label": "Button Label", "default": "Subscribe" }
+  ]
 }
 {% endschema %}
-
