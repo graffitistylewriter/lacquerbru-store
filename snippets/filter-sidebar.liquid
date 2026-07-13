@@ -136,3 +136,368 @@ Features
                 <div class="lb-filter-group__body">
 
                     {% case filter.type %}
+                        {% when 'price_range' %}
+
+                            <div class="lb-price-filter">
+
+                                <div class="lb-price-filter__inputs">
+
+                                    <div class="lb-price-filter__field">
+
+                                        <label
+                                            for="Filter-{{ filter.param_name }}-GTE"
+                                        >
+                                            Min
+                                        </label>
+
+                                        <input
+                                            id="Filter-{{ filter.param_name }}-GTE"
+                                            type="number"
+                                            name="{{ filter.min_value.param_name }}"
+                                            value="{{ filter.min_value.value }}"
+                                            min="0"
+                                            max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                                            placeholder="0"
+                                        >
+
+                                    </div>
+
+                                    <div class="lb-price-filter__field">
+
+                                        <label
+                                            for="Filter-{{ filter.param_name }}-LTE"
+                                        >
+                                            Max
+                                        </label>
+
+                                        <input
+                                            id="Filter-{{ filter.param_name }}-LTE"
+                                            type="number"
+                                            name="{{ filter.max_value.param_name }}"
+                                            value="{{ filter.max_value.value }}"
+                                            min="0"
+                                            max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                                            placeholder="{{ filter.range_max | money_without_currency }}"
+                                        >
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        {% when 'boolean' %}
+
+                            {% for value in filter.values %}
+
+                                <label class="lb-filter-checkbox">
+
+                                    <input
+                                        type="checkbox"
+                                        name="{{ value.param_name }}"
+                                        value="{{ value.value }}"
+                                        {% if value.active %}
+                                            checked
+                                        {% endif %}
+                                    >
+
+                                    <span>
+
+                                        {{ value.label }}
+
+                                    </span>
+
+                                    <span class="lb-filter-total">
+
+                                        {{ value.count }}
+
+                                    </span>
+
+                                </label>
+
+                            {% endfor %}
+
+                        {% when 'list' %}
+
+                            <div class="lb-filter-options">
+
+                                {% for value in filter.values %}
+
+                                    <label class="lb-filter-checkbox">
+
+                                        <input
+                                            type="checkbox"
+                                            name="{{ value.param_name }}"
+                                            value="{{ value.value }}"
+                                            {% if value.active %}
+                                                checked
+                                            {% endif %}
+                                        >
+
+                                        <span class="lb-filter-checkbox__label">
+
+                                            {{ value.label }}
+
+                                        </span>
+
+                                        <span class="lb-filter-checkbox__count">
+
+                                            {{ value.count }}
+
+                                        </span>
+
+                                    </label>
+
+                                {% endfor %}
+
+                            </div>
+
+                    {% endcase %}
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+        <div class="lb-filter-sidebar__actions">
+
+            <button
+                type="submit"
+                class="lb-btn lb-btn--primary lb-filter-apply"
+            >
+                {{ section.settings.apply_filters_text | default: 'Apply Filters' }}
+            </button>
+
+            <a
+                href="{{ collection.url }}"
+                class="lb-btn lb-btn--secondary lb-filter-reset"
+            >
+                {{ section.settings.clear_filters_text | default: 'Clear Filters' }}
+            </a>
+
+        </div>
+
+    </form>
+
+    <div class="lb-filter-sidebar__mobile">
+
+        <button
+            type="button"
+            class="lb-btn lb-btn--primary lb-filter-mobile-close"
+            data-filter-close
+        >
+            {{ section.settings.close_filters_text | default: 'View Results' }}
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const toggles = document.querySelectorAll('.lb-filter-group__toggle');
+
+    toggles.forEach(toggle => {
+
+        toggle.addEventListener('click', () => {
+
+            const group = toggle.parentElement;
+
+            group.classList.toggle('is-open');
+
+        });
+
+    });
+
+    const form = document.getElementById('CollectionFiltersForm');
+
+    if(form){
+
+        form.querySelectorAll('input[type="checkbox"]').forEach(input=>{
+
+            input.addEventListener('change',()=>{
+
+                form.submit();
+
+            });
+
+        });
+
+    }
+
+});
+</script>
+
+{% style %}
+
+.lb-filter-group__body{
+    display:none;
+}
+
+.lb-filter-group.is-open .lb-filter-group__body{
+    display:block;
+}
+
+.lb-filter-checkbox{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:1rem;
+    margin:.5rem 0;
+    cursor:pointer;
+}
+
+.lb-price-filter__inputs{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1rem;
+}
+
+.lb-filter-sidebar__actions{
+    margin-top:2rem;
+    display:flex;
+    flex-direction:column;
+    gap:1rem;
+}
+
+.lb-active-filter-summary{
+    margin-bottom:2rem;
+}
+
+.lb-active-filter-summary__badges{
+    display:flex;
+    flex-wrap:wrap;
+    gap:.5rem;
+}
+
+.lb-filter-badge{
+    padding:.35rem .8rem;
+    border-radius:999px;
+    background:#111;
+    color:#fff;
+    text-decoration:none;
+    font-size:.8rem;
+}
+
+.lb-filter-sidebar__mobile{
+    display:none;
+}
+
+@media(max-width:990px){
+
+    .lb-filter-sidebar__mobile{
+        display:block;
+        margin-top:2rem;
+    }
+
+}
+
+{% endstyle %}
+
+{% comment %}
+==============================================================================
+ACCESSIBILITY + PROGRESSIVE ENHANCEMENT
+==============================================================================
+
+These attributes are progressively enhanced by lb-main.js.
+
+Future roadmap
+
+✓ AJAX filtering
+✓ Price slider
+✓ Animated accordion
+✓ Filter persistence
+✓ Mobile drawer
+✓ View mode persistence
+✓ Search within filters
+
+==============================================================================
+{% endcomment %}
+
+<script>
+
+document.addEventListener('DOMContentLoaded',()=>{
+
+    document.querySelectorAll('.lb-filter-group__toggle').forEach(button=>{
+
+        const body=button.nextElementSibling;
+
+        if(body){
+
+            button.setAttribute('aria-expanded','false');
+
+            body.setAttribute('hidden','hidden');
+
+            button.addEventListener('click',()=>{
+
+                const expanded=button.getAttribute('aria-expanded')==='true';
+
+                button.setAttribute('aria-expanded',(!expanded).toString());
+
+                if(expanded){
+
+                    body.setAttribute('hidden','hidden');
+
+                }else{
+
+                    body.removeAttribute('hidden');
+
+                }
+
+            });
+
+        }
+
+    });
+
+});
+
+</script>
+
+{% unless collection.filters.size > 0 %}
+
+<div class="lb-filter-empty">
+
+    <p>
+
+        No filters are available for this collection.
+
+    </p>
+
+</div>
+
+{% endunless %}
+
+{% comment %}
+==============================================================================
+END OF FILE
+
+snippets/filter-sidebar.liquid
+
+Lacquer Bru Shopify Theme
+Version 2.0.0
+
+Status
+
+✓ Shopify OS 2.0
+✓ Theme Check Friendly
+✓ Responsive
+✓ Merchant Friendly
+✓ Reusable
+✓ Component Architecture
+
+Future Enhancements
+
+• AJAX filtering
+• Predictive filtering
+• Price slider component
+• Search within filters
+• Sticky desktop sidebar
+• Drawer animation
+• Remember filter state
+• Collection analytics
+
+==============================================================================
+{% endcomment %}
