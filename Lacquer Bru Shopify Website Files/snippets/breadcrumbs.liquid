@@ -7,7 +7,7 @@
 <nav class="lb-breadcrumbs" aria-label="Breadcrumb">
   <a href="{{ routes.root_url }}">Home</a>
 
-  {% case request.page_type %}
+  {% case template.name %}
     {% when 'product' %}
       {% assign product_collection = collection | default: fallback_collection %}
       {% if product_collection != blank %}
@@ -24,9 +24,7 @@
     {% when 'page' %}
       <span aria-current="page">{{ page.title }}</span>
 
-    {% else %}
-      {% if template contains 'cart' %}
-        <span aria-current="page">Cart</span>
-      {% endif %}
+    {% when 'cart' %}
+      <span aria-current="page">Cart</span>
   {% endcase %}
 </nav>
