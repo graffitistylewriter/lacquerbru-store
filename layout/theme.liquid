@@ -1,44 +1,24 @@
 <!doctype html>
-<html lang="{{ request.locale.iso_code }}">
+<html lang="{{ request.locale.iso_code }}" data-theme="dark">
 
 <head>
   <meta charset="utf-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width,initial-scale=1"
-  >
-
-  <meta
-    name="theme-color"
-    content="#111111"
-  >
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#111111">
 
   <link rel="canonical" href="{{ canonical_url }}">
 
   {% if settings.favicon != blank %}
-    <link
-      rel="icon"
-      type="image/png"
-      href="{{ settings.favicon | image_url }}"
-    >
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url }}">
   {% endif %}
 
   <title>
-    {% if page_title %}
-      {{ page_title }}
-    {% endif %}
-
-    {% unless page_title contains shop.name %}
-      | {{ shop.name }}
-    {% endunless %}
+    {% if page_title %}{{ page_title }}{% endif %}
+    {% unless page_title contains shop.name %} | {{ shop.name }}{% endunless %}
   </title>
 
   {% if page_description %}
-    <meta
-      name="description"
-      content="{{ page_description | escape }}"
-    >
+    <meta name="description" content="{{ page_description | escape }}">
   {% endif %}
 
   {{ content_for_header }}
@@ -50,6 +30,46 @@
   {{ 'lb-blueprints.css' | asset_url | stylesheet_tag }}
   {{ 'lb-animations.css' | asset_url | stylesheet_tag }}
 
+  <style>
+    :root,
+    [data-theme="dark"] {
+      --lb-bg:          #0A0A0A;
+      --lb-bg-2:        #111111;
+      --lb-bg-3:        #1A1A1A;
+      --lb-text:        #FFFFFF;
+      --lb-muted:       #AAAAAA;
+      --lb-border:      #2A2A2A;
+      --lb-accent:      #7DD8E8;
+      --lb-header-bg:   #0A0A0A;
+      --lb-header-text: #FFFFFF;
+    }
+    [data-theme="light"] {
+      --lb-bg:          #F5F5F0;
+      --lb-bg-2:        #EBEBEB;
+      --lb-bg-3:        #FFFFFF;
+      --lb-text:        #0A0A0A;
+      --lb-muted:       #555555;
+      --lb-border:      #DDDDDD;
+      --lb-accent:      #0A8FA8;
+      --lb-header-bg:   #FFFFFF;
+      --lb-header-text: #0A0A0A;
+    }
+    html { transition: background-color 0.3s ease; }
+    body {
+      background: var(--lb-bg);
+      color: var(--lb-text);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  </style>
+
+  {%- comment -%} Apply saved theme before paint — prevents flash {%- endcomment -%}
+  <script>
+    (function() {
+      var saved = localStorage.getItem('lb-theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', saved);
+    })();
+  </script>
+
 </head>
 
 <body
@@ -60,29 +80,34 @@
   "
 >
 
-  <a
-    class="skip-to-content-link visually-hidden focus-inset"
-    href="#MainContent"
-  >
+  <a class="skip-to-content-link visually-hidden focus-inset" href="#MainContent">
     Skip to content
   </a>
 
   {% section 'lb-header' %}
 
-  <main
-    id="MainContent"
-    role="main"
-    tabindex="-1"
-  >
-
+  <main id="MainContent" role="main" tabindex="-1">
     {{ content_for_layout }}
-
   </main>
 
   {% section 'lb-footer' %}
 
   <script src="{{ 'lb-main.js' | asset_url }}" defer></script>
 
-</body>
+  <script>
+  (function() {
+    var btn = document.getElementById('lb-theme-toggle');
+    if (!btn) return;
+    function getTheme() { return localStorage.getItem('lb-theme') || 'dark'; }
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('lb-theme', theme);
+    }
+    btn.addEventListener('click', function() {
+      setTheme(getTheme() === 'dark' ? 'light' : 'dark');
+    });
+  })();
+  </script>
 
+</body>
 </html>
