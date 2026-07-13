@@ -1,1 +1,13 @@
-{"sections":{"main":{"type":"main-collection","settings":{}}},"order":["main"]}
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "settings": {}
+    },
+    "trust": {
+      "type": "lb-trust-strip",
+      "settings": {}
+    }
+  },
+  "order": ["main", "trust"]
+}
