@@ -1,0 +1,13 @@
+{% if title != blank %}
+<header class="lb-page-header">
+
+  {% render 'breadcrumbs' %}
+
+  <h1>{{ title }}</h1>
+
+  {% if subtitle != blank %}
+    <p>{{ subtitle }}</p>
+  {% endif %}
+
+</header>
+{% endif %}

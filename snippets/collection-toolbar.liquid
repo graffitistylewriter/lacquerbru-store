@@ -1,0 +1,27 @@
+<div class="lb-collection-toolbar">
+
+    <div class="lb-collection-toolbar__left">
+
+        <strong>{{ collection.products_count }}</strong>
+
+        Products
+
+    </div>
+
+    <div class="lb-collection-toolbar__right">
+
+        {% if collection.all_tags.size > 0 %}
+
+            <span>
+
+                {{ collection.all_tags.size }}
+
+                Filters
+
+            </span>
+
+        {% endif %}
+
+    </div>
+
+</div>

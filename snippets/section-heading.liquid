@@ -1,0 +1,21 @@
+{% if title != blank %}
+
+<header class="lb-section-heading">
+
+  {% if kicker != blank %}
+    <p class="lb-section-heading__kicker">
+      {{ kicker }}
+    </p>
+  {% endif %}
+
+  <h2>{{ title }}</h2>
+
+  {% if subtitle != blank %}
+    <p class="lb-section-heading__subtitle">
+      {{ subtitle }}
+    </p>
+  {% endif %}
+
+</header>
+
+{% endif %}

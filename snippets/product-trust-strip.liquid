@@ -1,0 +1,47 @@
+<div class="lb-product-trust">
+
+  <div class="lb-product-trust__item">
+    <span class="lb-product-trust__icon">✓</span>
+
+    <div>
+      <strong>Secure Checkout</strong>
+      <small>Encrypted Shopify Payments</small>
+    </div>
+  </div>
+
+  {% if product.type contains 'Digital'
+    or product.tags contains 'digital'
+    or product.tags contains 'Brush Pack'
+  %}
+    <div class="lb-product-trust__item">
+      <span class="lb-product-trust__icon">⚡</span>
+
+      <div>
+        <strong>Instant Download</strong>
+        <small>Available immediately after purchase</small>
+      </div>
+    </div>
+
+  {% else %}
+
+    <div class="lb-product-trust__item">
+      <span class="lb-product-trust__icon">📦</span>
+
+      <div>
+        <strong>Carefully Packaged</strong>
+        <small>Protected for safe delivery</small>
+      </div>
+    </div>
+
+  {% endif %}
+
+  <div class="lb-product-trust__item">
+    <span class="lb-product-trust__icon">🎨</span>
+
+    <div>
+      <strong>Created by Lacquer Bru</strong>
+      <small>Original artwork & creative resources</small>
+    </div>
+  </div>
+
+</div>

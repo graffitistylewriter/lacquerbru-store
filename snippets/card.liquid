@@ -1,0 +1,25 @@
+{% liquid
+  assign card_class = class | default: ''
+%}
+
+<div class="lb-card {{ card_class }}">
+
+  {% if title %}
+    <header class="lb-card__header">
+      <h3>{{ title }}</h3>
+    </header>
+  {% endif %}
+
+  <div class="lb-card__body">
+
+    {{ content }}
+
+  </div>
+
+  {% if footer %}
+    <footer class="lb-card__footer">
+      {{ footer }}
+    </footer>
+  {% endif %}
+
+</div>

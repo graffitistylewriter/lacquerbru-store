@@ -1,20 +1,14 @@
 {% liquid
-  assign button_label = label
-  assign button_url = url
   assign button_style = style | default: 'primary'
-  assign button_target = target | default: '_self'
-  assign button_classes = classes | default: ''
+  assign button_url = url | default: '#'
+  assign button_label = label | default: 'Learn More'
 %}
 
-{% if button_label != blank and button_url != blank %}
-  <a
-    href="{{ button_url }}"
-    class="lb-button lb-button--{{ button_style }} {{ button_classes }}"
-    target="{{ button_target }}"
-    {% if button_target == '_blank' %}
-      rel="noopener noreferrer"
-    {% endif %}
-  >
-    <span>{{ button_label }}</span>
-  </a>
-{% endif %}
+<a
+  href="{{ button_url }}"
+  class="lb-button lb-button--{{ button_style }}"
+>
+
+  {{ button_label }}
+
+</a>

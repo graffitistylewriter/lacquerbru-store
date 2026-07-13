@@ -1,0 +1,17 @@
+{% liquid
+  assign variant = product.selected_or_first_available_variant
+%}
+
+<div class="lb-product-status">
+
+  {% if variant.available %}
+    <span class="lb-status lb-status--available">
+      ✓ Available
+    </span>
+  {% else %}
+    <span class="lb-status lb-status--soldout">
+      Sold Out
+    </span>
+  {% endif %}
+
+</div>

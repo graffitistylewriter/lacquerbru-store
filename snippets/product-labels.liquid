@@ -1,0 +1,29 @@
+{% liquid
+  assign current_variant = product.selected_or_first_available_variant
+%}
+
+<div class="lb-product-labels">
+
+  {% if product.type != blank %}
+    <span class="lb-product-label lb-product-label--type">
+      {{ product.type }}
+    </span>
+  {% endif %}
+
+  {% if product.vendor != blank %}
+    <span class="lb-product-label lb-product-label--vendor">
+      {{ product.vendor }}
+    </span>
+  {% endif %}
+
+  {% if current_variant.available %}
+    <span class="lb-product-label lb-product-label--stock">
+      In Stock
+    </span>
+  {% else %}
+    <span class="lb-product-label lb-product-label--soldout">
+      Sold Out
+    </span>
+  {% endif %}
+
+</div>

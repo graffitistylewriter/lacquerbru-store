@@ -1,0 +1,27 @@
+{%- liquid
+  assign image_object = image
+  assign image_alt = alt | default: image_object.alt | default: shop.name
+  assign image_width = width | default: 1200
+  assign image_loading = loading | default: 'lazy'
+  assign image_sizes = sizes | default: '100vw'
+  assign image_class = class | default: ''
+-%}
+
+{% if image_object != blank %}
+
+  {{
+    image_object
+    | image_url: width: image_width
+    | image_tag:
+      loading: image_loading,
+      widths: '360,540,720,900,1200,1600',
+      sizes: image_sizes,
+      class: image_class,
+      alt: image_alt
+  }}
+
+{% else %}
+
+  {{ 'image' | placeholder_svg_tag: 'lb-placeholder-image' }}
+
+{% endif %}

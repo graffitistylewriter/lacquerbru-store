@@ -1,0 +1,16 @@
+{% liquid
+  assign label = 'View Product'
+
+  if product.type contains 'Brush'
+    assign label = 'View Brush Pack'
+  elsif product.type contains 'Digital'
+    assign label = 'Download Resource'
+  elsif product.type contains 'Canvas'
+    assign label = 'View Artwork'
+  endif
+%}
+
+{% render 'button',
+  url: product.url,
+  label: label
+%}

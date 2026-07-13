@@ -1,0 +1,19 @@
+<ul class="lb-product-features">
+
+    {% if product.tags contains 'commercial' %}
+        <li>Commercial Licence Included</li>
+    {% endif %}
+
+    {% if product.tags contains 'digital' %}
+        <li>Instant Digital Download</li>
+    {% endif %}
+
+    {% if product.tags contains 'updates' %}
+        <li>Free Lifetime Updates</li>
+    {% endif %}
+
+    {% if product.tags contains 'support' %}
+        <li>Email Support Included</li>
+    {% endif %}
+
+</ul>

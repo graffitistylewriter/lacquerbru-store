@@ -1,0 +1,37 @@
+<table class="lb-specifications">
+
+<tbody>
+
+{% if current_variant.sku != blank %}
+<tr>
+
+<th>SKU</th>
+
+<td>{{ current_variant.sku }}</td>
+
+</tr>
+{% endif %}
+
+{% if product.vendor != blank %}
+<tr>
+
+<th>Artist</th>
+
+<td>{{ product.vendor }}</td>
+
+</tr>
+{% endif %}
+
+{% if product.type != blank %}
+<tr>
+
+<th>Category</th>
+
+<td>{{ product.type }}</td>
+
+</tr>
+{% endif %}
+
+</tbody>
+
+</table>

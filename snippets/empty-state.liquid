@@ -1,0 +1,16 @@
+<div class="lb-empty-state">
+
+  <h3>{{ heading | default: "Nothing here yet" }}</h3>
+
+  <p>
+    {{ message | default: "We're working on adding more content." }}
+  </p>
+
+  {% if button_url %}
+    {% render 'button',
+      url: button_url,
+      label: button_label
+    %}
+  {% endif %}
+
+</div>

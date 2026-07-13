@@ -1,0 +1,19 @@
+<ul class="lb-product-highlights">
+
+{% if product.available %}
+<li>✓ Ready to purchase</li>
+{% endif %}
+
+{% if product.tags contains 'digital' %}
+<li>⚡ Instant Download</li>
+{% endif %}
+
+{% if product.tags contains 'commercial' %}
+<li>Commercial Licence</li>
+{% endif %}
+
+{% if product.tags contains 'exclusive' %}
+<li>Exclusive Release</li>
+{% endif %}
+
+</ul>

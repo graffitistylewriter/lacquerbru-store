@@ -1,0 +1,35 @@
+{% liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign on_sale = false
+
+  if current_variant.compare_at_price > current_variant.price
+    assign on_sale = true
+    assign savings = current_variant.compare_at_price | minus: current_variant.price
+    assign savings_percent = savings | times: 100.0 | divided_by: current_variant.compare_at_price | round
+  endif
+%}
+
+<div class="lb-product-price">
+
+  {% if on_sale %}
+    <span class="lb-product-price__sale">
+      {{ current_variant.price | money }}
+    </span>
+
+    <span class="lb-product-price__compare">
+      {{ current_variant.compare_at_price | money }}
+    </span>
+
+    <span class="lb-product-price__saving">
+      Save {{ savings_percent }}%
+    </span>
+
+  {% else %}
+
+    <span class="lb-product-price__regular">
+      {{ current_variant.price | money }}
+    </span>
+
+  {% endif %}
+
+</div>

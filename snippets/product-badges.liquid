@@ -1,0 +1,50 @@
+{% liquid
+  assign badge_sale = false
+  assign badge_new = false
+  assign badge_best = false
+  assign badge_limited = false
+
+  if product.compare_at_price > product.price
+    assign badge_sale = true
+  endif
+
+  if product.tags contains 'new'
+    assign badge_new = true
+  endif
+
+  if product.tags contains 'bestseller'
+    assign badge_best = true
+  endif
+
+  if product.tags contains 'limited'
+    assign badge_limited = true
+  endif
+%}
+
+<div class="lb-product-badges">
+
+  {% if badge_sale %}
+    <span class="lb-badge lb-badge--sale">
+      Sale
+    </span>
+  {% endif %}
+
+  {% if badge_new %}
+    <span class="lb-badge lb-badge--new">
+      New
+    </span>
+  {% endif %}
+
+  {% if badge_best %}
+    <span class="lb-badge lb-badge--best">
+      Best Seller
+    </span>
+  {% endif %}
+
+  {% if badge_limited %}
+    <span class="lb-badge lb-badge--limited">
+      Limited
+    </span>
+  {% endif %}
+
+</div>

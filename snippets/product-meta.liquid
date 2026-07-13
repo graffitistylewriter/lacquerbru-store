@@ -1,0 +1,31 @@
+<div class="lb-product-meta">
+
+  {% if product.vendor != blank %}
+    <div class="lb-meta-row">
+      <strong>Artist</strong>
+      <span>{{ product.vendor }}</span>
+    </div>
+  {% endif %}
+
+  {% if product.type != blank %}
+    <div class="lb-meta-row">
+      <strong>Category</strong>
+      <span>{{ product.type }}</span>
+    </div>
+  {% endif %}
+
+  {% if current_variant.sku != blank %}
+    <div class="lb-meta-row">
+      <strong>SKU</strong>
+      <span>{{ current_variant.sku }}</span>
+    </div>
+  {% endif %}
+
+  {% if product.tags.size > 0 %}
+    <div class="lb-meta-row">
+      <strong>Tags</strong>
+      <span>{{ product.tags | join: ', ' }}</span>
+    </div>
+  {% endif %}
+
+</div>
