@@ -114,7 +114,7 @@
         <input type="hidden" name="id" value="{{ current_variant.id }}">
       {% endif %}
 
-      <button
+            <button
         type="submit"
         class="lb-btn"
         {% unless current_variant.available %}disabled{% endunless %}
@@ -125,8 +125,33 @@
           Sold Out
         {% endif %}
       </button>
-    {% endform %}
 
+      <div class="lb-product-trust" aria-label="Product benefits">
+        <div class="lb-product-trust__item">
+          <span aria-hidden="true">✓</span>
+          <span>Secure Checkout</span>
+        </div>
+
+        {% if product.tags contains 'digital' %}
+          <div class="lb-product-trust__item">
+            <span aria-hidden="true">✓</span>
+            <span>Instant Digital Delivery</span>
+          </div>
+        {% endif %}
+
+        <div class="lb-product-trust__item">
+          <span aria-hidden="true">✓</span>
+          <span>Commercial Licence Included</span>
+        </div>
+
+        <div class="lb-product-trust__item">
+          <span aria-hidden="true">✓</span>
+          <span>Professional Creative Assets</span>
+        </div>
+      </div>
+
+    {% endform %}
+    
     <div class="lb-product-main__accordions">
       {% if includes != blank %}
         <details>

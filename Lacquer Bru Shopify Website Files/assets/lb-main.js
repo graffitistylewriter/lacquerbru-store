@@ -111,3 +111,51 @@ const variants = window.lbProductVariants || [];
   });
 
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const variantSelect = document.querySelector('.lb-product-form__select');
+  const mobilePurchase = document.querySelector('[data-lb-mobile-purchase]');
+
+  if (!variantSelect || !mobilePurchase) {
+    return;
+  }
+
+  const price = mobilePurchase.querySelector('[data-lb-mobile-price]');
+  const variantInput = mobilePurchase.querySelector('[data-lb-mobile-variant-id]');
+  const button = mobilePurchase.querySelector('[data-lb-mobile-button]');
+
+  const variants = window.lbProductVariants || [];
+
+  variantSelect.addEventListener('change', () => {
+
+    const selectedVariantId = Number(variantSelect.value);
+
+    const selectedVariant = variants.find(
+      (variant) => variant.id === selectedVariantId
+    );
+
+    if (!selectedVariant) {
+      return;
+    }
+
+    if (price) {
+      price.textContent = Shopify.formatMoney(
+        selectedVariant.price,
+        window.moneyFormat
+      );
+    }
+
+    if (variantInput) {
+      variantInput.value = selectedVariant.id;
+    }
+
+    if (button) {
+      button.disabled = !selectedVariant.available;
+
+      button.textContent = selectedVariant.available
+        ? 'Add To Cart'
+        : 'Sold Out';
+    }
+
+  });
+});
