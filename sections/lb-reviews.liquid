@@ -22,7 +22,7 @@
         <div class="lb-reviews__card" style="background:{{ section.settings.card_bg }};" {{ block.shopify_attributes }}>
           {% if block.settings.rating > 0 %}
             <div class="lb-reviews__stars" style="color:{{ section.settings.star_color }};">
-              {% for i in (1..block.settings.rating) %}★{% endfor %}{% assign empty = 5 | minus: block.settings.rating %}{% for i in (1..empty) %}☆{% endfor %}
+              
             </div>
           {% endif %}
           {% if block.settings.body != blank %}
