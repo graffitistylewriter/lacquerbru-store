@@ -116,7 +116,7 @@
         <option>Other</option>
       </select>
     </div>
-    <div class="fgrp"><label>Your Message *</label><textarea name="contact[body]" placeholder="{{ section.settings.message_placeholder | default: 'Tell us what is on your mind...' }}" required></textarea></div>
+   <div class="fgrp"><label>Your Message *</label><textarea name="contact[body]" placeholder="{{ section.settings.message_placeholder | default: 'Tell us what is on your mind...' }}" required></textarea></div>
     <button class="form-sbmt" type="submit">{{ section.settings.form_btn_label | default: 'Send Message' }}</button>
   {% endform %}
 </div>
