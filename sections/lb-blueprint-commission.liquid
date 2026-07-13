@@ -1,43 +1,70 @@
 <section class="lb-blueprint-page lb-blueprint-page--commission">
 
-
 <div class="comm-hero">
-  <div class="comm-hero-bg"></div>
+  <div class="comm-hero-bg">
+    {% if section.settings.hero_bg_image != blank %}
+      {{ section.settings.hero_bg_image | image_url: width: 1920 | image_tag: loading: 'eager', class: 'hero-bg-img' }}
+    {% endif %}
+  </div>
   <div class="comm-hero-ol"></div>
   <div class="comm-hero-c">
-    <h1 class="comm-title">Commission Inquiry</h1>
-    <p class="comm-tag">Every great piece starts with a conversation</p>
+    <h1 class="comm-title">{{ section.settings.hero_title }}</h1>
+    <p class="comm-tag">{{ section.settings.hero_tagline }}</p>
   </div>
 </div>
 
-<div class="marquee-wrap"><div class="marquee-track"><span class="mi">Graffiti Murals</span><span class="ms"> &middot; </span><span class="mi">Digital Art</span><span class="ms"> &middot; </span><span class="mi">Brush Packs</span><span class="ms"> &middot; </span><span class="mi">Textured Finishes</span><span class="ms"> &middot; </span><span class="mi">Commission Work</span><span class="ms"> &middot; </span><span class="mi">Cape Town</span><span class="ms"> &middot; </span><span class="mi">Aerosoul</span><span class="ms"> &middot; </span><span class="mi">16 Years Experience</span><span class="ms"> &middot; </span><span class="mi">Mural Painting</span><span class="ms"> &middot; </span><span class="mi">Illustration</span><span class="ms"> &middot; </span><span class="mi">Graffiti Murals</span><span class="ms"> &middot; </span><span class="mi">Digital Art</span><span class="ms"> &middot; </span><span class="mi">Brush Packs</span><span class="ms"> &middot; </span><span class="mi">Textured Finishes</span><span class="ms"> &middot; </span><span class="mi">Commission Work</span><span class="ms"> &middot; </span><span class="mi">Cape Town</span><span class="ms"> &middot; </span><span class="mi">Aerosoul</span><span class="ms"> &middot; </span><span class="mi">16 Years Experience</span><span class="ms"> &middot; </span><span class="mi">Mural Painting</span><span class="ms"> &middot; </span><span class="mi">Illustration</span><span class="ms"> &middot; </span></div></div>
+{% if section.settings.marquee_text != blank %}
+<div class="marquee-wrap"><div class="marquee-track">
+  {% assign marquee_items = section.settings.marquee_text | split: ',' %}
+  {% for item in marquee_items %}{% for i in (1..2) %}
+    <span class="mi">{{ item | strip }}</span><span class="ms"> &middot; </span>
+  {% endfor %}{% endfor %}
+</div></div>
+{% endif %}
 
 <div class="comm-body">
   <div class="comm-info">
-    <span class="section-label">Work Together</span>
-    <h2 class="section-h2">Let's Create Something Original</h2>
-    <p>Whether you arrive with a clear concept or allow full creative freedom &mdash; both approaches are equally valued. Every commission becomes a shared journey toward creating something intentional, immersive, and built to leave a lasting impression.</p>
-    <ul class="what-list">
-      <li>Large scale exterior and interior murals</li>
-      <li>Textured feature walls and surface finishes</li>
-      <li>Brand spaces and commercial environments</li>
-      <li>Private residences and estates</li>
-      <li>Hospitality venues and retail environments</li>
-      <li>Vehicle graphics and custom artwork</li>
-      <li>Event live painting and activations</li>
-      <li>Digital illustration and design projects</li>
-      <li>Limited edition fine art print runs</li>
-    </ul>
+    {% if section.settings.info_label != blank %}<span class="section-label">{{ section.settings.info_label }}</span>{% endif %}
+    <h2 class="section-h2">{{ section.settings.info_heading }}</h2>
+    <p>{{ section.settings.info_body }}</p>
+    {% if section.settings.services_list != blank %}
+      <ul class="what-list">
+        {% assign items = section.settings.services_list | split: '|' %}
+        {% for item in items %}
+          <li>{{ item | strip }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
     <div class="comm-details">
-      <div class="cd"><span class="cd-icon">Email</span><span>Email: <a href="mailto:howzit@lacquerbru.co.za">howzit@lacquerbru.co.za</a></span></div>
-      <div class="cd"><span class="cd-icon">Phone</span><span>Call or WhatsApp: <a href="tel:+27656656693">+27 65 665 6693</a></span></div>
-      <div class="cd"><span class="cd-icon">Location</span><span>Based in Cape Town, South Africa. Working locally and internationally.</span></div>
-      <div class="cd"><span class="cd-icon">Time</span><span>We respond to all inquiries within 24 to 48 hours.</span></div>
+      {% if settings.contact_email != blank %}
+        <div class="cd">
+          <span class="cd-icon">Email</span>
+          <span>Email: <a href="mailto:{{ settings.contact_email }}">{{ settings.contact_email }}</a></span>
+        </div>
+      {% endif %}
+      {% if settings.contact_phone != blank %}
+        <div class="cd">
+          <span class="cd-icon">Phone</span>
+          <span>Call or WhatsApp: <a href="tel:{{ settings.contact_phone | remove: ' ' }}">{{ settings.contact_phone }}</a></span>
+        </div>
+      {% endif %}
+      {% if section.settings.location_text != blank %}
+        <div class="cd">
+          <span class="cd-icon">Location</span>
+          <span>{{ section.settings.location_text }}</span>
+        </div>
+      {% endif %}
+      {% if section.settings.response_time != blank %}
+        <div class="cd">
+          <span class="cd-icon">Time</span>
+          <span>{{ section.settings.response_time }}</span>
+        </div>
+      {% endif %}
     </div>
   </div>
   {% form 'contact', class: 'comm-form' %}
-    <div class="form-title">Tell Us About Your Project</div>
-    <p class="form-sub">The more detail you can share the better. Fill in what you know &mdash; we'll work through the rest together.</p>
+    <div class="form-title">{{ section.settings.form_title }}</div>
+    <p class="form-sub">{{ section.settings.form_subtext }}</p>
     <div class="fg-row">
       <div class="fgrp"><label>First Name *</label><input type="text" name="contact[first_name]" placeholder="Your first name" required></div>
       <div class="fgrp"><label>Last Name *</label><input type="text" name="contact[last_name]" placeholder="Your last name" required></div>
@@ -67,10 +94,10 @@
         <select name="contact[budget]">
           <option value="">Select a range</option>
           <option>Under R5,000</option>
-          <option>R5,000 &mdash; R15,000</option>
-          <option>R15,000 &mdash; R30,000</option>
-          <option>R30,000 &mdash; R60,000</option>
-          <option>R60,000 &mdash; R100,000</option>
+          <option>R5,000 — R15,000</option>
+          <option>R15,000 — R30,000</option>
+          <option>R30,000 — R60,000</option>
+          <option>R60,000 — R100,000</option>
           <option>R100,000+</option>
           <option>To be discussed</option>
         </select>
@@ -83,39 +110,68 @@
         <option>Within 1 month</option>
         <option>Within 3 months</option>
         <option>Within 6 months</option>
-        <option>Flexible &mdash; no rush</option>
+        <option>Flexible — no rush</option>
       </select>
     </div>
     <div class="fgrp">
       <label>Project Description *</label>
-      <textarea name="contact[body]" placeholder="Tell us about your project. What are you envisioning? What space or surface is involved? What feeling or atmosphere do you want to create? Any reference images or inspiration you can describe?" required></textarea>
+      <textarea name="contact[body]" placeholder="Tell us about your project..." required></textarea>
     </div>
-    <p class="form-note">By submitting this form you agree to our <a href="https://lacquerbru.co.za/terms-and-conditions" style="color:var(--blue)">Terms and Conditions</a>. We will never share your information with third parties. All inquiries are treated confidentially.</p>
-    <button class="form-sbmt" type="submit">Submit Commission Inquiry</button>
+    {% if section.settings.form_disclaimer != blank %}
+      <p class="form-note">{{ section.settings.form_disclaimer }}</p>
+    {% endif %}
+    <button class="form-sbmt" type="submit">{{ section.settings.form_btn_label | default: 'Submit Commission Inquiry' }}</button>
   {% endform %}
 </div>
 
 <section class="comm-work">
-  <span class="section-label">Previous Work</span>
-  <h2 class="section-h2">Commission Examples</h2>
-  <p class="section-sub">A selection of commissioned projects across different environments and scales.</p>
+  {% if section.settings.work_label != blank %}<span class="section-label">{{ section.settings.work_label }}</span>{% endif %}
+  <h2 class="section-h2">{{ section.settings.work_heading }}</h2>
+  <p class="section-sub">{{ section.settings.work_subtext }}</p>
   <div class="cw-grid">
-    <div class="cw-item"><img src="{{ 'lb-blueprint-commission-022.jpg' | asset_url }}" alt="Commission example" loading="lazy" width="1200" height="800"></div>
-    <div class="cw-item"><img src="{{ 'lb-blueprint-commission-023.jpg' | asset_url }}" alt="Commission example" loading="lazy" width="1200" height="800"></div>
-    <div class="cw-item"><img src="{{ 'lb-blueprint-commission-024.jpg' | asset_url }}" alt="Commission example" loading="lazy" width="1200" height="800"></div>
-    <div class="cw-item"><img src="{{ 'lb-blueprint-commission-025.jpg' | asset_url }}" alt="Commission example" loading="lazy" width="1200" height="800"></div>
+    {% if section.settings.work_img1 != blank %}<div class="cw-item">{{ section.settings.work_img1 | image_url: width: 1200 | image_tag: alt: 'Commission example', loading: 'lazy', width: 1200, height: 800 }}</div>{% endif %}
+    {% if section.settings.work_img2 != blank %}<div class="cw-item">{{ section.settings.work_img2 | image_url: width: 1200 | image_tag: alt: 'Commission example', loading: 'lazy', width: 1200, height: 800 }}</div>{% endif %}
+    {% if section.settings.work_img3 != blank %}<div class="cw-item">{{ section.settings.work_img3 | image_url: width: 1200 | image_tag: alt: 'Commission example', loading: 'lazy', width: 1200, height: 800 }}</div>{% endif %}
+    {% if section.settings.work_img4 != blank %}<div class="cw-item">{{ section.settings.work_img4 | image_url: width: 1200 | image_tag: alt: 'Commission example', loading: 'lazy', width: 1200, height: 800 }}</div>{% endif %}
   </div>
 </section>
-
-
-
 
 </section>
 
 {% schema %}
 {
   "name": "LB Blueprint Commission",
-  "settings": []
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "image_picker", "id": "hero_bg_image", "label": "Hero Background Image" },
+    { "type": "text", "id": "hero_title", "label": "Hero Title", "default": "Commission Inquiry" },
+    { "type": "text", "id": "hero_tagline", "label": "Hero Tagline", "default": "Every great piece starts with a conversation" },
+
+    { "type": "header", "content": "Marquee Strip" },
+    { "type": "textarea", "id": "marquee_text", "label": "Marquee Items (comma separated)", "default": "Graffiti Murals, Digital Art, Brush Packs, Textured Finishes, Commission Work, Cape Town, Aerosoul, 16 Years Experience, Mural Painting, Illustration" },
+
+    { "type": "header", "content": "Info Panel" },
+    { "type": "text", "id": "info_label", "label": "Section Label", "default": "Work Together" },
+    { "type": "text", "id": "info_heading", "label": "Heading", "default": "Let's Create Something Original" },
+    { "type": "textarea", "id": "info_body", "label": "Intro Paragraph", "default": "Whether you arrive with a clear concept or allow full creative freedom — both approaches are equally valued." },
+    { "type": "textarea", "id": "services_list", "label": "Services List (separate with |)", "default": "Large scale exterior and interior murals|Textured feature walls and surface finishes|Brand spaces and commercial environments|Private residences and estates|Hospitality venues and retail environments|Vehicle graphics and custom artwork|Event live painting and activations|Digital illustration and design projects|Limited edition fine art print runs" },
+    { "type": "text", "id": "location_text", "label": "Location Text", "default": "Based in Cape Town, South Africa. Working locally and internationally." },
+    { "type": "text", "id": "response_time", "label": "Response Time Text", "default": "We respond to all inquiries within 24 to 48 hours." },
+
+    { "type": "header", "content": "Contact Form" },
+    { "type": "text", "id": "form_title", "label": "Form Title", "default": "Tell Us About Your Project" },
+    { "type": "textarea", "id": "form_subtext", "label": "Form Subtext", "default": "The more detail you can share the better. Fill in what you know — we'll work through the rest together." },
+    { "type": "textarea", "id": "form_disclaimer", "label": "Form Disclaimer Text" },
+    { "type": "text", "id": "form_btn_label", "label": "Submit Button Label", "default": "Submit Commission Inquiry" },
+
+    { "type": "header", "content": "Previous Work Gallery" },
+    { "type": "text", "id": "work_label", "label": "Section Label", "default": "Previous Work" },
+    { "type": "text", "id": "work_heading", "label": "Heading", "default": "Commission Examples" },
+    { "type": "textarea", "id": "work_subtext", "label": "Subtext", "default": "A selection of commissioned projects across different environments and scales." },
+    { "type": "image_picker", "id": "work_img1", "label": "Work Image 1" },
+    { "type": "image_picker", "id": "work_img2", "label": "Work Image 2" },
+    { "type": "image_picker", "id": "work_img3", "label": "Work Image 3" },
+    { "type": "image_picker", "id": "work_img4", "label": "Work Image 4" }
+  ]
 }
 {% endschema %}
-

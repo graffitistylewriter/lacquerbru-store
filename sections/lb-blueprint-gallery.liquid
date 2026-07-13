@@ -1,99 +1,148 @@
 <section class="lb-blueprint-page lb-blueprint-page--gallery">
 
-
 <div class="pg-hero">
-  <div class="pg-hero-bg"></div>
+  <div class="pg-hero-bg">
+    {% if section.settings.hero_bg_image != blank %}
+      {{ section.settings.hero_bg_image | image_url: width: 1920 | image_tag: loading: 'eager', class: 'hero-bg-img' }}
+    {% endif %}
+  </div>
   <div class="pg-hero-ol"></div>
   <div class="pg-hero-c">
-    <h1 class="pg-title">Gallery</h1>
-    <p class="pg-sub">Murals &middot; Portraits &middot; Wildstyle &middot; Digital &middot; Commissions</p>
+    <h1 class="pg-title">{{ section.settings.hero_title }}</h1>
+    <p class="pg-sub">{{ section.settings.hero_subtitle }}</p>
   </div>
 </div>
 
-<div class="marquee-wrap"><div class="marquee-track"><span class="mi">Graffiti Murals</span><span class="ms"> &middot; </span><span class="mi">Digital Art</span><span class="ms"> &middot; </span><span class="mi">Brush Packs</span><span class="ms"> &middot; </span><span class="mi">Textured Finishes</span><span class="ms"> &middot; </span><span class="mi">Commission Work</span><span class="ms"> &middot; </span><span class="mi">Cape Town</span><span class="ms"> &middot; </span><span class="mi">Aerosoul</span><span class="ms"> &middot; </span><span class="mi">16 Years Experience</span><span class="ms"> &middot; </span><span class="mi">Mural Painting</span><span class="ms"> &middot; </span><span class="mi">Illustration</span><span class="ms"> &middot; </span><span class="mi">Graffiti Murals</span><span class="ms"> &middot; </span><span class="mi">Digital Art</span><span class="ms"> &middot; </span><span class="mi">Brush Packs</span><span class="ms"> &middot; </span><span class="mi">Textured Finishes</span><span class="ms"> &middot; </span><span class="mi">Commission Work</span><span class="ms"> &middot; </span><span class="mi">Cape Town</span><span class="ms"> &middot; </span><span class="mi">Aerosoul</span><span class="ms"> &middot; </span><span class="mi">16 Years Experience</span><span class="ms"> &middot; </span><span class="mi">Mural Painting</span><span class="ms"> &middot; </span><span class="mi">Illustration</span><span class="ms"> &middot; </span></div></div>
+{% if section.settings.marquee_text != blank %}
+<div class="marquee-wrap"><div class="marquee-track">
+  {% assign marquee_items = section.settings.marquee_text | split: ',' %}
+  {% for item in marquee_items %}{% for i in (1..2) %}
+    <span class="mi">{{ item | strip }}</span><span class="ms"> &middot; </span>
+  {% endfor %}{% endfor %}
+</div></div>
+{% endif %}
 
 <div class="gal-intro">
-  <span class="section-label">The Work</span>
-  <p>Over 16 years of aerosol culture, digital creation, and immersive visual transformation. Every piece on these walls started with a blank surface and a vision &mdash; whether that surface was a building, a canvas, or a screen.</p>
-</div>
-
-<div class="gal-filters">
-  <button class="gf active">All Work</button>
-  <button class="gf">Murals</button>
-  <button class="gf">Portraits</button>
-  <button class="gf">Wildstyle</button>
-  <button class="gf">Digital</button>
-  <button class="gf">Commercial</button>
+  {% if section.settings.intro_label != blank %}<span class="section-label">{{ section.settings.intro_label }}</span>{% endif %}
+  <p>{{ section.settings.intro_text }}</p>
 </div>
 
 <div class="gal-masonry">
-  <div class="gal-item wide">
-    <img src="{{ 'lb-blueprint-gallery-011.jpg' | asset_url }}" alt="Lacquer Bru wildstyle mural" loading="lazy" width="1200" height="800">
-    <div class="gal-item-ov">
-      <div class="gal-item-title">Wildstyle &mdash; Group Production</div>
-      <div class="gal-item-cat">Graffiti &middot; Mural</div>
-    </div>
-  </div>
-  <div class="gal-item">
-    <img src="{{ 'lb-blueprint-gallery-012.jpg' | asset_url }}" alt="Portrait mural" loading="lazy" width="1200" height="800">
-    <div class="gal-item-ov">
-      <div class="gal-item-title">Portrait Study</div>
-      <div class="gal-item-cat">Portrait &middot; Mural</div>
-    </div>
-  </div>
-  <div class="gal-item">
-    <img src="{{ 'lb-blueprint-gallery-013.jpg' | asset_url }}" alt="Fire mural" loading="lazy" width="1200" height="800">
-    <div class="gal-item-ov">
-      <div class="gal-item-title">Fire &amp; Motion</div>
-      <div class="gal-item-cat">Character &middot; Mural</div>
-    </div>
-  </div>
-  <div class="gal-item">
-    <img src="{{ 'lb-blueprint-gallery-014.jpg' | asset_url }}" alt="Large scale mural" loading="lazy" width="1200" height="800">
-    <div class="gal-item-ov">
-      <div class="gal-item-title">Large Scale Production</div>
-      <div class="gal-item-cat">Mural &middot; Commercial</div>
-    </div>
-  </div>
-  <div class="gal-item wide">
-    <img src="{{ 'lb-blueprint-gallery-015.jpg' | asset_url }}" alt="Conceptual mural" loading="lazy" width="1200" height="800">
-    <div class="gal-item-ov">
-      <div class="gal-item-title">Conceptual Piece</div>
-      <div class="gal-item-cat">Conceptual &middot; Mural</div>
-    </div>
-  </div>
-  <div class="gal-item wide">
-    <img src="{{ 'lb-blueprint-gallery-016.jpg' | asset_url }}" alt="Indoor mural" loading="lazy" width="1200" height="800">
-    <div class="gal-item-ov">
-      <div class="gal-item-title">Interior Transformation</div>
-      <div class="gal-item-cat">Interior &middot; Commercial</div>
-    </div>
-  </div>
-  <div class="gal-item">
-    <img src="{{ 'lb-blueprint-gallery-017.jpg' | asset_url }}" alt="Artwork detail" loading="lazy" width="1200" height="800">
-    <div class="gal-item-ov">
-      <div class="gal-item-title">Detail Work</div>
-      <div class="gal-item-cat">Graffiti &middot; Detail</div>
-    </div>
-  </div>
+  {% for i in (1..12) %}
+    {% assign img_key = 'gallery_img_' | append: i %}
+    {% assign title_key = 'gallery_title_' | append: i %}
+    {% assign cat_key = 'gallery_cat_' | append: i %}
+    {% assign wide_key = 'gallery_wide_' | append: i %}
+    {% assign img_val = section.settings[img_key] %}
+    {% if img_val != blank %}
+      <div class="gal-item{% if section.settings[wide_key] %} wide{% endif %}">
+        {{ img_val | image_url: width: 1200 | image_tag: loading: 'lazy', width: 1200, height: 800, alt: section.settings[title_key] }}
+        <div class="gal-item-ov">
+          <div class="gal-item-title">{{ section.settings[title_key] }}</div>
+          <div class="gal-item-cat">{{ section.settings[cat_key] }}</div>
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
 </div>
 
 <div class="gal-cta">
-  <span class="section-label">Commission Your Own Piece</span>
-  <h2 class="section-h2">See Something You Like?</h2>
-  <p>Every wall, canvas, and surface is an opportunity. Get in touch to discuss your project and let us create something original together.</p>
-  <a href="https://lacquerbru.co.za/commission-inquiry" class="btn-primary">Start a Commission</a>
+  {% if section.settings.cta_label != blank %}<span class="section-label">{{ section.settings.cta_label }}</span>{% endif %}
+  <h2 class="section-h2">{{ section.settings.cta_heading }}</h2>
+  <p>{{ section.settings.cta_subtext }}</p>
+  {% if section.settings.cta_btn_label != blank %}
+    <a href="{{ section.settings.cta_btn_url }}" class="btn-primary">{{ section.settings.cta_btn_label }}</a>
+  {% endif %}
 </div>
-
-
-
 
 </section>
 
 {% schema %}
 {
   "name": "LB Blueprint Gallery",
-  "settings": []
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "image_picker", "id": "hero_bg_image", "label": "Hero Background Image" },
+    { "type": "text", "id": "hero_title", "label": "Hero Title", "default": "Gallery" },
+    { "type": "text", "id": "hero_subtitle", "label": "Hero Subtitle", "default": "Murals · Portraits · Wildstyle · Digital · Commissions" },
+
+    { "type": "header", "content": "Marquee Strip" },
+    { "type": "textarea", "id": "marquee_text", "label": "Marquee Items (comma separated)", "default": "Graffiti Murals, Digital Art, Brush Packs, Textured Finishes, Commission Work, Cape Town, Aerosoul, 16 Years Experience, Mural Painting, Illustration" },
+
+    { "type": "header", "content": "Intro" },
+    { "type": "text", "id": "intro_label", "label": "Section Label", "default": "The Work" },
+    { "type": "textarea", "id": "intro_text", "label": "Intro Text", "default": "Over 16 years of aerosol culture, digital creation, and immersive visual transformation." },
+
+    { "type": "header", "content": "Gallery Image 1" },
+    { "type": "image_picker", "id": "gallery_img_1", "label": "Image 1" },
+    { "type": "text", "id": "gallery_title_1", "label": "Title 1", "default": "Wildstyle — Group Production" },
+    { "type": "text", "id": "gallery_cat_1", "label": "Category 1", "default": "Graffiti · Mural" },
+    { "type": "checkbox", "id": "gallery_wide_1", "label": "Wide (full width)", "default": true },
+
+    { "type": "header", "content": "Gallery Image 2" },
+    { "type": "image_picker", "id": "gallery_img_2", "label": "Image 2" },
+    { "type": "text", "id": "gallery_title_2", "label": "Title 2", "default": "Portrait Study" },
+    { "type": "text", "id": "gallery_cat_2", "label": "Category 2", "default": "Portrait · Mural" },
+    { "type": "checkbox", "id": "gallery_wide_2", "label": "Wide (full width)", "default": false },
+
+    { "type": "header", "content": "Gallery Image 3" },
+    { "type": "image_picker", "id": "gallery_img_3", "label": "Image 3" },
+    { "type": "text", "id": "gallery_title_3", "label": "Title 3", "default": "Fire & Motion" },
+    { "type": "text", "id": "gallery_cat_3", "label": "Category 3", "default": "Character · Mural" },
+    { "type": "checkbox", "id": "gallery_wide_3", "label": "Wide (full width)", "default": false },
+
+    { "type": "header", "content": "Gallery Image 4" },
+    { "type": "image_picker", "id": "gallery_img_4", "label": "Image 4" },
+    { "type": "text", "id": "gallery_title_4", "label": "Title 4", "default": "Large Scale Production" },
+    { "type": "text", "id": "gallery_cat_4", "label": "Category 4", "default": "Mural · Commercial" },
+    { "type": "checkbox", "id": "gallery_wide_4", "label": "Wide (full width)", "default": false },
+
+    { "type": "header", "content": "Gallery Image 5" },
+    { "type": "image_picker", "id": "gallery_img_5", "label": "Image 5" },
+    { "type": "text", "id": "gallery_title_5", "label": "Title 5", "default": "Conceptual Piece" },
+    { "type": "text", "id": "gallery_cat_5", "label": "Category 5", "default": "Conceptual · Mural" },
+    { "type": "checkbox", "id": "gallery_wide_5", "label": "Wide (full width)", "default": true },
+
+    { "type": "header", "content": "Gallery Image 6" },
+    { "type": "image_picker", "id": "gallery_img_6", "label": "Image 6" },
+    { "type": "text", "id": "gallery_title_6", "label": "Title 6", "default": "Interior Transformation" },
+    { "type": "text", "id": "gallery_cat_6", "label": "Category 6", "default": "Interior · Commercial" },
+    { "type": "checkbox", "id": "gallery_wide_6", "label": "Wide (full width)", "default": true },
+
+    { "type": "header", "content": "Gallery Image 7" },
+    { "type": "image_picker", "id": "gallery_img_7", "label": "Image 7" },
+    { "type": "text", "id": "gallery_title_7", "label": "Title 7", "default": "Detail Work" },
+    { "type": "text", "id": "gallery_cat_7", "label": "Category 7", "default": "Graffiti · Detail" },
+    { "type": "checkbox", "id": "gallery_wide_7", "label": "Wide (full width)", "default": false },
+
+    { "type": "header", "content": "Gallery Images 8–12" },
+    { "type": "image_picker", "id": "gallery_img_8", "label": "Image 8" },
+    { "type": "text", "id": "gallery_title_8", "label": "Title 8" },
+    { "type": "text", "id": "gallery_cat_8", "label": "Category 8" },
+    { "type": "checkbox", "id": "gallery_wide_8", "label": "Wide", "default": false },
+    { "type": "image_picker", "id": "gallery_img_9", "label": "Image 9" },
+    { "type": "text", "id": "gallery_title_9", "label": "Title 9" },
+    { "type": "text", "id": "gallery_cat_9", "label": "Category 9" },
+    { "type": "checkbox", "id": "gallery_wide_9", "label": "Wide", "default": false },
+    { "type": "image_picker", "id": "gallery_img_10", "label": "Image 10" },
+    { "type": "text", "id": "gallery_title_10", "label": "Title 10" },
+    { "type": "text", "id": "gallery_cat_10", "label": "Category 10" },
+    { "type": "checkbox", "id": "gallery_wide_10", "label": "Wide", "default": false },
+    { "type": "image_picker", "id": "gallery_img_11", "label": "Image 11" },
+    { "type": "text", "id": "gallery_title_11", "label": "Title 11" },
+    { "type": "text", "id": "gallery_cat_11", "label": "Category 11" },
+    { "type": "checkbox", "id": "gallery_wide_11", "label": "Wide", "default": false },
+    { "type": "image_picker", "id": "gallery_img_12", "label": "Image 12" },
+    { "type": "text", "id": "gallery_title_12", "label": "Title 12" },
+    { "type": "text", "id": "gallery_cat_12", "label": "Category 12" },
+    { "type": "checkbox", "id": "gallery_wide_12", "label": "Wide", "default": false },
+
+    { "type": "header", "content": "Bottom CTA" },
+    { "type": "text", "id": "cta_label", "label": "CTA Label", "default": "Commission Your Own Piece" },
+    { "type": "text", "id": "cta_heading", "label": "CTA Heading", "default": "See Something You Like?" },
+    { "type": "textarea", "id": "cta_subtext", "label": "CTA Subtext", "default": "Every wall, canvas, and surface is an opportunity. Get in touch to discuss your project." },
+    { "type": "text", "id": "cta_btn_label", "label": "CTA Button Label", "default": "Start a Commission" },
+    { "type": "url", "id": "cta_btn_url", "label": "CTA Button URL" }
+  ]
 }
 {% endschema %}
-

@@ -1,97 +1,147 @@
 <section class="lb-blueprint-page lb-blueprint-page--about">
 
-
 <div class="abt-hero">
-  <div class="abt-hero-bg"></div>
+  <div class="abt-hero-bg">
+    {% if section.settings.hero_bg_image != blank %}
+      {{ section.settings.hero_bg_image | image_url: width: 1920 | image_tag: loading: 'eager', class: 'hero-bg-img' }}
+    {% endif %}
+  </div>
   <div class="abt-hero-ol"></div>
   <div class="abt-hero-c">
-    <h1 class="abt-title">About Lacquer Bru</h1>
-    <p class="abt-tag">Rooted in aerosol culture. Built for premium execution.</p>
+    <h1 class="abt-title">{{ section.settings.hero_title }}</h1>
+    <p class="abt-tag">{{ section.settings.hero_tagline }}</p>
   </div>
 </div>
 
-<div class="marquee-wrap"><div class="marquee-track"><span class="mi">Graffiti Murals</span><span class="ms"> &middot; </span><span class="mi">Digital Art</span><span class="ms"> &middot; </span><span class="mi">Brush Packs</span><span class="ms"> &middot; </span><span class="mi">Textured Finishes</span><span class="ms"> &middot; </span><span class="mi">Commission Work</span><span class="ms"> &middot; </span><span class="mi">Cape Town</span><span class="ms"> &middot; </span><span class="mi">Aerosoul</span><span class="ms"> &middot; </span><span class="mi">16 Years Experience</span><span class="ms"> &middot; </span><span class="mi">Mural Painting</span><span class="ms"> &middot; </span><span class="mi">Illustration</span><span class="ms"> &middot; </span><span class="mi">Graffiti Murals</span><span class="ms"> &middot; </span><span class="mi">Digital Art</span><span class="ms"> &middot; </span><span class="mi">Brush Packs</span><span class="ms"> &middot; </span><span class="mi">Textured Finishes</span><span class="ms"> &middot; </span><span class="mi">Commission Work</span><span class="ms"> &middot; </span><span class="mi">Cape Town</span><span class="ms"> &middot; </span><span class="mi">Aerosoul</span><span class="ms"> &middot; </span><span class="mi">16 Years Experience</span><span class="ms"> &middot; </span><span class="mi">Mural Painting</span><span class="ms"> &middot; </span><span class="mi">Illustration</span><span class="ms"> &middot; </span></div></div>
+{% if section.settings.marquee_text != blank %}
+<div class="marquee-wrap"><div class="marquee-track">
+  {% assign marquee_items = section.settings.marquee_text | split: ',' %}
+  {% for item in marquee_items %}{% for i in (1..2) %}
+    <span class="mi">{{ item | strip }}</span><span class="ms"> &middot; </span>
+  {% endfor %}{% endfor %}
+</div></div>
+{% endif %}
 
 <div class="abt-intro">
-  <div class="abt-img"></div>
+  {% if section.settings.intro_image != blank %}
+    <div class="abt-img">
+      {{ section.settings.intro_image | image_url: width: 900 | image_tag: loading: 'lazy', alt: section.settings.hero_title }}
+    </div>
+  {% else %}
+    <div class="abt-img"></div>
+  {% endif %}
   <div class="abt-txt">
-    <span class="section-label">The Studio</span>
-    <h2 class="section-h2">Where Urban Expression Meets Premium Craft</h2>
-    <p>Lacquer Bru is a <strong>multidisciplinary creative studio</strong> built on over 16 years of professional experience across mural painting, graffiti art, illustration, graphic design, textured finishes, commercial painting, and immersive visual transformation.</p>
-    <p>Rooted in aerosol culture and evolved through years of real-world creative execution, our work exists at the intersection of <em>urban expression</em> and <em>premium craftsmanship</em>. We specialise in transforming ordinary environments into engaging visual experiences that carry atmosphere, identity, and impact.</p>
-    <p>What separates Lacquer Bru is the ability to merge <strong>raw artistic energy with refined execution</strong> &mdash; creating work that is visually bold while remaining sophisticated, functional, and professionally delivered.</p>
+    {% if section.settings.intro_label != blank %}<span class="section-label">{{ section.settings.intro_label }}</span>{% endif %}
+    <h2 class="section-h2">{{ section.settings.intro_heading }}</h2>
+    <div>{{ section.settings.intro_body }}</div>
   </div>
 </div>
 
 <div class="stats-bar">
-  <div class="stat-item"><span class="stat-n">16+</span><span class="stat-l">Years of Experience</span></div>
-  <div class="stat-item"><span class="stat-n">3+</span><span class="stat-l">Countries</span></div>
-  <div class="stat-item"><span class="stat-n">100+</span><span class="stat-l">Projects Completed</span></div>
-  <div class="stat-item"><span class="stat-n">&infin;</span><span class="stat-l">Surfaces Transformed</span></div>
+  <div class="stat-item"><span class="stat-n">{{ section.settings.stat1_number }}</span><span class="stat-l">{{ section.settings.stat1_label }}</span></div>
+  <div class="stat-item"><span class="stat-n">{{ section.settings.stat2_number }}</span><span class="stat-l">{{ section.settings.stat2_label }}</span></div>
+  <div class="stat-item"><span class="stat-n">{{ section.settings.stat3_number }}</span><span class="stat-l">{{ section.settings.stat3_label }}</span></div>
+  <div class="stat-item"><span class="stat-n">{{ section.settings.stat4_number }}</span><span class="stat-l">{{ section.settings.stat4_label }}</span></div>
 </div>
 
 <section class="abt-services">
-  <span class="section-label">What We Do</span>
-  <h2 class="section-h2">Services &amp; Disciplines</h2>
-  <p class="section-sub">Every service is rooted in the same philosophy &mdash; authentic expression executed with precision and professionalism.</p>
+  {% if section.settings.services_label != blank %}<span class="section-label">{{ section.settings.services_label }}</span>{% endif %}
+  <h2 class="section-h2">{{ section.settings.services_heading }}</h2>
+  <p class="section-sub">{{ section.settings.services_subtext }}</p>
   <div class="srv-grid">
-    <div class="srv-card">
-      <span class="srv-icon"></span>
-      <div class="srv-name">Mural Painting</div>
-      <p class="srv-desc">Large scale exterior and interior murals for private residences, commercial properties, hospitality venues, public spaces, and developments. From concept to completion.</p>
-    </div>
-    <div class="srv-card">
-      <span class="srv-icon"></span>
-      <div class="srv-name">Illustration &amp; Design</div>
-      <p class="srv-desc">Custom illustration, graphic design, branding visuals, and digital creative assets for businesses, events, and personal projects.</p>
-    </div>
-    <div class="srv-card">
-      <span class="srv-icon"></span>
-      <div class="srv-name">Digital Art &amp; Assets</div>
-      <p class="srv-desc">Procreate brush packs, digital texture packs, and downloadable creative assets built by a working artist for working artists.</p>
-    </div>
-    <div class="srv-card">
-      <span class="srv-icon"></span>
-      <div class="srv-name">Textured Finishes</div>
-      <p class="srv-desc">High-end decorative surface finishing and textured feature walls using advanced airless spray application systems for residential and commercial environments.</p>
-    </div>
-    <div class="srv-card">
-      <span class="srv-icon"></span>
-      <div class="srv-name">Commercial Painting</div>
-      <p class="srv-desc">Professional surface finishing for driveways, roofs, garage doors, exterior walls, and large-scale property transformations with exceptional efficiency and detail.</p>
-    </div>
-    <div class="srv-card">
-      <span class="srv-icon"></span>
-      <div class="srv-name">Live Event Painting</div>
-      <p class="srv-desc">Live painting at events, activations, exhibitions, and brand experiences. A performance as compelling as the finished piece.</p>
-    </div>
+    {% for i in (1..6) %}
+      {% assign name_key = 'service_' | append: i | append: '_name' %}
+      {% assign desc_key = 'service_' | append: i | append: '_desc' %}
+      {% assign name_val = section.settings[name_key] %}
+      {% assign desc_val = section.settings[desc_key] %}
+      {% if name_val != blank %}
+        <div class="srv-card">
+          <span class="srv-icon"></span>
+          <div class="srv-name">{{ name_val }}</div>
+          <p class="srv-desc">{{ desc_val }}</p>
+        </div>
+      {% endif %}
+    {% endfor %}
   </div>
 </section>
 
 <div class="aerosoul-sec">
   <div class="aerosoul-bg"></div>
   <div class="aerosoul-c">
-    <div class="aerosoul-word">Aerosoul</div>
-    <p class="aerosoul-def">At the heart of everything we create is what we call <strong>Aerosoul</strong> &mdash; the fusion of surface, atmosphere, movement, and expression. It is the energy carried through every mural, texture, design, finish, and interaction.<br><br>We don't simply decorate spaces.<br><strong>We transform them into experiences.</strong></p>
-    <a href="https://lacquerbru.co.za/gallery" class="btn-blue">Experience the Work</a>
+    <div class="aerosoul-word">{{ section.settings.aerosoul_word }}</div>
+    <div class="aerosoul-def">{{ section.settings.aerosoul_body }}</div>
+    {% if section.settings.aerosoul_btn_label != blank %}
+      <a href="{{ section.settings.aerosoul_btn_url }}" class="btn-blue">{{ section.settings.aerosoul_btn_label }}</a>
+    {% endif %}
   </div>
 </div>
 
 <div class="abt-cta">
-  <h2>Ready to Create Something Unique?</h2>
-  <p>Every great project starts with a conversation. Tell us what you have in mind.</p>
-  <a href="https://lacquerbru.co.za/commission-inquiry" class="btn-primary">Start a Commission Inquiry</a>
+  <h2>{{ section.settings.cta_heading }}</h2>
+  <p>{{ section.settings.cta_subtext }}</p>
+  {% if section.settings.cta_btn_label != blank %}
+    <a href="{{ section.settings.cta_btn_url }}" class="btn-primary">{{ section.settings.cta_btn_label }}</a>
+  {% endif %}
 </div>
-
-
-
 
 </section>
 
 {% schema %}
 {
   "name": "LB Blueprint About",
-  "settings": []
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "image_picker", "id": "hero_bg_image", "label": "Hero Background Image" },
+    { "type": "text", "id": "hero_title", "label": "Hero Title", "default": "About Lacquer Bru" },
+    { "type": "text", "id": "hero_tagline", "label": "Hero Tagline", "default": "Rooted in aerosol culture. Built for premium execution." },
+
+    { "type": "header", "content": "Marquee Strip" },
+    { "type": "textarea", "id": "marquee_text", "label": "Marquee Items (comma separated)", "default": "Graffiti Murals, Digital Art, Brush Packs, Textured Finishes, Commission Work, Cape Town, Aerosoul, 16 Years Experience, Mural Painting, Illustration" },
+
+    { "type": "header", "content": "Intro Section" },
+    { "type": "image_picker", "id": "intro_image", "label": "Intro Image" },
+    { "type": "text", "id": "intro_label", "label": "Section Label", "default": "The Studio" },
+    { "type": "text", "id": "intro_heading", "label": "Heading", "default": "Where Urban Expression Meets Premium Craft" },
+    { "type": "richtext", "id": "intro_body", "label": "Body Text" },
+
+    { "type": "header", "content": "Stats Bar" },
+    { "type": "text", "id": "stat1_number", "label": "Stat 1 Number", "default": "16+" },
+    { "type": "text", "id": "stat1_label", "label": "Stat 1 Label", "default": "Years of Experience" },
+    { "type": "text", "id": "stat2_number", "label": "Stat 2 Number", "default": "3+" },
+    { "type": "text", "id": "stat2_label", "label": "Stat 2 Label", "default": "Countries" },
+    { "type": "text", "id": "stat3_number", "label": "Stat 3 Number", "default": "100+" },
+    { "type": "text", "id": "stat3_label", "label": "Stat 3 Label", "default": "Projects Completed" },
+    { "type": "text", "id": "stat4_number", "label": "Stat 4 Number", "default": "∞" },
+    { "type": "text", "id": "stat4_label", "label": "Stat 4 Label", "default": "Surfaces Transformed" },
+
+    { "type": "header", "content": "Services Section" },
+    { "type": "text", "id": "services_label", "label": "Section Label", "default": "What We Do" },
+    { "type": "text", "id": "services_heading", "label": "Heading", "default": "Services & Disciplines" },
+    { "type": "textarea", "id": "services_subtext", "label": "Subtext", "default": "Every service is rooted in the same philosophy — authentic expression executed with precision and professionalism." },
+    { "type": "text", "id": "service_1_name", "label": "Service 1 Name", "default": "Mural Painting" },
+    { "type": "textarea", "id": "service_1_desc", "label": "Service 1 Description", "default": "Large scale exterior and interior murals for private residences, commercial properties, hospitality venues, public spaces, and developments." },
+    { "type": "text", "id": "service_2_name", "label": "Service 2 Name", "default": "Illustration & Design" },
+    { "type": "textarea", "id": "service_2_desc", "label": "Service 2 Description", "default": "Custom illustration, graphic design, branding visuals, and digital creative assets for businesses, events, and personal projects." },
+    { "type": "text", "id": "service_3_name", "label": "Service 3 Name", "default": "Digital Art & Assets" },
+    { "type": "textarea", "id": "service_3_desc", "label": "Service 3 Description", "default": "Procreate brush packs, digital texture packs, and downloadable creative assets built by a working artist for working artists." },
+    { "type": "text", "id": "service_4_name", "label": "Service 4 Name", "default": "Textured Finishes" },
+    { "type": "textarea", "id": "service_4_desc", "label": "Service 4 Description", "default": "High-end decorative surface finishing and textured feature walls using advanced airless spray application systems." },
+    { "type": "text", "id": "service_5_name", "label": "Service 5 Name", "default": "Commercial Painting" },
+    { "type": "textarea", "id": "service_5_desc", "label": "Service 5 Description", "default": "Professional surface finishing for driveways, roofs, garage doors, exterior walls, and large-scale property transformations." },
+    { "type": "text", "id": "service_6_name", "label": "Service 6 Name", "default": "Live Event Painting" },
+    { "type": "textarea", "id": "service_6_desc", "label": "Service 6 Description", "default": "Live painting at events, activations, exhibitions, and brand experiences. A performance as compelling as the finished piece." },
+
+    { "type": "header", "content": "Aerosoul Section" },
+    { "type": "text", "id": "aerosoul_word", "label": "Feature Word", "default": "Aerosoul" },
+    { "type": "richtext", "id": "aerosoul_body", "label": "Aerosoul Description" },
+    { "type": "text", "id": "aerosoul_btn_label", "label": "Button Label", "default": "Experience the Work" },
+    { "type": "url", "id": "aerosoul_btn_url", "label": "Button URL" },
+
+    { "type": "header", "content": "Bottom CTA" },
+    { "type": "text", "id": "cta_heading", "label": "CTA Heading", "default": "Ready to Create Something Unique?" },
+    { "type": "text", "id": "cta_subtext", "label": "CTA Subtext", "default": "Every great project starts with a conversation. Tell us what you have in mind." },
+    { "type": "text", "id": "cta_btn_label", "label": "CTA Button Label", "default": "Start a Commission Inquiry" },
+    { "type": "url", "id": "cta_btn_url", "label": "CTA Button URL" }
+  ]
 }
 {% endschema %}
-
