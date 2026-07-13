@@ -1,0 +1,45 @@
+{% liquid
+  assign current_product = product
+
+  if current_product == blank
+    assign current_product = item
+  endif
+
+  assign on_sale = false
+
+  if current_product.compare_at_price > current_product.price
+    assign on_sale = true
+  endif
+%}
+
+<div class="lb-price">
+
+  {% if current_product.available == false %}
+
+    <span class="lb-price__sold-out">
+      Sold Out
+    </span>
+
+  {% else %}
+
+    {% if on_sale %}
+
+      <span class="lb-price__current lb-price__current--sale">
+        {{ current_product.price | money }}
+      </span>
+
+      <span class="lb-price__compare">
+        {{ current_product.compare_at_price | money }}
+      </span>
+
+    {% else %}
+
+      <span class="lb-price__current">
+        {{ current_product.price | money }}
+      </span>
+
+    {% endif %}
+
+  {% endif %}
+
+</div>

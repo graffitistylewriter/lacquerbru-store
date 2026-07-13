@@ -1,0 +1,22 @@
+{% liquid
+  assign media_image = image
+  assign media_alt = alt | default: media_image.alt
+  assign media_width = width | default: 900
+  assign media_loading = loading | default: 'lazy'
+  assign media_sizes = sizes | default: '(min-width: 990px) 25vw, 50vw'
+  assign media_widths = widths | default: '360,540,720,900,1200'
+  assign media_class = class | default: ''
+%}
+
+{% if media_image != blank %}
+  {{
+    media_image
+    | image_url: width: media_width
+    | image_tag:
+      loading: media_loading,
+      widths: media_widths,
+      sizes: media_sizes,
+      alt: media_alt,
+      class: media_class
+  }}
+{% endif %}

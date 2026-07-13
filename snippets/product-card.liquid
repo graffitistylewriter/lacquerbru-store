@@ -1,36 +1,35 @@
 {% liquid
-  assign card_product = product
-  if card_product == blank
-    assign card_product = card
-  endif
+  assign card_product = product | default: card
+
+  assign show_vendor = show_vendor | default: settings.show_vendor
+  assign show_badges = show_badges | default: true
+  assign show_price = show_price | default: true
+  assign show_image = show_image | default: true
 %}
+
+{% if card_product %}
 
 <article class="lb-product-card">
 
   <a href="{{ card_product.url }}" class="lb-product-card__link">
 
-    {% if card_product.featured_image %}
-      {{
-        card_product.featured_image
-        | image_url: width: 900
-        | image_tag:
-          loading: 'lazy',
-          widths: '400,600,900',
-          sizes: '(min-width: 990px) 25vw, 50vw',
-          alt: card_product.title
-      }}
+    {% if show_image and card_product.featured_image %}
+      {% render 'media',
+        image: card_product.featured_image,
+        alt: card_product.title,
+        class: 'lb-product-card__image'
+      %}
     {% endif %}
 
-    {% if card_product.compare_at_price > card_product.price %}
-      <span class="lb-product-card__badge lb-product-card__badge--sale">
-        Sale
-      </span>
+    {% if show_badges %}
 
-    {% elsif card_product.available == false %}
+      {% if card_product.available == false %}
+        {% render 'badge', type: 'sold-out' %}
 
-      <span class="lb-product-card__badge lb-product-card__badge--soldout">
-        Sold Out
-      </span>
+      {% elsif card_product.compare_at_price > card_product.price %}
+        {% render 'badge', type: 'sale' %}
+
+      {% endif %}
 
     {% endif %}
 
@@ -40,34 +39,22 @@
         {{ card_product.title }}
       </h3>
 
-      {% if settings.show_vendor %}
+      {% if show_vendor %}
         <div class="lb-product-card__vendor">
           {{ card_product.vendor }}
         </div>
       {% endif %}
 
-      <div class="lb-product-card__price">
-
-        {% if card_product.compare_at_price > card_product.price %}
-
-          <span class="lb-product-card__price-sale">
-            {{ card_product.price | money }}
-          </span>
-
-          <s>
-            {{ card_product.compare_at_price | money }}
-          </s>
-
-        {% else %}
-
-          {{ card_product.price | money }}
-
-        {% endif %}
-
-      </div>
+      {% if show_price %}
+        {% render 'price',
+          product: card_product
+        %}
+      {% endif %}
 
     </div>
 
   </a>
 
 </article>
+
+{% endif %}

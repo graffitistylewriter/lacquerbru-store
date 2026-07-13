@@ -1,0 +1,25 @@
+{% liquid
+  assign badge_type = type | default: 'default'
+  assign badge_text = text
+
+  if badge_text == blank
+    case badge_type
+      when 'sale'
+        assign badge_text = 'Sale'
+      when 'sold-out'
+        assign badge_text = 'Sold Out'
+      when 'new'
+        assign badge_text = 'New'
+      when 'limited'
+        assign badge_text = 'Limited'
+      else
+        assign badge_text = 'Featured'
+    endcase
+  endif
+%}
+
+{% if badge_text != blank %}
+  <span class="lb-badge lb-badge--{{ badge_type }}">
+    {{ badge_text }}
+  </span>
+{% endif %}

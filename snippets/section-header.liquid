@@ -1,0 +1,36 @@
+{% liquid
+  assign header_title = title
+  assign header_description = description
+  assign header_alignment = alignment | default: 'center'
+  assign header_button_label = button_label
+  assign header_button_url = button_url
+%}
+
+{% if header_title != blank or header_description != blank or header_button_label != blank %}
+
+  <div class="lb-section-header lb-section-header--{{ header_alignment }}">
+
+    {% if header_title != blank %}
+      <h2 class="lb-section-header__title">
+        {{ header_title }}
+      </h2>
+    {% endif %}
+
+    {% if header_description != blank %}
+      <div class="lb-section-header__description">
+        {{ header_description }}
+      </div>
+    {% endif %}
+
+    {% if header_button_label != blank and header_button_url != blank %}
+      <div class="lb-section-header__action">
+        {% render 'button',
+          label: header_button_label,
+          url: header_button_url
+        %}
+      </div>
+    {% endif %}
+
+  </div>
+
+{% endif %}
