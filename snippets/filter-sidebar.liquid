@@ -1,0 +1,138 @@
+{% comment %}
+==============================================================================
+LACQUER BRU SHOPIFY THEME
+
+File:
+snippets/filter-sidebar.liquid
+
+Version:
+2.0.0
+
+Author:
+Kevin Schiffer + OpenAI
+
+Purpose:
+Reusable Shopify OS 2.0 Collection Filter Sidebar
+
+Features
+
+✓ Shopify Filters API
+✓ Price Range
+✓ Vendor
+✓ Product Type
+✓ Availability
+✓ Metafield Filters
+✓ Active Filter Summary
+✓ Clear Filters
+✓ Mobile Ready
+✓ Theme Check Safe
+
+==============================================================================
+{% endcomment %}
+
+{% liquid
+    assign active_filter_count = 0
+
+    for filter in collection.filters
+        assign active_filter_count = active_filter_count | plus: filter.active_values.size
+    endfor
+%}
+
+<div class="lb-filter-sidebar">
+
+    <div class="lb-filter-sidebar__header">
+
+        <h2>
+            {{ section.settings.filters_heading | default: 'Filters' }}
+        </h2>
+
+        {% if active_filter_count > 0 %}
+
+            <span class="lb-filter-count">
+
+                {{ active_filter_count }}
+
+            </span>
+
+        {% endif %}
+
+    </div>
+
+    {% if active_filter_count > 0 %}
+
+        <div class="lb-active-filter-summary">
+
+            <div class="lb-active-filter-summary__title">
+
+                Active Filters
+
+            </div>
+
+            <div class="lb-active-filter-summary__badges">
+
+                {% for filter in collection.filters %}
+
+                    {% for value in filter.active_values %}
+
+                        <a
+                            href="{{ value.url_to_remove }}"
+                            class="lb-filter-badge"
+                        >
+
+                            {{ value.label }}
+
+                            ×
+
+                        </a>
+
+                    {% endfor %}
+
+                {% endfor %}
+
+            </div>
+
+            <div class="lb-clear-all">
+
+                <a href="{{ collection.url }}">
+
+                    Clear All Filters
+
+                </a>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+    <form
+        id="CollectionFiltersForm"
+        class="lb-filter-form"
+    >
+
+        {% for filter in collection.filters %}
+
+            <div class="lb-filter-group">
+
+                <button
+                    class="lb-filter-group__toggle"
+                    type="button"
+                >
+
+                    <span>
+
+                        {{ filter.label }}
+
+                    </span>
+
+                    <span>
+
+                        +
+
+                    </span>
+
+                </button>
+
+                <div class="lb-filter-group__body">
+
+                    {% case filter.type %}

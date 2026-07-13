@@ -1,27 +1,152 @@
+{% comment %}
+==============================================================================
+LACQUER BRU SHOPIFY THEME
+
+File:
+snippets/collection-toolbar.liquid
+
+Version:
+2.0.0
+
+Author:
+Kevin Schiffer + OpenAI
+
+Purpose:
+Collection toolbar with sorting, product count,
+active filter count and future-ready grid controls.
+
+==============================================================================
+{% endcomment %}
+
 <div class="lb-collection-toolbar">
 
-    <div class="lb-collection-toolbar__left">
+  <div class="lb-collection-toolbar__left">
 
-        <strong>{{ collection.products_count }}</strong>
-
+    <div class="lb-collection-count">
+      {{ collection.products_count }}
+      {% if collection.products_count == 1 %}
+        Product
+      {% else %}
         Products
+      {% endif %}
+    </div>
+
+    {% assign active_filters = 0 %}
+
+    {% for filter in collection.filters %}
+      {% assign active_filters = active_filters | plus: filter.active_values.size %}
+    {% endfor %}
+
+    {% if active_filters > 0 %}
+      <div class="lb-active-filters">
+        {{ active_filters }}
+        Active
+      </div>
+    {% endif %}
+
+  </div>
+
+  <div class="lb-collection-toolbar__right">
+
+    <button
+      class="lb-mobile-filter-toggle"
+      type="button"
+      aria-label="Open Filters"
+      data-filter-toggle
+    >
+      <span class="lb-toolbar-icon">
+        &#9776;
+      </span>
+
+      Filters
+
+      {% if active_filters > 0 %}
+        <span class="lb-filter-badge">
+          {{ active_filters }}
+        </span>
+      {% endif %}
+    </button>
+
+    <div class="lb-grid-toggle">
+
+      <button
+        type="button"
+        class="lb-grid-toggle__button is-active"
+        aria-label="Grid View"
+        data-grid="grid"
+      >
+        ⬜
+      </button>
+
+      <button
+        type="button"
+        class="lb-grid-toggle__button"
+        aria-label="List View"
+        data-grid="list"
+      >
+        ☰
+      </button>
 
     </div>
 
-    <div class="lb-collection-toolbar__right">
+    <div class="lb-sort">
 
-        {% if collection.all_tags.size > 0 %}
+      <label
+        class="visually-hidden"
+        for="lb-sort-by"
+      >
+        Sort Products
+      </label>
 
-            <span>
+      <select
+        id="lb-sort-by"
+        name="sort_by"
+        onchange="this.form.submit()"
+        form="CollectionSortForm"
+      >
 
-                {{ collection.all_tags.size }}
+        {% for option in collection.sort_options %}
 
-                Filters
+          <option
+            value="{{ option.value }}"
+            {% if option.value == collection.sort_by %}
+              selected
+            {% endif %}
+          >
+            {{ option.name }}
+          </option>
 
-            </span>
+        {% endfor %}
 
-        {% endif %}
+      </select>
 
     </div>
+
+  </div>
 
 </div>
+
+<form
+  id="CollectionSortForm"
+  method="get"
+>
+
+  {% for filter in collection.filters %}
+    {% for value in filter.active_values %}
+      <input
+        type="hidden"
+        name="{{ value.param_name }}"
+        value="{{ value.value }}"
+      >
+    {% endfor %}
+  {% endfor %}
+
+  {% if collection.sort_by %}
+    <input
+      type="hidden"
+      name="sort_by"
+      value="{{ collection.sort_by }}"
+    >
+  {% endif %}
+
+</form>

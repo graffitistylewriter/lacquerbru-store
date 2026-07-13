@@ -239,6 +239,8 @@
       <div class="lb-collection-results">
 
         {%- paginate collection.products by section.settings.products_per_page -%}
+          
+          {% render 'collection-toolbar' %}
 
           {%- if collection.products.size > 0 -%}
             <div
