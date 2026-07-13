@@ -1,149 +1,508 @@
+{%- assign nav_logo_top = section.settings.logo_top_text | default: shop.name -%}
+{%- assign nav_logo_bot = section.settings.logo_bottom_text | default: 'Studio' -%}
+
 {% if section.settings.show_announcement and section.settings.announcement_text != blank %}
-<div class="lb-announcement" style="background:{{ section.settings.announcement_bg }};color:{{ section.settings.announcement_color }};">
-  <p>
-    {% if section.settings.announcement_url != blank %}
-      <a href="{{ section.settings.announcement_url }}" style="color:{{ section.settings.announcement_color }};">{{ section.settings.announcement_text }}</a>
-    {% else %}
+<div
+  class="lb-announcement"
+  style="background:{{ section.settings.announcement_bg }};color:{{ section.settings.announcement_color }};"
+>
+  {% if section.settings.announcement_url != blank %}
+    <a href="{{ section.settings.announcement_url }}" style="color:{{ section.settings.announcement_color }};">
       {{ section.settings.announcement_text }}
-    {% endif %}
-  </p>
+    </a>
+  {% else %}
+    {{ section.settings.announcement_text }}
+  {% endif %}
 </div>
 {% endif %}
 
-<nav id="nb" class="lb-site-nav{% if section.settings.sticky_header %} lb-nav--sticky{% endif %}">
+<nav id="lb-nav" class="lb-nav">
 
-  <a href="{{ routes.root_url }}" class="nav-logo" aria-label="{{ shop.name }}">
+  {%- comment -%} LOGO {%- endcomment -%}
+  <a href="{{ routes.root_url }}" class="lb-nav__logo" aria-label="{{ shop.name }}">
     {% if settings.logo != blank %}
-      {{ settings.logo | image_url: width: 300 | image_tag: alt: shop.name, class: 'nav-logo-img' }}
+      {{ settings.logo | image_url: width: 300 | image_tag: alt: shop.name, class: 'lb-nav__logo-img', loading: 'eager' }}
     {% else %}
-      <span class="nav-logo-text">{{ settings.business_name | default: shop.name }}</span>
+      <span class="lb-nav__logo-top">{{ nav_logo_top }}</span>
+      <span class="lb-nav__logo-bot">{{ nav_logo_bot }}</span>
     {% endif %}
   </a>
 
-  <div class="nav-links">
-    {% if section.settings.menu != blank %}
-      {% for link in section.settings.menu.links %}
-        <a href="{{ link.url }}"{% if link.active %} class="nav-link--active"{% endif %}>{{ link.title }}</a>
-      {% endfor %}
-    {% else %}
-      {% for link in linklists.main-menu.links %}
-        <a href="{{ link.url }}"{% if link.active %} class="nav-link--active"{% endif %}>{{ link.title }}</a>
-      {% endfor %}
-    {% endif %}
-  </div>
+  {%- comment -%} DESKTOP NAV {%- endcomment -%}
+  <ul class="lb-nav__links" role="list">
+    {%- assign nav_menu = section.settings.menu | default: 'main-menu' -%}
+    {% for link in linklists[nav_menu].links %}
+      <li class="lb-nav__item{% if link.links.size > 0 %} lb-nav__item--has-dropdown{% endif %}">
+        <a
+          href="{{ link.url }}"
+          class="lb-nav__link{% if link.active %} lb-nav__link--active{% endif %}"
+        >
+          {{ link.title }}
+          {% if link.links.size > 0 %}
+            <svg class="lb-nav__chevron" width="10" height="6" viewBox="0 0 10 6" fill="none">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          {% endif %}
+        </a>
+        {% if link.links.size > 0 %}
+          <ul class="lb-nav__dropdown" role="list">
+            {% for child in link.links %}
+              <li>
+                <a href="{{ child.url }}" class="lb-nav__dropdown-link">{{ child.title }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
 
-  <div class="nav-actions">
+  {%- comment -%} ACTIONS {%- endcomment -%}
+  <div class="lb-nav__actions">
+
     {% if section.settings.show_search %}
-      <a href="{{ routes.search_url }}" class="nav-icon" aria-label="Search">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <a href="{{ routes.search_url }}" class="lb-nav__icon" aria-label="Search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
       </a>
     {% endif %}
 
     {% if section.settings.show_account %}
-      <a href="{{ routes.account_url }}" class="nav-icon" aria-label="Account">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <a href="{{ routes.account_url }}" class="lb-nav__icon" aria-label="Account">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+        </svg>
       </a>
     {% endif %}
 
     {% if section.settings.show_cart %}
-      <a href="{{ routes.cart_url }}" class="nav-icon nav-cart" aria-label="Cart">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <a href="{{ routes.cart_url }}" class="lb-nav__icon lb-nav__cart" aria-label="Cart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
         {% if cart.item_count > 0 %}
-          <span class="nav-cart-count">{{ cart.item_count }}</span>
+          <span class="lb-nav__cart-count">{{ cart.item_count }}</span>
         {% endif %}
       </a>
     {% endif %}
+
+    {% if section.settings.cta_label != blank %}
+      <a href="{{ section.settings.cta_url }}" class="lb-nav__cta">
+        {{ section.settings.cta_label }}
+      </a>
+    {% endif %}
+
   </div>
 
-  <button class="hamburger" type="button" aria-label="Open menu" aria-controls="mm" aria-expanded="false" data-lb-menu-open>
+  {%- comment -%} HAMBURGER {%- endcomment -%}
+  <button
+    class="lb-nav__hamburger"
+    type="button"
+    aria-label="Open menu"
+    aria-controls="lb-mobile-menu"
+    aria-expanded="false"
+    data-lb-menu-open
+  >
     <span></span><span></span><span></span>
   </button>
 
 </nav>
 
-<div class="mobile-menu" id="mm" aria-hidden="true">
-  <button class="mobile-close" type="button" aria-label="Close menu" data-lb-menu-close>&times;</button>
+{%- comment -%} MOBILE MENU {%- endcomment -%}
+<div class="lb-mobile-menu" id="lb-mobile-menu" aria-hidden="true" role="dialog" aria-label="Navigation">
+  <button
+    class="lb-mobile-menu__close"
+    type="button"
+    aria-label="Close menu"
+    data-lb-menu-close
+  >&times;</button>
 
-  {% if section.settings.menu != blank %}
-    {% for link in section.settings.menu.links %}
-      <a href="{{ link.url }}">{{ link.title }}</a>
-    {% endfor %}
-  {% else %}
-    {% for link in linklists.main-menu.links %}
-      <a href="{{ link.url }}">{{ link.title }}</a>
-    {% endfor %}
-  {% endif %}
+  <div class="lb-mobile-menu__logo">
+    {% if settings.logo != blank %}
+      {{ settings.logo | image_url: width: 200 | image_tag: alt: shop.name }}
+    {% else %}
+      <span class="lb-nav__logo-top">{{ nav_logo_top }}</span>
+      <span class="lb-nav__logo-bot">{{ nav_logo_bot }}</span>
+    {% endif %}
+  </div>
 
-  <div class="mobile-actions">
-    {% if section.settings.show_account %}<a href="{{ routes.account_url }}">Account</a>{% endif %}
-    {% if section.settings.show_cart %}<a href="{{ routes.cart_url }}">Cart ({{ cart.item_count }})</a>{% endif %}
+  <nav class="lb-mobile-menu__nav">
+    {% for link in linklists[nav_menu].links %}
+      <a
+        href="{{ link.url }}"
+        class="lb-mobile-menu__link{% if link.active %} lb-mobile-menu__link--active{% endif %}"
+      >{{ link.title }}</a>
+      {% if link.links.size > 0 %}
+        {% for child in link.links %}
+          <a href="{{ child.url }}" class="lb-mobile-menu__child">{{ child.title }}</a>
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+  </nav>
+
+  <div class="lb-mobile-menu__footer">
+    {% if section.settings.show_account %}
+      <a href="{{ routes.account_url }}" class="lb-mobile-menu__util">Account</a>
+    {% endif %}
+    <a href="{{ routes.cart_url }}" class="lb-mobile-menu__util">
+      Cart{% if cart.item_count > 0 %} ({{ cart.item_count }}){% endif %}
+    </a>
+    {% if section.settings.cta_label != blank %}
+      <a href="{{ section.settings.cta_url }}" class="lb-nav__cta lb-mobile-menu__cta">
+        {{ section.settings.cta_label }}
+      </a>
+    {% endif %}
   </div>
 </div>
 
+<div class="lb-mobile-overlay" data-lb-overlay></div>
+
 <style>
+  :root {
+    --lb-nav-bg: {{ section.settings.nav_bg }};
+    --lb-nav-text: {{ section.settings.nav_text_color }};
+    --lb-nav-accent: {{ section.settings.nav_accent_color }};
+    --lb-nav-height: {{ section.settings.nav_height }}px;
+  }
+
   .lb-announcement {
     text-align: center;
-    padding: 10px 1rem;
-    font-size: 0.85rem;
-    letter-spacing: 0.04em;
+    padding: 9px 1rem;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
   }
-  .lb-announcement p { margin: 0; }
   .lb-announcement a { text-decoration: underline; }
 
-  .lb-nav--sticky {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
-  .nav-actions {
+  .lb-nav {
+    position: {% if section.settings.sticky_header %}fixed{% else %}relative{% endif %};
+    top: 0; left: 0; width: 100%;
+    z-index: 1000;
+    padding: 18px 60px;
     display: flex;
     align-items: center;
-    gap: 1rem;
-    margin-left: auto;
+    gap: 32px;
+    background: var(--lb-nav-bg);
+    backdrop-filter: blur(14px);
+    border-bottom: 0.5px solid rgba(255,255,255,0.08);
+    transition: padding 0.3s, background 0.3s;
+    color: var(--lb-nav-text);
+  }
+  .lb-nav.lb-nav--scrolled {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background: {{ section.settings.nav_bg_scrolled }};
   }
 
-  .nav-icon {
-    position: relative;
-    color: inherit;
+  /* LOGO */
+  .lb-nav__logo {
     display: flex;
-    align-items: center;
-    opacity: 0.85;
-    transition: opacity 0.2s;
+    flex-direction: column;
+    line-height: 1;
+    text-decoration: none;
+    flex-shrink: 0;
   }
-  .nav-icon:hover { opacity: 1; }
-
-  .nav-cart-count {
-    position: absolute;
-    top: -6px;
-    right: -8px;
-    background: var(--blue, #3b82f6);
-    color: #fff;
-    font-size: 0.65rem;
+  .lb-nav__logo-img { height: 40px; width: auto; }
+  .lb-nav__logo-top {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--lb-nav-text);
+  }
+  .lb-nav__logo-bot {
+    font-size: 23px;
     font-weight: 700;
-    width: 16px;
-    height: 16px;
+    color: var(--lb-nav-accent);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  /* LINKS */
+  .lb-nav__links {
+    display: flex;
+    gap: 0;
+    list-style: none;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    flex: 1;
+  }
+  .lb-nav__item { position: relative; }
+  .lb-nav__link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 14px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    transition: color 0.2s;
+    white-space: nowrap;
+  }
+  .lb-nav__link:hover,
+  .lb-nav__link--active { color: var(--lb-nav-accent); }
+  .lb-nav__chevron { transition: transform 0.2s; flex-shrink: 0; }
+  .lb-nav__item--has-dropdown:hover .lb-nav__chevron { transform: rotate(180deg); }
+
+  /* DROPDOWN */
+  .lb-nav__dropdown {
+    position: absolute;
+    top: calc(100% + 12px);
+    left: 0;
+    background: #0e0e0e;
+    border: 0.5px solid rgba(255,255,255,0.1);
+    min-width: 200px;
+    padding: 8px 0;
+    list-style: none;
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-6px);
+    transition: opacity 0.2s, transform 0.2s;
+    z-index: 10;
+  }
+  .lb-nav__item--has-dropdown:hover .lb-nav__dropdown {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+  }
+  .lb-nav__dropdown-link {
+    display: block;
+    padding: 10px 20px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    text-decoration: none;
+    transition: color 0.2s, background 0.2s;
+  }
+  .lb-nav__dropdown-link:hover {
+    color: var(--lb-nav-accent);
+    background: rgba(255,255,255,0.04);
+  }
+
+  /* ACTIONS */
+  .lb-nav__actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  .lb-nav__icon {
+    position: relative;
+    color: rgba(255,255,255,0.65);
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .lb-nav__icon:hover { color: var(--lb-nav-accent); }
+  .lb-nav__cart-count {
+    position: absolute;
+    top: -7px; right: -9px;
+    background: var(--lb-nav-accent);
+    color: #000;
+    font-size: 9px;
+    font-weight: 700;
+    width: 16px; height: 16px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+  .lb-nav__cta {
+    background: var(--lb-nav-accent);
+    color: #000 !important;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    text-decoration: none;
+    border: 1.5px solid var(--lb-nav-accent);
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+  }
+  .lb-nav__cta:hover {
+    background: transparent;
+    color: var(--lb-nav-accent) !important;
+  }
+
+  /* HAMBURGER */
+  .lb-nav__hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px;
+    margin-left: auto;
+  }
+  .lb-nav__hamburger span {
+    width: 24px; height: 1.5px;
+    background: var(--lb-nav-text);
+    display: block;
+    transition: all 0.3s;
+  }
+
+  /* MOBILE MENU */
+  .lb-mobile-menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #0a0a0a;
+    z-index: 999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 80px 32px 40px;
+    overflow-y: auto;
+  }
+  .lb-mobile-menu.lb-mobile-menu--open { display: flex; }
+  .lb-mobile-menu__close {
+    position: absolute;
+    top: 20px; right: 24px;
+    font-size: 28px;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    background: none;
+    border: none;
     line-height: 1;
+    transition: color 0.2s;
   }
-
-  .nav-link--active {
-    opacity: 1;
-    border-bottom: 2px solid var(--blue, #3b82f6);
-  }
-
-  .mobile-actions {
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid rgba(255,255,255,0.1);
+  .lb-mobile-menu__close:hover { color: var(--lb-nav-accent); }
+  .lb-mobile-menu__logo {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 40px;
+  }
+  .lb-mobile-menu__nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+  }
+  .lb-mobile-menu__link {
+    font-size: 28px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 0;
+    transition: color 0.2s;
+    text-align: center;
+  }
+  .lb-mobile-menu__link:hover,
+  .lb-mobile-menu__link--active { color: var(--lb-nav-accent); }
+  .lb-mobile-menu__child {
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    text-decoration: none;
+    padding: 5px 0;
+    transition: color 0.2s;
+    text-align: center;
+    display: block;
+  }
+  .lb-mobile-menu__child:hover { color: var(--lb-nav-accent); }
+  .lb-mobile-menu__footer {
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 0.5px solid rgba(255,255,255,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+  }
+  .lb-mobile-menu__util {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .lb-mobile-menu__util:hover { color: var(--lb-nav-accent); }
+  .lb-mobile-menu__cta { margin-top: 8px; }
+
+  .lb-mobile-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 998;
+  }
+  .lb-mobile-overlay--visible { display: block; }
+
+  /* BODY OFFSET when sticky */
+  {% if section.settings.sticky_header %}
+  .lb-page-offset { padding-top: var(--lb-nav-height); }
+  {% endif %}
+
+  @media (max-width: 960px) {
+    .lb-nav { padding: 14px 24px; }
+    .lb-nav__links { display: none; }
+    .lb-nav__actions .lb-nav__icon:not(.lb-nav__cart) { display: none; }
+    .lb-nav__cta { display: none; }
+    .lb-nav__hamburger { display: flex; }
   }
 </style>
+
+<script>
+(function() {
+  var nav = document.getElementById('lb-nav');
+  var menu = document.getElementById('lb-mobile-menu');
+  var overlay = document.querySelector('[data-lb-overlay]');
+  var openBtns = document.querySelectorAll('[data-lb-menu-open]');
+  var closeBtns = document.querySelectorAll('[data-lb-menu-close]');
+
+  function openMenu() {
+    menu.classList.add('lb-mobile-menu--open');
+    overlay.classList.add('lb-mobile-overlay--visible');
+    menu.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu() {
+    menu.classList.remove('lb-mobile-menu--open');
+    overlay.classList.remove('lb-mobile-overlay--visible');
+    menu.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  openBtns.forEach(function(btn) { btn.addEventListener('click', openMenu); });
+  closeBtns.forEach(function(btn) { btn.addEventListener('click', closeMenu); });
+  overlay.addEventListener('click', closeMenu);
+
+  {% if section.settings.sticky_header %}
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 60) {
+      nav.classList.add('lb-nav--scrolled');
+    } else {
+      nav.classList.remove('lb-nav--scrolled');
+    }
+  });
+  {% endif %}
+})();
+</script>
 
 {% schema %}
 {
@@ -163,7 +522,7 @@
       "type": "text",
       "id": "announcement_text",
       "label": "Announcement Text",
-      "default": "Free shipping on orders over R500"
+      "default": "Free shipping on orders over R500 — Shop Now"
     },
     {
       "type": "url",
@@ -174,13 +533,31 @@
       "type": "color",
       "id": "announcement_bg",
       "label": "Announcement Background",
-      "default": "#3b82f6"
+      "default": "#7DD8E8"
     },
     {
       "type": "color",
       "id": "announcement_color",
       "label": "Announcement Text Colour",
-      "default": "#ffffff"
+      "default": "#0A0A0A"
+    },
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "text",
+      "id": "logo_top_text",
+      "label": "Logo Top Line",
+      "info": "Small text above the main logo word. Used when no logo image is set.",
+      "default": "Lacquer"
+    },
+    {
+      "type": "text",
+      "id": "logo_bottom_text",
+      "label": "Logo Bottom Line",
+      "info": "Large bold text. Used when no logo image is set.",
+      "default": "BRU"
     },
     {
       "type": "header",
@@ -189,13 +566,29 @@
     {
       "type": "link_list",
       "id": "menu",
-      "label": "Navigation Menu"
+      "label": "Navigation Menu",
+      "default": "main-menu"
     },
     {
       "type": "checkbox",
       "id": "sticky_header",
-      "label": "Sticky Header (stays at top on scroll)",
+      "label": "Sticky Header",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "CTA Button"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA Button Label",
+      "default": "Commission Inquiry"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA Button URL"
     },
     {
       "type": "header",
@@ -218,6 +611,48 @@
       "id": "show_cart",
       "label": "Show Cart Icon",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "color",
+      "id": "nav_bg",
+      "label": "Nav Background",
+      "default": "#0A0A0A"
+    },
+    {
+      "type": "color",
+      "id": "nav_bg_scrolled",
+      "label": "Nav Background (scrolled)",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "nav_text_color",
+      "label": "Nav Text Colour",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "nav_accent_color",
+      "label": "Nav Accent Colour",
+      "default": "#7DD8E8"
+    },
+    {
+      "type": "header",
+      "content": "Sizing"
+    },
+    {
+      "type": "range",
+      "id": "nav_height",
+      "label": "Nav Height (for page offset)",
+      "min": 50,
+      "max": 120,
+      "step": 2,
+      "default": 72,
+      "unit": "px"
     }
   ]
 }
