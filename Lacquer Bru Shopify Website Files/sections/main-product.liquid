@@ -210,6 +210,10 @@
   {% endform %}
 </div>
 
+<script>
+  window.lbProductVariants = {{ product.variants | json }};
+</script>
+
 {% render 'structured-data-product' %}
 {% schema %}
 {

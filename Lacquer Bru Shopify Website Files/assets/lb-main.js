@@ -54,43 +54,60 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-document.addEventListener('variant:change', function(event) {
-
-  const variant = event.detail.variant;
-
-  if (!variant) return;
+document.addEventListener('DOMContentLoaded', () => {
+  const variantSelect = document.querySelector('.lb-product-form__select');
 
   const mobilePurchase = document.querySelector('[data-lb-mobile-purchase]');
 
-  if (!mobilePurchase) return;
-
+  if (!variantSelect || !mobilePurchase) {
+    return;
+  }
 
   const price = mobilePurchase.querySelector('[data-lb-mobile-price]');
   const variantInput = mobilePurchase.querySelector('[data-lb-mobile-variant-id]');
   const button = mobilePurchase.querySelector('[data-lb-mobile-button]');
 
 
-  if (price) {
-    price.textContent = Shopify.formatMoney(
-      variant.price,
-      window.moneyFormat
+const variants = window.lbProductVariants || [];
+
+
+  variantSelect.addEventListener('change', () => {
+
+    const selectedVariantId = Number(variantSelect.value);
+
+    const selectedVariant = variants.find(
+      variant => variant.id === selectedVariantId
     );
-  }
 
 
-  if (variantInput) {
-    variantInput.value = variant.id;
-  }
+    if (!selectedVariant) {
+      return;
+    }
 
 
-  if (button) {
+    if (price) {
+      price.textContent = Shopify.formatMoney(
+        selectedVariant.price,
+        window.moneyFormat
+      );
+    }
 
-    button.disabled = !variant.available;
 
-    button.textContent = variant.available
-      ? 'Add To Cart'
-      : 'Sold Out';
+    if (variantInput) {
+      variantInput.value = selectedVariant.id;
+    }
 
-  }
+
+    if (button) {
+
+      button.disabled = !selectedVariant.available;
+
+      button.textContent = selectedVariant.available
+        ? 'Add To Cart'
+        : 'Sold Out';
+
+    }
+
+  });
 
 });
