@@ -1,0 +1,6 @@
+## Ignore Google Drive temporary upload directories
+.tmp.driveupload/
+
+# Optional common ignores
+# .DS_Store
+# node_modules/
