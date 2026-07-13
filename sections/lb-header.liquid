@@ -1,4 +1,16 @@
-<nav id="nb" class="lb-site-nav">
+{% if section.settings.show_announcement and section.settings.announcement_text != blank %}
+<div class="lb-announcement" style="background:{{ section.settings.announcement_bg }};color:{{ section.settings.announcement_color }};">
+  <p>
+    {% if section.settings.announcement_url != blank %}
+      <a href="{{ section.settings.announcement_url }}" style="color:{{ section.settings.announcement_color }};">{{ section.settings.announcement_text }}</a>
+    {% else %}
+      {{ section.settings.announcement_text }}
+    {% endif %}
+  </p>
+</div>
+{% endif %}
+
+<nav id="nb" class="lb-site-nav{% if section.settings.sticky_header %} lb-nav--sticky{% endif %}">
 
   <a href="{{ routes.root_url }}" class="nav-logo" aria-label="{{ shop.name }}">
     {% if settings.logo != blank %}
@@ -11,19 +23,40 @@
   <div class="nav-links">
     {% if section.settings.menu != blank %}
       {% for link in section.settings.menu.links %}
-        <a href="{{ link.url }}">{{ link.title }}</a>
+        <a href="{{ link.url }}"{% if link.active %} class="nav-link--active"{% endif %}>{{ link.title }}</a>
       {% endfor %}
     {% else %}
       {% for link in linklists.main-menu.links %}
-        <a href="{{ link.url }}">{{ link.title }}</a>
+        <a href="{{ link.url }}"{% if link.active %} class="nav-link--active"{% endif %}>{{ link.title }}</a>
       {% endfor %}
     {% endif %}
   </div>
 
+  <div class="nav-actions">
+    {% if section.settings.show_search %}
+      <a href="{{ routes.search_url }}" class="nav-icon" aria-label="Search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </a>
+    {% endif %}
+
+    {% if section.settings.show_account %}
+      <a href="{{ routes.account_url }}" class="nav-icon" aria-label="Account">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </a>
+    {% endif %}
+
+    {% if section.settings.show_cart %}
+      <a href="{{ routes.cart_url }}" class="nav-icon nav-cart" aria-label="Cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        {% if cart.item_count > 0 %}
+          <span class="nav-cart-count">{{ cart.item_count }}</span>
+        {% endif %}
+      </a>
+    {% endif %}
+  </div>
+
   <button class="hamburger" type="button" aria-label="Open menu" aria-controls="mm" aria-expanded="false" data-lb-menu-open>
-    <span></span>
-    <span></span>
-    <span></span>
+    <span></span><span></span><span></span>
   </button>
 
 </nav>
@@ -40,16 +73,151 @@
       <a href="{{ link.url }}">{{ link.title }}</a>
     {% endfor %}
   {% endif %}
+
+  <div class="mobile-actions">
+    {% if section.settings.show_account %}<a href="{{ routes.account_url }}">Account</a>{% endif %}
+    {% if section.settings.show_cart %}<a href="{{ routes.cart_url }}">Cart ({{ cart.item_count }})</a>{% endif %}
+  </div>
 </div>
+
+<style>
+  .lb-announcement {
+    text-align: center;
+    padding: 10px 1rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+  }
+  .lb-announcement p { margin: 0; }
+  .lb-announcement a { text-decoration: underline; }
+
+  .lb-nav--sticky {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-left: auto;
+  }
+
+  .nav-icon {
+    position: relative;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    opacity: 0.85;
+    transition: opacity 0.2s;
+  }
+  .nav-icon:hover { opacity: 1; }
+
+  .nav-cart-count {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background: var(--blue, #3b82f6);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  .nav-link--active {
+    opacity: 1;
+    border-bottom: 2px solid var(--blue, #3b82f6);
+  }
+
+  .mobile-actions {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+</style>
 
 {% schema %}
 {
   "name": "LB Header",
   "settings": [
     {
+      "type": "header",
+      "content": "Announcement Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Show Announcement Bar",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement Text",
+      "default": "Free shipping on orders over R500"
+    },
+    {
+      "type": "url",
+      "id": "announcement_url",
+      "label": "Announcement Link (optional)"
+    },
+    {
+      "type": "color",
+      "id": "announcement_bg",
+      "label": "Announcement Background",
+      "default": "#3b82f6"
+    },
+    {
+      "type": "color",
+      "id": "announcement_color",
+      "label": "Announcement Text Colour",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
       "type": "link_list",
       "id": "menu",
       "label": "Navigation Menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_header",
+      "label": "Sticky Header (stays at top on scroll)",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Icons"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show Search Icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account",
+      "label": "Show Account Icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart",
+      "label": "Show Cart Icon",
+      "default": true
     }
   ]
 }
