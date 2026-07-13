@@ -1,37 +1,27 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "hero": {
+    "page-hero": {
       "type": "lb-hero",
       "settings": {
-        "eyebrow": "Support",
-        "heading": "FAQ.",
-        "heading_em": "",
-        "subtext": "Everything you need to know about our products, services, and process.",
-        "btn1_label": "",
-        "btn2_label": "",
+        "min_height": 400,
         "show_scroll_indicator": false,
-        "min_height": 380
+        "btn1_label": "",
+        "btn2_label": ""
       }
     },
-    "marquee": {
-      "type": "lb-marquee",
+    "main": {
+      "type": "main-page",
       "settings": {}
-    },
-    "faq": {
-      "type": "lb-faq",
-      "settings": {
-        "label": "Support",
-        "heading": "Frequently Asked Questions"
-      }
-    },
-    "cta": {
-      "type": "lb-cta-banner",
-      "settings": {
-        "heading": "Still Have Questions?",
-        "subtext": "Get in touch and we will get back to you within 24 to 48 hours.",
-        "btn1_label": "Contact Us"
-      }
     }
   },
-  "order": ["hero", "marquee", "faq", "cta"]
+  "order": ["page-hero", "main"]
 }
