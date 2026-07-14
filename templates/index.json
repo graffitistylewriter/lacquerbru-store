@@ -227,34 +227,14 @@
     },
     "1784048606a9f8731b": {
       "type": "_blocks",
-      "blocks": {
-        "ai_gen_block_8fc11da_7RAwAM": {
-          "type": "ai_gen_block_8fc11da",
-          "name": "LB Block Hero",
-          "settings": {
-            "hero_height": 45,
-            "mobile_height": 40,
-            "desktop_width_percent": 100,
-            "show_overlay": true,
-            "overlay_color": "#000000",
-            "overlay_opacity": 35,
-            "overlay_height": "medium",
-            "heading_text": "Welcome to Lacquer Bru",
-            "heading_color": "#f0ede6",
-            "heading_size": 64,
-            "heading_weight": "700",
-            "heading_spacing": 8,
-            "heading_italic_text": "Premium Graffiti Supplies",
-            "italic_color": "#f0ede6",
-            "italic_size": 32,
-            "italic_weight": "400"
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_8fc11da_7RAwAM"
-      ],
+      "settings": {}
+    },
+    "1784049540ca459bd5": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "178404960650f8d073": {
+      "type": "_blocks",
       "settings": {}
     }
   },
@@ -280,6 +260,8 @@
     "1784047643baf0f558",
     "1784047706c25e8ff5",
     "1784047731acb49dcd",
-    "1784048606a9f8731b"
+    "1784048606a9f8731b",
+    "1784049540ca459bd5",
+    "178404960650f8d073"
   ]
 }
