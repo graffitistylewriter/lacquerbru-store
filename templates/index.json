@@ -22,9 +22,9 @@
         "heading_em": "Digital Creator.",
         "subtext": "Graffiti murals, digital art, and creative assets born from 16 years of aerosol culture in Cape Town.",
         "btn1_label": "Shop the Collection",
-        "btn1_url": "",
+        "btn1_url": "shopify://pages/shop",
         "btn2_label": "Commission Inquiry",
-        "btn2_url": "",
+        "btn2_url": "shopify://pages/commission-contact",
         "content_align": "center",
         "min_height": 750,
         "padding_v": 120,
@@ -38,9 +38,21 @@
     },
     "marquee": {
       "type": "lb-marquee",
+      "blocks": {
+        "marquee_item_FQgRwN": {
+          "type": "marquee_item",
+          "disabled": true,
+          "settings": {
+            "text": "Graffiti Murals"
+          }
+        }
+      },
+      "block_order": [
+        "marquee_item_FQgRwN"
+      ],
       "settings": {
         "accessibility_label": "Lacquer Bru creative services",
-        "separator": "&middot;"
+        "separator": "·"
       }
     },
     "featured": {
