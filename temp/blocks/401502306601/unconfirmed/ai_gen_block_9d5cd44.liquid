@@ -1,6 +1,405 @@
+{% doc %}
+  @prompt
+    Implement a full light/dark mode toggle system across the entire theme. The theme currently has hardcoded hex colors in every section with no central color variable system. Here is what needs to be done:
+    
+    1. CSS VARIABLES: In the theme's main CSS file (lb-base.css or similar), define two sets of CSS custom properties on :root for light and dark modes:
+    - Dark mode (default): --color-bg: #111111, --color-bg-secondary: #1a1a1a, --color-text: #f0ede6, --color-text-muted: #aaaaaa, --color-accent: #7dd8e8, --color-border: #2a2a2a
+    - Light mode: --color-bg: #ffffff, --color-bg-secondary: #f5f5f5, --color-text: #111111, --color-text-muted: #555555, --color-accent: #3b82f6, --color-border: #e0e0e0
+    
+    2. REPLACE HARDCODED COLORS: In all section CSS files (lb-components.css, lb-blueprints.css, etc.) and section Liquid files, replace hardcoded hex background and text colors with the CSS variables above. Key sections to update:
+    - LB Header: background #0a0a0a → var(--color-bg), text #ffffff → var(--color-text)
+    - LB Footer: background #1a1a1a → var(--color-bg-secondary), text #ffffff → var(--color-text)
+    - Cart page: background #0A0A0A → var(--color-bg), text #FFFFFF → var(--color-text)
+    - All other sections with hardcoded dark/light colors
+    
+    3. TOGGLE MECHANISM: Add a light/dark toggle button (sun/moon icon) to the header that:
+    - Switches a data-theme="dark" / data-theme="light" attribute on the <html> element
+    - Uses CSS [data-theme="light"] { } to override the variables for light mode
+    - Saves the user's preference to localStorage so it persists across pages
+    - Defaults to dark mode
+    
+    4. Keep all accent colors, layout, spacing, fonts and everything else completely unchanged. Only colors should switch.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  :root {
+    --color-bg: #111111;
+    --color-bg-secondary: #1a1a1a;
+    --color-text: #f0ede6;
+    --color-text-muted: #aaaaaa;
+    --color-accent: #7dd8e8;
+    --color-border: #2a2a2a;
+  }
+
+  [data-theme="light"] {
+    --color-bg: #ffffff;
+    --color-bg-secondary: #f5f5f5;
+    --color-text: #111111;
+    --color-text-muted: #555555;
+    --color-accent: #3b82f6;
+    --color-border: #e0e0e0;
+  }
+
+  .theme-toggle-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+  }
+
+  .theme-toggle__button-{{ ai_gen_id }} {
+    position: {{ block.settings.position }};
+    {% if block.settings.position == 'fixed' %}
+      top: {{ block.settings.fixed_top }}px;
+      right: {{ block.settings.fixed_right }}px;
+      z-index: 9999;
+    {% endif %}
+    width: {{ block.settings.button_size }}px;
+    height: {{ block.settings.button_size }}px;
+    border-radius: {{ block.settings.border_radius }}px;
+    background-color: {{ block.settings.button_bg_color }};
+    border: {{ block.settings.border_width }}px solid {{ block.settings.border_color }};
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: {{ block.settings.shadow_size }}px {{ block.settings.shadow_size }}px {{ block.settings.shadow_blur }}px rgba(0, 0, 0, {{ block.settings.shadow_opacity }});
+  }
+
+  .theme-toggle__button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_bg_color }};
+    transform: scale(1.05);
+  }
+
+  .theme-toggle__icon-{{ ai_gen_id }} {
+    width: calc({{ block.settings.button_size }}px * 0.6);
+    height: calc({{ block.settings.button_size }}px * 0.6);
+    color: {{ block.settings.icon_color }};
+    transition: all 0.3s ease;
+  }
+
+  .theme-toggle__button-{{ ai_gen_id }}:hover .theme-toggle__icon-{{ ai_gen_id }} {
+    color: {{ block.settings.icon_hover_color }};
+  }
+
+  .theme-toggle__icon-{{ ai_gen_id }}.hidden {
+    display: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    .theme-toggle__button-{{ ai_gen_id }} {
+      {% if block.settings.position == 'fixed' %}
+        top: {{ block.settings.mobile_fixed_top }}px;
+        right: {{ block.settings.mobile_fixed_right }}px;
+      {% endif %}
+      width: {{ block.settings.mobile_button_size }}px;
+      height: {{ block.settings.mobile_button_size }}px;
+    }
+
+    .theme-toggle__icon-{{ ai_gen_id }} {
+      width: calc({{ block.settings.mobile_button_size }}px * 0.6);
+      height: calc({{ block.settings.mobile_button_size }}px * 0.6);
+    }
+  }
+{% endstyle %}
+
+<theme-toggle-{{ ai_gen_id }} class="theme-toggle-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <button
+    class="theme-toggle__button-{{ ai_gen_id }}"
+    aria-label="Toggle light and dark mode"
+    type="button"
+  >
+    <svg
+      class="theme-toggle__icon-{{ ai_gen_id }} theme-toggle__icon-sun-{{ ai_gen_id }}"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+    <svg
+      class="theme-toggle__icon-{{ ai_gen_id }} theme-toggle__icon-moon-{{ ai_gen_id }} hidden"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+    </svg>
+  </button>
+</theme-toggle-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class ThemeToggle{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.button = this.querySelector('.theme-toggle__button-{{ ai_gen_id }}');
+        this.sunIcon = this.querySelector('.theme-toggle__icon-sun-{{ ai_gen_id }}');
+        this.moonIcon = this.querySelector('.theme-toggle__icon-moon-{{ ai_gen_id }}');
+        this.storageKey = 'theme-preference';
+      }
+
+      connectedCallback() {
+        this.initializeTheme();
+        this.button.addEventListener('click', () => this.toggleTheme());
+      }
+
+      initializeTheme() {
+        const savedTheme = localStorage.getItem(this.storageKey);
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const defaultTheme = '{{ block.settings.default_theme }}';
+        
+        let theme = savedTheme || defaultTheme;
+        
+        if (!savedTheme && defaultTheme === 'system') {
+          theme = prefersDark ? 'dark' : 'light';
+        }
+
+        this.setTheme(theme);
+      }
+
+      toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        this.setTheme(newTheme);
+        localStorage.setItem(this.storageKey, newTheme);
+      }
+
+      setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        
+        if (theme === 'light') {
+          this.sunIcon.classList.add('hidden');
+          this.moonIcon.classList.remove('hidden');
+          this.button.setAttribute('aria-label', 'Switch to dark mode');
+        } else {
+          this.sunIcon.classList.remove('hidden');
+          this.moonIcon.classList.add('hidden');
+          this.button.setAttribute('aria-label', 'Switch to light mode');
+        }
+      }
+    }
+
+    customElements.define('theme-toggle-{{ ai_gen_id }}', ThemeToggle{{ ai_gen_id }});
+  })();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Light dark mode toggle",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Theme settings"
+    },
+    {
+      "type": "select",
+      "id": "default_theme",
+      "label": "Default theme",
+      "options": [
+        {
+          "value": "dark",
+          "label": "Dark"
+        },
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "system",
+          "label": "System preference"
+        }
+      ],
+      "default": "dark"
+    },
+    {
+      "type": "header",
+      "content": "Button position"
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Position type",
+      "options": [
+        {
+          "value": "relative",
+          "label": "Relative (in header)"
+        },
+        {
+          "value": "fixed",
+          "label": "Fixed (floating)"
+        }
+      ],
+      "default": "relative"
+    },
+    {
+      "type": "range",
+      "id": "fixed_top",
+      "label": "Fixed top position",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "fixed_right",
+      "label": "Fixed right position",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "mobile_fixed_top",
+      "label": "Mobile fixed top",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_fixed_right",
+      "label": "Mobile fixed right",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Button style"
+    },
+    {
+      "type": "range",
+      "id": "button_size",
+      "label": "Button size",
+      "min": 30,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "mobile_button_size",
+      "label": "Mobile button size",
+      "min": 30,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 45
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 25
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Background color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg_color",
+      "label": "Hover background color",
+      "default": "#2a2a2a"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon color",
+      "default": "#f0ede6"
+    },
+    {
+      "type": "color",
+      "id": "icon_hover_color",
+      "label": "Icon hover color",
+      "default": "#7dd8e8"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "Border width",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#2a2a2a"
+    },
+    {
+      "type": "header",
+      "content": "Shadow"
+    },
+    {
+      "type": "range",
+      "id": "shadow_size",
+      "label": "Shadow offset",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "shadow_blur",
+      "label": "Shadow blur",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "shadow_opacity",
+      "label": "Shadow opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.3
+    }
+  ],
+  "presets": [
+    {
+      "name": "Light dark mode toggle"
+    }
+  ]
+}
 {% endschema %}
