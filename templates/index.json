@@ -128,28 +128,6 @@
     },
     "1784020519a9fd7562": {
       "type": "_blocks",
-      "blocks": {
-        "ai_gen_block_cd5e22f_EjpKBb": {
-          "type": "ai_gen_block_cd5e22f",
-          "settings": {
-            "label": "Payments Via",
-            "alignment": "flex-start",
-            "mobile_alignment": "center",
-            "logo_height": 24,
-            "padding_top": 0,
-            "padding_bottom": 0,
-            "show_paypal": true,
-            "show_payfast": true,
-            "show_visa": true,
-            "show_mastercard": true,
-            "show_amex": true
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_cd5e22f_EjpKBb"
-      ],
       "settings": {}
     },
     "1784023657398c7ca3": {
