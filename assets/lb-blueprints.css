@@ -37,7 +37,11 @@ nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:20px 60px;displa
 .btn-primary:hover{background:var(--white);border-color:var(--white);}
 .btn-ghost{background:transparent;color:var(--white);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;padding:16px 40px;text-decoration:none;border:1.5px solid rgba(255,255,255,0.35);transition:all 0.2s;display:inline-block;font-family:'Inter',sans-serif;}
 .btn-ghost:hover{border-color:var(--blue);color:var(--blue);}
-.btn-blue{background:transparent;color:var(--blue);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;padding:16px 40px;text-decoration:none;border:1.5px solid var(--blue);transition:all 0.2s;display:inline-block;font-family:'Inter',sans-serif;}
+.btn-blue {
+  background: var(--blue);
+  color: var(--void);
+  border: 1.5px solid var(--blue);
+}
 .btn-blue:hover{background:var(--blue);color:var(--void);}
 
 /* LAYOUT */
