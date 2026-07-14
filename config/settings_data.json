@@ -75,7 +75,7 @@
           "trust_4_value": "Response within 24-48 hours guaranteed",
           "copyright_text": "Lacquer Bru. All rights reserved.",
           "extra_legal_menu": "",
-          "show_payment_badges": true,
+          "show_payment_badges": false,
           "payment_badge_1": "kevin is",
           "payment_badge_2": "Visa",
           "payment_badge_3": "",
