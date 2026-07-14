@@ -217,6 +217,18 @@
     color: {{ section.settings.text_color }};
     writing-mode: vertical-rl;
   }
+  .lb-hero__text-band {
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    pointer-events: none;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    transition: opacity 0.3s ease, height 0.3s ease;
+  }
+
   @keyframes lb-scroll-pulse {
     0%, 100% { opacity: 0.25; transform: scaleY(0.8); }
     50% { opacity: 1; transform: scaleY(1); }
@@ -244,6 +256,16 @@
       { "value": "center left", "label": "Left" },
       { "value": "center right", "label": "Right" }
     ], "default": "center center" },
+        { "type": "header", "content": "Text Band Overlay (Dark Theme)" },
+    { "type": "checkbox", "id": "show_text_band", "label": "Show Text Band", "default": true },
+    { "type": "color", "id": "text_band_color", "label": "Band Colour", "default": "#000000" },
+    { "type": "range", "id": "text_band_opacity", "label": "Band Opacity", "min": 0, "max": 100, "step": 5, "default": 35, "unit": "%" },
+    { "type": "select", "id": "text_band_height", "label": "Band Height", "options": [
+      { "value": "60px", "label": "Narrow (60px)" },
+      { "value": "100px", "label": "Medium (100px)" },
+      { "value": "140px", "label": "Tall (140px)" },
+      { "value": "200px", "label": "Extra Tall (200px)" }
+    ], "default": "100px" },
     { "type": "checkbox", "id": "show_overlay", "label": "Show Overlay", "default": true },
     { "type": "color", "id": "overlay_color", "label": "Overlay Colour", "default": "#000000" },
     { "type": "range", "id": "overlay_opacity", "label": "Overlay Opacity", "min": 0, "max": 90, "step": 5, "default": 55, "unit": "%" },
