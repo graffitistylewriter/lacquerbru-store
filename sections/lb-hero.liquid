@@ -27,6 +27,20 @@
     ></div>
   {% endif %}
 
+  {%- comment -%} TEXT BAND OVERLAY {%- endcomment -%}
+  {%- if section.settings.show_text_band -%}
+    {%- assign band_opacity = section.settings.text_band_opacity | divided_by: 100.0 -%}
+    <div
+      class="lb-hero__text-band"
+      style="
+        background: {{ section.settings.text_band_color }};
+        opacity: {{ band_opacity }};
+        height: {{ section.settings.text_band_height }};
+      "
+    ></div>
+  {%- endif -%}
+
+
   {%- comment -%} CONTENT {%- endcomment -%}
   <div class="lb-hero__content lb-hero__content--{{ section.settings.content_align }}">
 
