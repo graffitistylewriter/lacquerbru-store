@@ -1,6 +1,76 @@
+{% doc %}
+  @prompt
+    In the LB Header section, add a configurable overlay block that sits above the hero image but beneath heading and heading italic text layers using z-index layering. The block should have these settings in the theme editor panel: a color picker (default black), an opacity range slider 0-100% (default 40%), a width setting (default 100%), and a height setting (default 100%). The overlay should be absolutely positioned over the hero image using CSS, with its color and opacity applied via inline styles from the settings values.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-hero-overlay-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: {{ block.settings.overlay_width }}%;
+    height: {{ block.settings.overlay_height }}%;
+    z-index: 1;
+    pointer-events: none;
+  }
+{% endstyle %}
+
+<div
+  class="ai-hero-overlay-{{ ai_gen_id }}"
+  style="background-color: {{ block.settings.overlay_color }}; opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};"
+  {{ block.shopify_attributes }}
+></div>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Hero overlay",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Overlay settings"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "overlay_width",
+      "label": "Width",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "overlay_height",
+      "label": "Height",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero overlay"
+    }
+  ]
+}
 {% endschema %}
