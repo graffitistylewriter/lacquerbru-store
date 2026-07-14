@@ -12,39 +12,114 @@
     "hero": {
       "type": "lb-hero",
       "settings": {
+        "bg_color": "#0a0a0a",
+        "bg_position": "center center",
+        "show_overlay": true,
+        "overlay_color": "#000000",
+        "overlay_opacity": 55,
         "eyebrow": "If Not Unique, Why Bother",
         "heading": "Street Artist.",
         "heading_em": "Digital Creator.",
         "subtext": "Graffiti murals, digital art, and creative assets born from 16 years of aerosol culture in Cape Town.",
         "btn1_label": "Shop the Collection",
+        "btn1_url": "",
         "btn2_label": "Commission Inquiry",
-        "show_scroll_indicator": true
+        "btn2_url": "",
+        "content_align": "center",
+        "min_height": 750,
+        "padding_v": 120,
+        "content_max_width": 700,
+        "show_scroll_indicator": true,
+        "scroll_label": "Scroll",
+        "text_color": "#ffffff",
+        "subtext_color": "#aaaaaa",
+        "accent_color": "#7dd8e8"
       }
     },
     "marquee": {
       "type": "lb-marquee",
-      "settings": {}
+      "settings": {
+        "accessibility_label": "Lacquer Bru creative services",
+        "separator": "&middot;"
+      }
     },
     "featured": {
       "type": "lb-featured-products",
       "settings": {
         "label": "Available Now",
         "heading": "The Collection",
-        "subtext": "Digital assets built for working creatives."
+        "subtext": "Digital assets built for working creatives.",
+        "view_all_label": "View All Products",
+        "collection": "",
+        "product_limit": 4,
+        "columns": "3",
+        "grid_gap": 24,
+        "show_vendor": true,
+        "show_badge": true,
+        "bg_color": "#0a0a0a",
+        "card_bg": "#1a1a1a",
+        "text_color": "#ffffff",
+        "muted_color": "#aaaaaa",
+        "accent_color": "#7dd8e8",
+        "heading_color": "#ffffff",
+        "padding_top": 100,
+        "padding_bottom": 100
       }
     },
     "about": {
       "type": "lb-about-strip",
       "settings": {
+        "image_side": "left",
         "label": "The Studio",
         "heading": "Where Urban Expression Meets Premium Craft",
-        "image_side": "left"
+        "body": "",
+        "btn_label": "Read the Full Story",
+        "btn_url": "",
+        "show_stats": true,
+        "stat_1_num": "16+",
+        "stat_1_label": "Years Active",
+        "stat_2_num": "3+",
+        "stat_2_label": "Countries",
+        "stat_3_num": "100+",
+        "stat_3_label": "Projects",
+        "stat_4_num": "∞",
+        "stat_4_label": "Surfaces",
+        "bg_color": "#0a0a0a",
+        "text_color": "#ffffff",
+        "muted_color": "#aaaaaa",
+        "accent_color": "#7dd8e8",
+        "padding_top": 100,
+        "padding_bottom": 100
       }
     },
     "trust": {
       "type": "lb-trust-strip",
-      "settings": {}
+      "settings": {
+        "item_1_icon": "⚡",
+        "item_1_label": "Instant Download",
+        "item_1_value": "Files delivered immediately after payment",
+        "item_2_icon": "🔒",
+        "item_2_label": "Secure Checkout",
+        "item_2_value": "Protected transactions",
+        "item_3_icon": "🎨",
+        "item_3_label": "Made by an Artist",
+        "item_3_value": "Tested in real workflows",
+        "item_4_icon": "💬",
+        "item_4_label": "Real Support",
+        "item_4_value": "Response within 24–48 hours",
+        "bg_color": "#111111",
+        "text_color": "#ffffff",
+        "muted_color": "#aaaaaa",
+        "border_color": "#2a2a2a",
+        "padding_v": 24
+      }
     }
   },
-  "order": ["hero", "marquee", "featured", "about", "trust"]
+  "order": [
+    "hero",
+    "marquee",
+    "featured",
+    "about",
+    "trust"
+  ]
 }
