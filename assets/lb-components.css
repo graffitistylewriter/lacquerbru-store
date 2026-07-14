@@ -229,8 +229,8 @@
 
 .lb-shop-featured__grid {
   display: grid;
-  max-width: 640px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: var(--lb-page-width);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
   margin: 0 auto;
 }
@@ -643,9 +643,11 @@
 }
 
 @media (max-width: 640px) {
-  .lb-gallery-strip__header {
-    grid-template-columns: 1fr;
+  .lb-shop-featured__grid {
+    grid-template-columns: 1fr 1fr;
   }
+}
+
 
   .lb-gallery-strip__grid,
   .lb-shop-featured__grid,
