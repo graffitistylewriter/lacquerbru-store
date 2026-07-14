@@ -69,7 +69,7 @@
           </a>
         {% endif %}
         {% if section.settings.btn2_label != blank %}
-          <a href="{{ section.settings.btn2_url }}" class="lb-btn lb-btn--ghost">
+          <a href="{{ section.settings.btn2_url }}" class="lb-btn lb-btn--commission">
             {{ section.settings.btn2_label }}
           </a>
         {% endif %}
@@ -191,6 +191,17 @@
     border-color: {{ section.settings.accent_color }};
     color: {{ section.settings.accent_color }};
   }
+    .lb-btn--commission {
+    background: {{ section.settings.accent_color }};
+    color: #FFFFFF;
+    border-color: {{ section.settings.accent_color }};
+  }
+  .lb-btn--commission:hover {
+    background: transparent;
+    color: {{ section.settings.accent_color }};
+    border-color: {{ section.settings.accent_color }};
+  }
+
 
   /* SCROLL INDICATOR */
   .lb-hero__scroll {
