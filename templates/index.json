@@ -151,6 +151,45 @@
         "ai_gen_block_cd5e22f_EjpKBb"
       ],
       "settings": {}
+    },
+    "1784023657398c7ca3": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_96b5033_EMVCV6": {
+          "type": "ai_gen_block_96b5033",
+          "settings": {
+            "heading": "We Accept",
+            "heading_size": 18,
+            "show_payment_logos": true,
+            "show_paypal": true,
+            "show_payfast": false,
+            "show_visa": true,
+            "show_mastercard": true,
+            "show_amex": false,
+            "logo_height": 35,
+            "logo_gap": 20,
+            "show_social_icons": true,
+            "instagram_url": "https://www.instagram.com/graffitistylewriter",
+            "facebook_url": "https://www.facebook.com/kevinschiffer",
+            "youtube_url": "https://www.youtube.com/graffitistylewriter",
+            "tiktok_url": "",
+            "linkedin_url": "",
+            "social_icon_size": 36,
+            "social_gap": 12,
+            "alignment": "flex-end",
+            "section_gap": 20,
+            "padding_vertical": 20,
+            "padding_horizontal": 20,
+            "border_radius": 0,
+            "desktop_width_percent": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_96b5033_EMVCV6"
+      ],
+      "settings": {}
     }
   },
   "order": [
@@ -159,6 +198,7 @@
     "featured",
     "about",
     "trust",
-    "1784020519a9fd7562"
+    "1784020519a9fd7562",
+    "1784023657398c7ca3"
   ]
 }
