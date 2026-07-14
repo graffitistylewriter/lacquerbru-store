@@ -1,203 +1,127 @@
-<div
-  class="lb-marquee"
-  style="
-    background: {{ section.settings.bg_color }};
-    padding: {{ section.settings.padding_v }}px 0;
-  "
-  aria-hidden="true"
->
-  <div
-    class="lb-marquee__track"
-    style="animation-duration: {{ section.settings.speed }}s;"
-  >
-    {%- assign items = section.settings.items | split: ',' -%}
-    {%- for _repeat in (1..2) -%}
-      {%- for item in items -%}
-        <span class="lb-marquee__item" style="color:{{ section.settings.text_color }};">
-          {{- item | strip -}}
-        </span>
-        <span class="lb-marquee__sep" style="color:{{ section.settings.sep_color }};">
-          {{ section.settings.separator | default: '·' }}
-        </span>
-      {%- endfor -%}
-    {%- endfor -%}
-  </div>
-</div>
+<section class="lb-marquee" aria-label="{{ section.settings.accessibility_label | escape }}">
 
-<style>
-  .lb-marquee {
-    overflow: hidden;
-    width: 100%;
-  }
-  .lb-marquee__track {
-    display: flex;
-    white-space: nowrap;
-    animation: lb-marquee-scroll linear infinite;
-    width: max-content;
-  }
-  {% if section.settings.direction == 'right' %}
-  .lb-marquee__track { animation-direction: reverse; }
-  {% endif %}
-  {% if section.settings.pause_on_hover %}
-  .lb-marquee:hover .lb-marquee__track { animation-play-state: paused; }
-  {% endif %}
-  .lb-marquee__item {
-    font-size: {{ section.settings.font_size }}px;
-    font-weight: {{ section.settings.font_weight }};
-    letter-spacing: {{ section.settings.letter_spacing }}em;
-    text-transform: uppercase;
-    padding: 0 {{ section.settings.item_gap }}px;
-    display: inline-block;
-  }
-  .lb-marquee__sep {
-    font-size: {{ section.settings.font_size }}px;
-    opacity: 0.4;
-    display: inline-block;
-  }
-  @keyframes lb-marquee-scroll {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-</style>
+  <div class="lb-marquee__track">
+
+    {% for repeat in (1..2) %}
+
+      {% for block in section.blocks %}
+
+        {% if block.settings.text != blank %}
+          <span class="lb-marquee__item" {{ block.shopify_attributes }}>
+            {{ block.settings.text }}
+          </span>
+
+          {% unless forloop.last and repeat == 2 %}
+            <span class="lb-marquee__separator" aria-hidden="true">
+              {{ section.settings.separator }}
+            </span>
+          {% endunless %}
+        {% endif %}
+
+      {% endfor %}
+
+    {% endfor %}
+
+  </div>
+
+</section>
 
 {% schema %}
 {
   "name": "LB Marquee",
-  "tag": "div",
   "settings": [
     {
-      "type": "header",
-      "content": "Content"
-    },
-    {
-      "type": "textarea",
-      "id": "items",
-      "label": "Marquee Items (comma separated)",
-      "default": "Graffiti Murals, Digital Art, Brush Packs, Textured Finishes, Commission Work, Cape Town, Aerosoul, 16 Years Experience, Mural Painting, Illustration"
+      "type": "text",
+      "id": "accessibility_label",
+      "label": "Accessibility Label",
+      "default": "Lacquer Bru creative services"
     },
     {
       "type": "text",
       "id": "separator",
-      "label": "Separator Character",
-      "default": "·"
-    },
+      "label": "Separator",
+      "default": "&middot;"
+    }
+  ],
+  "blocks": [
     {
-      "type": "header",
-      "content": "Animation"
-    },
-    {
-      "type": "range",
-      "id": "speed",
-      "label": "Scroll Speed",
-      "min": 10,
-      "max": 80,
-      "step": 5,
-      "default": 30,
-      "info": "Lower = faster, Higher = slower",
-      "unit": "s"
-    },
-    {
-      "type": "select",
-      "id": "direction",
-      "label": "Scroll Direction",
-      "options": [
-        { "value": "left", "label": "Left (default)" },
-        { "value": "right", "label": "Right" }
-      ],
-      "default": "left"
-    },
-    {
-      "type": "checkbox",
-      "id": "pause_on_hover",
-      "label": "Pause on Hover",
-      "default": false
-    },
-    {
-      "type": "header",
-      "content": "Typography"
-    },
-    {
-      "type": "range",
-      "id": "font_size",
-      "label": "Font Size",
-      "min": 8,
-      "max": 24,
-      "step": 1,
-      "default": 12,
-      "unit": "px"
-    },
-    {
-      "type": "select",
-      "id": "font_weight",
-      "label": "Font Weight",
-      "options": [
-        { "value": "400", "label": "Regular" },
-        { "value": "500", "label": "Medium" },
-        { "value": "600", "label": "Semibold" },
-        { "value": "700", "label": "Bold" }
-      ],
-      "default": "700"
-    },
-    {
-      "type": "range",
-      "id": "letter_spacing",
-      "label": "Letter Spacing",
-      "min": 0,
-      "max": 40,
-      "step": 2,
-      "default": 18,
-      "info": "Value × 0.01em",
-      "unit": "×"
-    },
-    {
-      "type": "range",
-      "id": "item_gap",
-      "label": "Item Padding",
-      "min": 8,
-      "max": 48,
-      "step": 4,
-      "default": 22,
-      "unit": "px"
-    },
-    {
-      "type": "header",
-      "content": "Colours & Spacing"
-    },
-    {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Background Colour",
-      "default": "#7DD8E8"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text Colour",
-      "default": "#0A0A0A"
-    },
-    {
-      "type": "color",
-      "id": "sep_color",
-      "label": "Separator Colour",
-      "default": "#0A0A0A"
-    },
-    {
-      "type": "range",
-      "id": "padding_v",
-      "label": "Vertical Padding",
-      "min": 6,
-      "max": 40,
-      "step": 2,
-      "default": 13,
-      "unit": "px"
+      "type": "marquee_item",
+      "name": "Marquee Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Graffiti Murals"
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "Marquee Strip",
-      "settings": {
-        "items": "Your Brand, Your Story, Your Work, Your Vision, Your Style"
-      }
+      "name": "LB Marquee",
+      "blocks": [
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Graffiti Murals"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Digital Art"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Brush Packs"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Textured Finishes"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Commission Work"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Cape Town"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Aerosoul"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "16 Years Experience"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Mural Painting"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Illustration"
+          }
+        }
+      ]
     }
   ]
 }

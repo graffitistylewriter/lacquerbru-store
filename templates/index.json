@@ -12,6 +12,7 @@
     "hero": {
       "type": "lb-hero",
       "settings": {
+        "bg_image": "shopify://shop_images/envynause_2015-12-06_-8m1YCkvQL_1133951999903200267_dd63fccc-4b22-4cc4-a8ab-22542436d5e6.jpg",
         "bg_color": "#0a0a0a",
         "bg_position": "center center",
         "show_overlay": true,
@@ -22,9 +23,9 @@
         "heading_em": "Digital Creator.",
         "subtext": "Graffiti murals, digital art, and creative assets born from 16 years of aerosol culture in Cape Town.",
         "btn1_label": "Shop the Collection",
-        "btn1_url": "",
+        "btn1_url": "shopify://pages/shop",
         "btn2_label": "Commission Inquiry",
-        "btn2_url": "",
+        "btn2_url": "shopify://pages/commission-contact",
         "content_align": "center",
         "min_height": 750,
         "padding_v": 120,
@@ -38,9 +39,21 @@
     },
     "marquee": {
       "type": "lb-marquee",
+      "blocks": {
+        "marquee_item_FQgRwN": {
+          "type": "marquee_item",
+          "disabled": true,
+          "settings": {
+            "text": "Graffiti Murals"
+          }
+        }
+      },
+      "block_order": [
+        "marquee_item_FQgRwN"
+      ],
       "settings": {
         "accessibility_label": "Lacquer Bru creative services",
-        "separator": "&middot;"
+        "separator": "·"
       }
     },
     "featured": {
@@ -100,7 +113,7 @@
         "item_1_value": "Files delivered immediately after payment",
         "item_2_icon": "🔒",
         "item_2_label": "Secure Checkout",
-        "item_2_value": "Protected transactions",
+        "item_2_value": "Protected Transactions",
         "item_3_icon": "🎨",
         "item_3_label": "Made by an Artist",
         "item_3_value": "Tested in real workflows",
@@ -113,6 +126,68 @@
         "border_color": "#2a2a2a",
         "padding_v": 24
       }
+    },
+    "1784020519a9fd7562": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "1784023657398c7ca3": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "1784024586e53a876f": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "17840251663087e853": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_91c9c74_eGN8NG": {
+          "type": "ai_gen_block_91c9c74",
+          "settings": {
+            "title": "We Accept",
+            "title_color": "#f0ede6",
+            "title_size": 16,
+            "alignment": "center",
+            "desktop_width_percent": 100,
+            "show_paypal": true,
+            "show_visa": true,
+            "show_mastercard": true,
+            "show_amex": false,
+            "icon_size": 60,
+            "icon_spacing": 10
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_91c9c74_eGN8NG"
+      ],
+      "settings": {}
+    },
+    "178402562841220d57": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "17840257605f6bd2c8": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "178402582755ac5889": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "1784029770acda479a": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "1784030207f5240a6d": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "1784030366c4edb756": {
+      "type": "_blocks",
+      "settings": {}
     }
   },
   "order": [
@@ -120,6 +195,16 @@
     "marquee",
     "featured",
     "about",
-    "trust"
+    "trust",
+    "1784020519a9fd7562",
+    "1784023657398c7ca3",
+    "1784024586e53a876f",
+    "17840251663087e853",
+    "178402562841220d57",
+    "17840257605f6bd2c8",
+    "178402582755ac5889",
+    "1784029770acda479a",
+    "1784030207f5240a6d",
+    "1784030366c4edb756"
   ]
 }

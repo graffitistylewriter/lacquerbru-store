@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "shop_hero": {
@@ -14,27 +23,115 @@
     "product_feature": {
       "type": "lb-product-feature",
       "blocks": {
-        "badge1": { "type": "badge", "settings": { "text": "Procreate 5+" } },
-        "badge2": { "type": "badge", "settings": { "text": ".brushset Format" } },
-        "badge3": { "type": "badge", "settings": { "text": "Instant Download" } },
-        "inc1": { "type": "include_item", "settings": { "text": "Delivered as a single file" } },
-        "inc2": { "type": "include_item", "settings": { "text": "Imports directly in seconds" } },
-        "inc3": { "type": "include_item", "settings": { "text": "Installation guide included" } },
-        "inc4": { "type": "include_item", "settings": { "text": "Free updates when new versions release" } },
-        "compat1": { "type": "compat_item", "settings": { "label": "Procreate 5+", "available": true } },
-        "compat2": { "type": "compat_item", "settings": { "label": "All iPad Models", "available": true } }
+        "badge1": {
+          "type": "badge",
+          "settings": {
+            "text": "Procreate 5+"
+          }
+        },
+        "badge2": {
+          "type": "badge",
+          "settings": {
+            "text": ".brushset Format"
+          }
+        },
+        "badge3": {
+          "type": "badge",
+          "settings": {
+            "text": "Instant Download"
+          }
+        },
+        "inc1": {
+          "type": "include_item",
+          "settings": {
+            "text": "Delivered as a single file"
+          }
+        },
+        "inc2": {
+          "type": "include_item",
+          "settings": {
+            "text": "Imports directly in seconds"
+          }
+        },
+        "inc3": {
+          "type": "include_item",
+          "settings": {
+            "text": "Installation guide included"
+          }
+        },
+        "inc4": {
+          "type": "include_item",
+          "settings": {
+            "text": "Free updates when new versions release"
+          }
+        },
+        "compat1": {
+          "type": "compat_item",
+          "settings": {
+            "label": "Procreate 5+",
+            "available": true
+          }
+        },
+        "compat2": {
+          "type": "compat_item",
+          "settings": {
+            "label": "All iPad Models",
+            "available": true
+          }
+        }
       },
-      "block_order": ["badge1", "badge2", "badge3", "inc1", "inc2", "inc3", "inc4", "compat1", "compat2"]
+      "block_order": [
+        "badge1",
+        "badge2",
+        "badge3",
+        "inc1",
+        "inc2",
+        "inc3",
+        "inc4",
+        "compat1",
+        "compat2"
+      ],
+      "settings": {}
     },
     "trust_strip": {
       "type": "lb-trust-strip",
       "blocks": {
-        "t1": { "type": "trust_item", "settings": { "label": "Instant Delivery", "value": "Download link sent immediately after payment" } },
-        "t2": { "type": "trust_item", "settings": { "label": "Artist Made", "value": "Built and tested in real workflows" } },
-        "t3": { "type": "trust_item", "settings": { "label": "Free Updates", "value": "Pack updates delivered at no extra cost" } },
-        "t4": { "type": "trust_item", "settings": { "label": "Real Support", "value": "Issues? We respond within 24\u201348 hours" } }
+        "t1": {
+          "type": "trust_item",
+          "settings": {
+            "label": "Instant Delivery",
+            "value": "Download link sent immediately after payment"
+          }
+        },
+        "t2": {
+          "type": "trust_item",
+          "settings": {
+            "label": "Artist Made",
+            "value": "Built and tested in real workflows"
+          }
+        },
+        "t3": {
+          "type": "trust_item",
+          "settings": {
+            "label": "Free Updates",
+            "value": "Pack updates delivered at no extra cost"
+          }
+        },
+        "t4": {
+          "type": "trust_item",
+          "settings": {
+            "label": "Real Support",
+            "value": "Issues? We respond within 24–48 hours"
+          }
+        }
       },
-      "block_order": ["t1", "t2", "t3", "t4"]
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "settings": {}
     },
     "about_pack": {
       "type": "lb-about-pack",
@@ -46,38 +143,139 @@
     "how_it_works": {
       "type": "lb-how-it-works",
       "blocks": {
-        "s1": { "type": "step", "settings": { "title": "Add to Cart & Pay", "description": "Select your pack and complete checkout securely. Takes under two minutes." } },
-        "s2": { "type": "step", "settings": { "title": "Check Your Inbox", "description": "Your download link arrives by email immediately after payment." } },
-        "s3": { "type": "step", "settings": { "title": "Download & Import", "description": "Unzip your file and import it directly. Ready to use instantly." } }
+        "s1": {
+          "type": "step",
+          "settings": {
+            "title": "Add to Cart & Pay",
+            "description": "Select your pack and complete checkout securely. Takes under two minutes."
+          }
+        },
+        "s2": {
+          "type": "step",
+          "settings": {
+            "title": "Check Your Inbox",
+            "description": "Your download link arrives by email immediately after payment."
+          }
+        },
+        "s3": {
+          "type": "step",
+          "settings": {
+            "title": "Download & Import",
+            "description": "Unzip your file and import it directly. Ready to use instantly."
+          }
+        }
       },
-      "block_order": ["s1", "s2", "s3"]
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "settings": {}
     },
     "licensing": {
       "type": "lb-licensing",
       "blocks": {
-        "l1": { "type": "license_card", "settings": { "featured": true, "type_label": "Included with Purchase", "name": "Personal License", "description": "Included automatically with every purchase at no extra cost.", "list_items": "Use in personal artwork and projects\nCreate and sell artwork made with these brushes\nUse for client work where you are the creative\nPrint and display artwork created with the pack", "note": "You may NOT resell, redistribute, or share the brush files themselves." } },
-        "l2": { "type": "license_card", "settings": { "type_label": "Available on Request", "name": "Commercial License", "description": "Need to use these assets to create products sold themselves?", "list_items": "Create digital products for commercial sale\nUse in templates sold to other designers\nBroadcast and advertising use\nBranding and product packaging", "note": "Contact us to discuss commercial licensing pricing." } }
+        "l1": {
+          "type": "license_card",
+          "settings": {
+            "featured": true,
+            "type_label": "Included with Purchase",
+            "name": "Personal License",
+            "description": "Included automatically with every purchase at no extra cost.",
+            "list_items": "Use in personal artwork and projects\nCreate and sell artwork made with these brushes\nUse for client work where you are the creative\nPrint and display artwork created with the pack",
+            "note": "You may NOT resell, redistribute, or share the brush files themselves."
+          }
+        },
+        "l2": {
+          "type": "license_card",
+          "settings": {
+            "type_label": "Available on Request",
+            "name": "Commercial License",
+            "description": "Need to use these assets to create products sold themselves?",
+            "list_items": "Create digital products for commercial sale\nUse in templates sold to other designers\nBroadcast and advertising use\nBranding and product packaging",
+            "note": "Contact us to discuss commercial licensing pricing."
+          }
+        }
       },
-      "block_order": ["l1", "l2"]
+      "block_order": [
+        "l1",
+        "l2"
+      ],
+      "settings": {}
     },
     "reviews": {
       "type": "lb-reviews",
       "blocks": {
-        "r1": { "type": "review", "settings": { "rating": 5, "body": "These brushes have completely changed how I approach my work.", "author": "Digital Artist, Cape Town", "verified": true } },
-        "r2": { "type": "review", "settings": { "rating": 5, "body": "This is the first pack that felt like it was made by someone who actually paints.", "author": "Illustrator, Johannesburg", "verified": true } },
-        "r3": { "type": "review", "settings": { "rating": 5, "body": "Downloaded and imported in under two minutes. Support was fast and helpful.", "author": "Graffiti Artist, Durban", "verified": true } }
+        "r1": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "body": "These brushes have completely changed how I approach my work.",
+            "author": "Digital Artist, Cape Town",
+            "verified": true
+          }
+        },
+        "r2": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "body": "This is the first pack that felt like it was made by someone who actually paints.",
+            "author": "Illustrator, Johannesburg",
+            "verified": true
+          }
+        },
+        "r3": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "body": "Downloaded and imported in under two minutes. Support was fast and helpful.",
+            "author": "Graffiti Artist, Durban",
+            "verified": true
+          }
+        }
       },
-      "block_order": ["r1", "r2", "r3"]
+      "block_order": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "settings": {}
     },
     "faq": {
       "type": "lb-faq",
       "blocks": {
-        "f1": { "type": "faq_item", "settings": { "question": "Which apps are these brushes compatible with?" } },
-        "f2": { "type": "faq_item", "settings": { "question": "How do I install the brushes?" } },
-        "f3": { "type": "faq_item", "settings": { "question": "I didn't receive my download email \u2014 what now?" } },
-        "f4": { "type": "faq_item", "settings": { "question": "Can I get a refund on a digital product?" } }
+        "f1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Which apps are these brushes compatible with?"
+          }
+        },
+        "f2": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I install the brushes?"
+          }
+        },
+        "f3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "I didn't receive my download email — what now?"
+          }
+        },
+        "f4": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I get a refund on a digital product?"
+          }
+        }
       },
-      "block_order": ["f1", "f2", "f3", "f4"]
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "f4"
+      ],
+      "settings": {}
     },
     "notify_signup": {
       "type": "lb-notify-signup",
