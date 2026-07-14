@@ -174,8 +174,8 @@
             "show_paypal": true,
             "show_visa": true,
             "show_mastercard": true,
-            "show_amex": true,
-            "icon_size": 50,
+            "show_amex": false,
+            "icon_size": 60,
             "icon_spacing": 10
           },
           "blocks": {}
