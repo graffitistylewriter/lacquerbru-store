@@ -1,6 +1,384 @@
+{% doc %}
+  @prompt
+    In the LB Hero section (template--25957812863273__hero), make the following changes:
+    
+    1. STACKING FIX: Ensure the "Street Artist." (heading field) and "Digital Creator." (heading_em field) boundary boxes are ALWAYS stacked vertically - one above the other - on ALL screen sizes (mobile, tablet, desktop). They must never appear side by side on the same line. Force this with CSS using display: block on each heading part, removing any inline or flex-row behavior between them.
+    
+    2. ADD EDITABLE CONTROLS to the section schema for:
+       - Individual font size control for the "Street Artist." heading text
+       - Individual font size control for the "Digital Creator." heading text
+       - Text alignment control for the heading block (left, center, right)
+       - Option to adjust spacing/gap between the two text boundary boxes
+    
+    These controls should appear in the hero block section settings panel in the theme editor so the merchant can adjust them without touching code.
+{% enddoc %}
+
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .lb-hero-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: {{ block.settings.background_color }};
+    padding: 60px 20px;
+  }
+
+  .lb-hero-background-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .lb-hero-background-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: {{ block.settings.background_opacity }};
+  }
+
+  .lb-hero-content-{{ ai_gen_id }} {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    width: 100%;
+    text-align: {{ block.settings.text_alignment }};
+  }
+
+  .lb-hero-heading-wrapper-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    {% if block.settings.text_alignment == 'left' %}
+      align-items: flex-start;
+    {% elsif block.settings.text_alignment == 'right' %}
+      align-items: flex-end;
+    {% else %}
+      align-items: center;
+    {% endif %}
+    gap: {{ block.settings.heading_gap }}px;
+    margin-bottom: 30px;
+  }
+
+  .lb-hero-heading-{{ ai_gen_id }} {
+    display: block;
+    font-family: {{ block.settings.font_heading.family }}, {{ block.settings.font_heading.fallback_families }};
+    font-weight: {{ block.settings.font_heading.weight }};
+    font-style: {{ block.settings.font_heading.style }};
+    color: {{ block.settings.heading_color }};
+    font-size: {{ block.settings.heading_size }}px;
+    line-height: 1.2;
+    margin: 0;
+    width: 100%;
+  }
+
+  .lb-hero-heading-em-{{ ai_gen_id }} {
+    display: block;
+    font-family: {{ block.settings.font_heading.family }}, {{ block.settings.font_heading.fallback_families }};
+    font-weight: {{ block.settings.font_heading.weight }};
+    font-style: {{ block.settings.font_heading.style }};
+    color: {{ block.settings.heading_em_color }};
+    font-size: {{ block.settings.heading_em_size }}px;
+    line-height: 1.2;
+    margin: 0;
+    width: 100%;
+  }
+
+  .lb-hero-subheading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subheading_size }}px;
+    color: {{ block.settings.subheading_color }};
+    margin-bottom: 40px;
+    max-width: 600px;
+    {% if block.settings.text_alignment == 'left' %}
+      margin-left: 0;
+      margin-right: auto;
+    {% elsif block.settings.text_alignment == 'right' %}
+      margin-left: auto;
+      margin-right: 0;
+    {% else %}
+      margin-left: auto;
+      margin-right: auto;
+    {% endif %}
+  }
+
+  .lb-hero-cta-{{ ai_gen_id }} {
+    display: inline-block;
+    padding: 16px 40px;
+    background-color: {{ block.settings.button_bg_color }};
+    color: {{ block.settings.button_text_color }};
+    text-decoration: none;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    font-size: {{ block.settings.button_font_size }}px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .lb-hero-cta-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_bg_color }};
+    transform: translateY(-2px);
+  }
+
+  @media screen and (max-width: 768px) {
+    .lb-hero-{{ ai_gen_id }} {
+      min-height: 80vh;
+      padding: 40px 20px;
+    }
+
+    .lb-hero-heading-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.heading_size }}px * 0.6);
+    }
+
+    .lb-hero-heading-em-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.heading_em_size }}px * 0.6);
+    }
+
+    .lb-hero-subheading-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.subheading_size }}px * 0.85);
+    }
+
+    .lb-hero-heading-wrapper-{{ ai_gen_id }} {
+      gap: calc({{ block.settings.heading_gap }}px * 0.7);
+    }
+  }
+{% endstyle %}
+
+<div class="lb-hero-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  {% if block.settings.background_image %}
+    <div class="lb-hero-background-{{ ai_gen_id }}">
+      <img
+        src="{{ block.settings.background_image | image_url: width: 2000 }}"
+        alt="{{ block.settings.background_image.alt | escape }}"
+        loading="eager"
+        width="{{ block.settings.background_image.width }}"
+        height="{{ block.settings.background_image.height }}"
+      >
+    </div>
+  {% endif %}
+
+  <div class="lb-hero-content-{{ ai_gen_id }}">
+    <div class="lb-hero-heading-wrapper-{{ ai_gen_id }}">
+      {% if block.settings.heading != blank %}
+        <h1 class="lb-hero-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h1>
+      {% endif %}
+      
+      {% if block.settings.heading_em != blank %}
+        <h2 class="lb-hero-heading-em-{{ ai_gen_id }}">{{ block.settings.heading_em }}</h2>
+      {% endif %}
+    </div>
+
+    {% if block.settings.subheading != blank %}
+      <div class="lb-hero-subheading-{{ ai_gen_id }}">
+        {{ block.settings.subheading }}
+      </div>
+    {% endif %}
+
+    {% if block.settings.cta_text != blank and block.settings.cta_link != blank %}
+      <a href="{{ block.settings.cta_link }}" class="lb-hero-cta-{{ ai_gen_id }}">
+        {{ block.settings.cta_text }}
+      </a>
+    {% endif %}
+  </div>
+</div>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "LB Hero",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#111111"
+    },
+    {
+      "type": "range",
+      "id": "background_opacity",
+      "label": "Background image opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.5
+    },
+    {
+      "type": "header",
+      "content": "Heading text"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "First heading line",
+      "default": "Street Artist."
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "First heading font size",
+      "min": 20,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "First heading color",
+      "default": "#f0ede6"
+    },
+    {
+      "type": "text",
+      "id": "heading_em",
+      "label": "Second heading line",
+      "default": "Digital Creator."
+    },
+    {
+      "type": "range",
+      "id": "heading_em_size",
+      "label": "Second heading font size",
+      "min": 20,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "color",
+      "id": "heading_em_color",
+      "label": "Second heading color",
+      "default": "#3b82f6"
+    },
+    {
+      "type": "range",
+      "id": "heading_gap",
+      "label": "Gap between headings",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "font_picker",
+      "id": "font_heading",
+      "label": "Heading font",
+      "default": "sans-serif"
+    },
+    {
+      "type": "header",
+      "content": "Subheading"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading text"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "label": "Subheading font size",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading color",
+      "default": "#888888"
+    },
+    {
+      "type": "header",
+      "content": "Call to action button"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button link"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "label": "Button font size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button background",
+      "default": "#3b82f6"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg_color",
+      "label": "Button hover background",
+      "default": "#2563eb"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Button border radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "LB Hero"
+    }
+  ]
+}
 {% endschema %}
