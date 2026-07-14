@@ -69,17 +69,7 @@
           </a>
         {% endif %}
         {% if section.settings.btn2_label != blank %}
-          .lb-btn--commission {
-            background: {{ section.settings.accent_color }};
-            color: #FFFFFF;
-            border-color: {{ section.settings.accent_color }};
-          }
-          .lb-btn--commission:hover {
-            background: transparent;
-            color: {{ section.settings.accent_color }};
-            border-color: {{ section.settings.accent_color }};
-          }
-
+          <a href="{{ section.settings.btn2_url }}" class="lb-btn lb-btn--ghost">
             {{ section.settings.btn2_label }}
           </a>
         {% endif %}
