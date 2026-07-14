@@ -1,0 +1,194 @@
+<section
+  class="lb-blog"
+  style="background:{{ section.settings.bg_color }};padding:{{ section.settings.padding_top }}px 60px {{ section.settings.padding_bottom }}px;"
+>
+  <div class="lb-blog__inner">
+
+    {% paginate blog.articles by section.settings.posts_per_page %}
+
+      {% if blog.articles_count == 0 %}
+        <div class="lb-blog__empty" style="color:{{ section.settings.muted_color }};">
+          <p>{{ section.settings.empty_text | default: 'No posts yet. Check back soon.' }}</p>
+        </div>
+      {% else %}
+
+        {%- comment -%} FEATURED FIRST POST {%- endcomment -%}
+        {% if section.settings.show_featured and paginate.current_page == 1 %}
+          {%- assign featured = blog.articles.first -%}
+          <a href="{{ featured.url }}" class="lb-blog__featured" style="background:{{ section.settings.card_bg }};">
+            {% if featured.image %}
+              {{ featured.image | image_url: width: 1400 | image_tag:
+                loading: 'eager',
+                alt: featured.title,
+                class: 'lb-blog__featured-img',
+                width: 1400, height: 700
+              }}
+              <div class="lb-blog__featured-overlay"></div>
+            {% else %}
+              <div class="lb-blog__featured-placeholder"></div>
+            {% endif %}
+            <div class="lb-blog__featured-content">
+              <span class="lb-blog__featured-label" style="color:{{ section.settings.accent_color }};">{{ section.settings.featured_label | default: 'Latest Post' }}</span>
+              <h2 class="lb-blog__featured-title" style="color:#fff;">{{ featured.title }}</h2>
+              {% if featured.excerpt != blank %}
+                <p class="lb-blog__featured-excerpt" style="color:rgba(255,255,255,0.7);">{{ featured.excerpt | strip_html | truncate: 160 }}</p>
+              {% endif %}
+              <div class="lb-blog__featured-meta" style="color:rgba(255,255,255,0.5);">
+                {{ featured.published_at | date: '%B %d, %Y' }}
+                {% if section.settings.show_read_time %}
+                  · {{ featured.content | strip_html | split: ' ' | size | divided_by: 200 | plus: 1 }} min read
+                {% endif %}
+              </div>
+            </div>
+          </a>
+        {% endif %}
+
+        {%- comment -%} ARTICLE GRID {%- endcomment -%}
+        <div
+          class="lb-blog__grid"
+          style="grid-template-columns:repeat({{ section.settings.columns }},1fr);gap:{{ section.settings.gap }}px;"
+        >
+          {% for article in blog.articles %}
+            {% if section.settings.show_featured and paginate.current_page == 1 and forloop.first %}
+              {% continue %}
+            {% endif %}
+            <a href="{{ article.url }}" class="lb-blog__card" style="background:{{ section.settings.card_bg }};">
+              <div class="lb-blog__card-img-wrap">
+                {% if article.image %}
+                  {{ article.image | image_url: width: 800 | image_tag:
+                    loading: 'lazy',
+                    alt: article.title,
+                    class: 'lb-blog__card-img',
+                    width: 800, height: 500
+                  }}
+                {% else %}
+                  <div class="lb-blog__card-placeholder"></div>
+                {% endif %}
+              </div>
+              <div class="lb-blog__card-body">
+                <div class="lb-blog__card-meta" style="color:{{ section.settings.muted_color }};">
+                  <time>{{ article.published_at | date: '%b %d, %Y' }}</time>
+                  {% if section.settings.show_read_time %}
+                    <span>·</span>
+                    <span>{{ article.content | strip_html | split: ' ' | size | divided_by: 200 | plus: 1 }} min read</span>
+                  {% endif %}
+                </div>
+                <h3 class="lb-blog__card-title" style="color:{{ section.settings.text_color }};">{{ article.title }}</h3>
+                {% if article.excerpt != blank %}
+                  <p class="lb-blog__card-excerpt" style="color:{{ section.settings.muted_color }};">{{ article.excerpt | strip_html | truncate: 120 }}</p>
+                {% endif %}
+                <span class="lb-blog__card-read" style="color:{{ section.settings.accent_color }};">
+                  {{ section.settings.read_more_label | default: 'Read More' }} →
+                </span>
+              </div>
+            </a>
+          {% endfor %}
+        </div>
+
+        {%- comment -%} PAGINATION {%- endcomment -%}
+        {% if paginate.pages > 1 %}
+          <div class="lb-blog__pagination">
+            {% if paginate.previous %}
+              <a href="{{ paginate.previous.url }}" class="lb-pagination__btn" style="color:{{ section.settings.text_color }};border-color:rgba(255,255,255,0.15);">← Previous</a>
+            {% endif %}
+            {% for part in paginate.parts %}
+              {% if part.is_link %}
+                <a href="{{ part.url }}" class="lb-pagination__btn" style="color:{{ section.settings.muted_color }};border-color:rgba(255,255,255,0.1);">{{ part.title }}</a>
+              {% elsif part.title == paginate.current_page %}
+                <span class="lb-pagination__btn lb-pagination__btn--active" style="background:{{ section.settings.accent_color }};color:#000;border-color:{{ section.settings.accent_color }};">{{ part.title }}</span>
+              {% else %}
+                <span style="color:{{ section.settings.muted_color }};padding:10px 6px;font-size:12px;">{{ part.title }}</span>
+              {% endif %}
+            {% endfor %}
+            {% if paginate.next %}
+              <a href="{{ paginate.next.url }}" class="lb-pagination__btn" style="color:{{ section.settings.text_color }};border-color:rgba(255,255,255,0.15);">Next →</a>
+            {% endif %}
+          </div>
+        {% endif %}
+
+      {% endif %}
+
+    {% endpaginate %}
+
+  </div>
+</section>
+
+<style>
+  .lb-blog__inner { max-width: 1400px; margin: 0 auto; }
+
+  .lb-blog__featured {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    margin-bottom: {{ section.settings.gap }}px;
+    min-height: 480px;
+    display: flex;
+    align-items: flex-end;
+  }
+  .lb-blog__featured-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s; }
+  .lb-blog__featured:hover .lb-blog__featured-img { transform: scale(1.03); }
+  .lb-blog__featured-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, transparent 100%); }
+  .lb-blog__featured-placeholder { position: absolute; inset: 0; background: rgba(255,255,255,0.04); }
+  .lb-blog__featured-content { position: relative; z-index: 2; padding: 48px; display: flex; flex-direction: column; gap: 12px; max-width: 700px; }
+  .lb-blog__featured-label { font-size: 10px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; }
+  .lb-blog__featured-title { font-size: clamp(22px, 3.5vw, 42px); font-weight: 700; text-transform: uppercase; letter-spacing: -0.01em; line-height: 1.1; margin: 0; }
+  .lb-blog__featured-excerpt { font-size: 14px; line-height: 1.7; margin: 0; }
+  .lb-blog__featured-meta { font-size: 11px; letter-spacing: 0.08em; }
+
+  .lb-blog__grid { display: grid; }
+  .lb-blog__card { text-decoration: none; display: flex; flex-direction: column; overflow: hidden; transition: opacity 0.2s; }
+  .lb-blog__card:hover { opacity: 0.85; }
+  .lb-blog__card-img-wrap { aspect-ratio: 16/9; overflow: hidden; }
+  .lb-blog__card-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s; }
+  .lb-blog__card:hover .lb-blog__card-img { transform: scale(1.04); }
+  .lb-blog__card-placeholder { width: 100%; height: 100%; background: rgba(255,255,255,0.04); }
+  .lb-blog__card-body { padding: 24px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  .lb-blog__card-meta { display: flex; gap: 8px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .lb-blog__card-title { font-size: 18px; font-weight: 700; line-height: 1.3; margin: 0; }
+  .lb-blog__card-excerpt { font-size: 13px; line-height: 1.7; margin: 0; flex: 1; }
+  .lb-blog__card-read { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-top: auto; }
+
+  .lb-blog__empty { text-align: center; padding: 80px 0; font-size: 15px; }
+
+  .lb-blog__pagination { display: flex; justify-content: center; align-items: center; gap: 8px; padding-top: 60px; flex-wrap: wrap; }
+  .lb-pagination__btn { padding: 10px 18px; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-decoration: none; border: 1px solid; transition: all 0.2s; display: inline-block; }
+  .lb-pagination__btn:hover { opacity: 0.75; }
+  .lb-pagination__btn--active { font-weight: 700; }
+
+  @media (max-width: 860px) {
+    .lb-blog { padding-left: 24px !important; padding-right: 24px !important; }
+    .lb-blog__grid { grid-template-columns: 1fr !important; }
+    .lb-blog__featured-content { padding: 24px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Blog Posts",
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    { "type": "checkbox", "id": "show_featured", "label": "Show Featured First Post", "default": true },
+    { "type": "text", "id": "featured_label", "label": "Featured Post Label", "default": "Latest Post" },
+    { "type": "select", "id": "columns", "label": "Grid Columns", "options": [
+      { "value": "1", "label": "1" },
+      { "value": "2", "label": "2" },
+      { "value": "3", "label": "3" }
+    ], "default": "3" },
+    { "type": "range", "id": "posts_per_page", "label": "Posts Per Page", "min": 3, "max": 24, "step": 3, "default": 9 },
+    { "type": "range", "id": "gap", "label": "Grid Gap", "min": 8, "max": 48, "step": 4, "default": 24, "unit": "px" },
+    { "type": "checkbox", "id": "show_read_time", "label": "Show Read Time", "default": true },
+    { "type": "text", "id": "read_more_label", "label": "Read More Label", "default": "Read More" },
+    { "type": "text", "id": "empty_text", "label": "Empty Blog Message", "default": "No posts yet. Check back soon." },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#0A0A0A" },
+    { "type": "color", "id": "card_bg", "label": "Card Background", "default": "#1A1A1A" },
+    { "type": "color", "id": "text_color", "label": "Text Colour", "default": "#FFFFFF" },
+    { "type": "color", "id": "muted_color", "label": "Muted Colour", "default": "#AAAAAA" },
+    { "type": "color", "id": "accent_color", "label": "Accent Colour", "default": "#7DD8E8" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top Padding", "min": 40, "max": 160, "step": 10, "default": 60, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom Padding", "min": 40, "max": 160, "step": 10, "default": 100, "unit": "px" }
+  ]
+}
+{% endschema %}

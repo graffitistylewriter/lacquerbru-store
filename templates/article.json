@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-article",
+      "settings": {}
+    },
+    "trust": {
+      "type": "lb-trust-strip",
+      "settings": {}
+    }
+  },
+  "order": ["main", "trust"]
+}

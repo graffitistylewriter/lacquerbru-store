@@ -1,0 +1,26 @@
+{
+  "sections": {
+    "hero": {
+      "type": "lb-hero",
+      "settings": {
+        "eyebrow": "The Journal",
+        "heading": "Behind the Work.",
+        "heading_em": "",
+        "subtext": "Stories, process, and perspectives from the studio.",
+        "btn1_label": "",
+        "btn2_label": "",
+        "show_scroll_indicator": false,
+        "min_height": 400
+      }
+    },
+    "marquee": {
+      "type": "lb-marquee",
+      "settings": {}
+    },
+    "main": {
+      "type": "main-blog",
+      "settings": {}
+    }
+  },
+  "order": ["hero", "marquee", "main"]
+}
