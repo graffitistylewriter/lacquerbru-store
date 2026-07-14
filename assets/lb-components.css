@@ -629,6 +629,9 @@
 @media (max-width: 960px) {
   .lb-gallery-strip__grid,
   .lb-shop-featured__grid,
+    grid-template-columns: 1fr 1fr;
+  }
+}
   .lb-project-grid__grid,
   .lb-project-detail__hero,
   .lb-project-detail__gallery,
@@ -643,10 +646,9 @@
 }
 
 @media (max-width: 640px) {
-  .lb-shop-featured__grid {
-    grid-template-columns: 1fr 1fr;
+  .lb-gallery-strip__header {
+    grid-template-columns: 1fr;
   }
-}
 
 
   .lb-gallery-strip__grid,
