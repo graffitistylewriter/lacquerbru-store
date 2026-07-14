@@ -165,7 +165,7 @@
             "show_payfast": false,
             "show_visa": true,
             "show_mastercard": true,
-            "show_amex": false,
+            "show_amex": true,
             "logo_height": 35,
             "logo_gap": 20,
             "show_social_icons": true,
@@ -190,6 +190,36 @@
         "ai_gen_block_96b5033_EMVCV6"
       ],
       "settings": {}
+    },
+    "1784024586e53a876f": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "17840251663087e853": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_91c9c74_eGN8NG": {
+          "type": "ai_gen_block_91c9c74",
+          "settings": {
+            "title": "We Accept",
+            "title_color": "#f0ede6",
+            "title_size": 16,
+            "alignment": "center",
+            "desktop_width_percent": 100,
+            "show_paypal": true,
+            "show_visa": true,
+            "show_mastercard": true,
+            "show_amex": true,
+            "icon_size": 50,
+            "icon_spacing": 10
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_91c9c74_eGN8NG"
+      ],
+      "settings": {}
     }
   },
   "order": [
@@ -199,6 +229,8 @@
     "about",
     "trust",
     "1784020519a9fd7562",
-    "1784023657398c7ca3"
+    "1784023657398c7ca3",
+    "1784024586e53a876f",
+    "17840251663087e853"
   ]
 }
