@@ -1,31 +1,5 @@
 <section class="lb-blueprint-page lb-blueprint-page--contact">
 
-<div class="ct-hero">
-  <div class="ct-hero-bg">
-    {% if section.settings.hero_bg_image != blank %}
-      {{ section.settings.hero_bg_image | image_url: width: 1920 | image_tag: loading: 'eager', class: 'hero-bg-img' }}
-    {% endif %}
-  </div>
-  <div class="ct-hero-ol"></div>
-  <div class="ct-hero-c">
-    <h1 class="ct-title">{{ section.settings.hero_title }}</h1>
-    <p class="ct-tag">
-      {% if settings.contact_email != blank %}{{ settings.contact_email }}{% endif %}
-      {% if settings.contact_email != blank and settings.contact_phone != blank %} &middot; {% endif %}
-      {% if settings.contact_phone != blank %}{{ settings.contact_phone }}{% endif %}
-    </p>
-  </div>
-</div>
-
-{% if section.settings.marquee_text != blank %}
-<div class="marquee-wrap"><div class="marquee-track">
-  {% assign marquee_items = section.settings.marquee_text | split: ',' %}
-  {% for item in marquee_items %}{% for i in (1..2) %}
-    <span class="mi">{{ item | strip }}</span><span class="ms"> &middot; </span>
-  {% endfor %}{% endfor %}
-</div></div>
-{% endif %}
-
 <div class="ct-body">
   <div class="ct-info">
     {% if section.settings.info_label != blank %}<span class="section-label">{{ section.settings.info_label }}</span>{% endif %}
@@ -47,7 +21,7 @@
           <span class="cinfo-label">Phone &amp; WhatsApp</span>
           <div class="cinfo-val">
             <a href="tel:{{ settings.contact_phone | remove: ' ' }}">{{ settings.contact_phone }}</a>
-            {% if section.settings.phone_hours != blank %}<br><span style="font-size:12px;color:var(--muted)">{{ section.settings.phone_hours }}</span>{% endif %}
+            {% if section.settings.phone_hours != blank %}<br><span style="font-size:12px;opacity:0.6;">{{ section.settings.phone_hours }}</span>{% endif %}
           </div>
         </div>
       </div>
@@ -116,21 +90,17 @@
         <option>Other</option>
       </select>
     </div>
-   <div class="fgrp"><label>Your Message *</label><textarea name="contact[body]" placeholder="{{ section.settings.message_placeholder | default: 'Tell us what is on your mind...' }}" required></textarea></div>
+    <div class="fgrp"><label>Your Message *</label><textarea name="contact[body]" placeholder="{{ section.settings.message_placeholder | default: 'Tell us what is on your mind...' }}" required></textarea></div>
     <button class="form-sbmt" type="submit">{{ section.settings.form_btn_label | default: 'Send Message' }}</button>
   {% endform %}
 </div>
 
 </section>
+
 {% schema %}
 {
   "name": "LB Blueprint Contact",
   "settings": [
-    { "type": "header", "content": "Hero" },
-    { "type": "image_picker", "id": "hero_bg_image", "label": "Hero Background Image" },
-    { "type": "text", "id": "hero_title", "label": "Hero Title", "default": "Get In Touch" },
-    { "type": "header", "content": "Marquee Strip" },
-    { "type": "textarea", "id": "marquee_text", "label": "Marquee Items (comma separated)", "default": "Graffiti Murals, Digital Art, Brush Packs, Textured Finishes, Commission Work, Cape Town, Aerosoul, 16 Years Experience, Mural Painting, Illustration" },
     { "type": "header", "content": "Contact Info Panel" },
     { "type": "text", "id": "info_label", "label": "Section Label", "default": "Contact" },
     { "type": "text", "id": "info_heading", "label": "Heading", "default": "Let's Talk" },

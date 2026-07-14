@@ -1,27 +1,5 @@
 <section class="lb-blueprint-page lb-blueprint-page--gallery">
 
-<div class="pg-hero">
-  <div class="pg-hero-bg">
-    {% if section.settings.hero_bg_image != blank %}
-      {{ section.settings.hero_bg_image | image_url: width: 1920 | image_tag: loading: 'eager', class: 'hero-bg-img' }}
-    {% endif %}
-  </div>
-  <div class="pg-hero-ol"></div>
-  <div class="pg-hero-c">
-    <h1 class="pg-title">{{ section.settings.hero_title }}</h1>
-    <p class="pg-sub">{{ section.settings.hero_subtitle }}</p>
-  </div>
-</div>
-
-{% if section.settings.marquee_text != blank %}
-<div class="marquee-wrap"><div class="marquee-track">
-  {% assign marquee_items = section.settings.marquee_text | split: ',' %}
-  {% for item in marquee_items %}{% for i in (1..2) %}
-    <span class="mi">{{ item | strip }}</span><span class="ms"> &middot; </span>
-  {% endfor %}{% endfor %}
-</div></div>
-{% endif %}
-
 <div class="gal-intro">
   {% if section.settings.intro_label != blank %}<span class="section-label">{{ section.settings.intro_label }}</span>{% endif %}
   <p>{{ section.settings.intro_text }}</p>
@@ -61,61 +39,44 @@
 {
   "name": "LB Blueprint Gallery",
   "settings": [
-    { "type": "header", "content": "Hero" },
-    { "type": "image_picker", "id": "hero_bg_image", "label": "Hero Background Image" },
-    { "type": "text", "id": "hero_title", "label": "Hero Title", "default": "Gallery" },
-    { "type": "text", "id": "hero_subtitle", "label": "Hero Subtitle", "default": "Murals · Portraits · Wildstyle · Digital · Commissions" },
-
-    { "type": "header", "content": "Marquee Strip" },
-    { "type": "textarea", "id": "marquee_text", "label": "Marquee Items (comma separated)", "default": "Graffiti Murals, Digital Art, Brush Packs, Textured Finishes, Commission Work, Cape Town, Aerosoul, 16 Years Experience, Mural Painting, Illustration" },
-
     { "type": "header", "content": "Intro" },
     { "type": "text", "id": "intro_label", "label": "Section Label", "default": "The Work" },
     { "type": "textarea", "id": "intro_text", "label": "Intro Text", "default": "Over 16 years of aerosol culture, digital creation, and immersive visual transformation." },
-
     { "type": "header", "content": "Gallery Image 1" },
     { "type": "image_picker", "id": "gallery_img_1", "label": "Image 1" },
     { "type": "text", "id": "gallery_title_1", "label": "Title 1", "default": "Wildstyle — Group Production" },
     { "type": "text", "id": "gallery_cat_1", "label": "Category 1", "default": "Graffiti · Mural" },
     { "type": "checkbox", "id": "gallery_wide_1", "label": "Wide (full width)", "default": true },
-
     { "type": "header", "content": "Gallery Image 2" },
     { "type": "image_picker", "id": "gallery_img_2", "label": "Image 2" },
     { "type": "text", "id": "gallery_title_2", "label": "Title 2", "default": "Portrait Study" },
     { "type": "text", "id": "gallery_cat_2", "label": "Category 2", "default": "Portrait · Mural" },
-    { "type": "checkbox", "id": "gallery_wide_2", "label": "Wide (full width)", "default": false },
-
+    { "type": "checkbox", "id": "gallery_wide_2", "label": "Wide", "default": false },
     { "type": "header", "content": "Gallery Image 3" },
     { "type": "image_picker", "id": "gallery_img_3", "label": "Image 3" },
     { "type": "text", "id": "gallery_title_3", "label": "Title 3", "default": "Fire & Motion" },
     { "type": "text", "id": "gallery_cat_3", "label": "Category 3", "default": "Character · Mural" },
-    { "type": "checkbox", "id": "gallery_wide_3", "label": "Wide (full width)", "default": false },
-
+    { "type": "checkbox", "id": "gallery_wide_3", "label": "Wide", "default": false },
     { "type": "header", "content": "Gallery Image 4" },
     { "type": "image_picker", "id": "gallery_img_4", "label": "Image 4" },
     { "type": "text", "id": "gallery_title_4", "label": "Title 4", "default": "Large Scale Production" },
     { "type": "text", "id": "gallery_cat_4", "label": "Category 4", "default": "Mural · Commercial" },
-    { "type": "checkbox", "id": "gallery_wide_4", "label": "Wide (full width)", "default": false },
-
+    { "type": "checkbox", "id": "gallery_wide_4", "label": "Wide", "default": false },
     { "type": "header", "content": "Gallery Image 5" },
     { "type": "image_picker", "id": "gallery_img_5", "label": "Image 5" },
     { "type": "text", "id": "gallery_title_5", "label": "Title 5", "default": "Conceptual Piece" },
     { "type": "text", "id": "gallery_cat_5", "label": "Category 5", "default": "Conceptual · Mural" },
-    { "type": "checkbox", "id": "gallery_wide_5", "label": "Wide (full width)", "default": true },
-
+    { "type": "checkbox", "id": "gallery_wide_5", "label": "Wide", "default": true },
     { "type": "header", "content": "Gallery Image 6" },
     { "type": "image_picker", "id": "gallery_img_6", "label": "Image 6" },
     { "type": "text", "id": "gallery_title_6", "label": "Title 6", "default": "Interior Transformation" },
     { "type": "text", "id": "gallery_cat_6", "label": "Category 6", "default": "Interior · Commercial" },
-    { "type": "checkbox", "id": "gallery_wide_6", "label": "Wide (full width)", "default": true },
-
-    { "type": "header", "content": "Gallery Image 7" },
+    { "type": "checkbox", "id": "gallery_wide_6", "label": "Wide", "default": true },
+    { "type": "header", "content": "Gallery Images 7–12" },
     { "type": "image_picker", "id": "gallery_img_7", "label": "Image 7" },
     { "type": "text", "id": "gallery_title_7", "label": "Title 7", "default": "Detail Work" },
     { "type": "text", "id": "gallery_cat_7", "label": "Category 7", "default": "Graffiti · Detail" },
-    { "type": "checkbox", "id": "gallery_wide_7", "label": "Wide (full width)", "default": false },
-
-    { "type": "header", "content": "Gallery Images 8–12" },
+    { "type": "checkbox", "id": "gallery_wide_7", "label": "Wide", "default": false },
     { "type": "image_picker", "id": "gallery_img_8", "label": "Image 8" },
     { "type": "text", "id": "gallery_title_8", "label": "Title 8" },
     { "type": "text", "id": "gallery_cat_8", "label": "Category 8" },
@@ -136,7 +97,6 @@
     { "type": "text", "id": "gallery_title_12", "label": "Title 12" },
     { "type": "text", "id": "gallery_cat_12", "label": "Category 12" },
     { "type": "checkbox", "id": "gallery_wide_12", "label": "Wide", "default": false },
-
     { "type": "header", "content": "Bottom CTA" },
     { "type": "text", "id": "cta_label", "label": "CTA Label", "default": "Commission Your Own Piece" },
     { "type": "text", "id": "cta_heading", "label": "CTA Heading", "default": "See Something You Like?" },

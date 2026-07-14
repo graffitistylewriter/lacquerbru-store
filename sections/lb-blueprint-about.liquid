@@ -1,31 +1,9 @@
 <section class="lb-blueprint-page lb-blueprint-page--about">
 
-<div class="abt-hero">
-  <div class="abt-hero-bg">
-    {% if section.settings.hero_bg_image != blank %}
-      {{ section.settings.hero_bg_image | image_url: width: 1920 | image_tag: loading: 'eager', class: 'hero-bg-img' }}
-    {% endif %}
-  </div>
-  <div class="abt-hero-ol"></div>
-  <div class="abt-hero-c">
-    <h1 class="abt-title">{{ section.settings.hero_title }}</h1>
-    <p class="abt-tag">{{ section.settings.hero_tagline }}</p>
-  </div>
-</div>
-
-{% if section.settings.marquee_text != blank %}
-<div class="marquee-wrap"><div class="marquee-track">
-  {% assign marquee_items = section.settings.marquee_text | split: ',' %}
-  {% for item in marquee_items %}{% for i in (1..2) %}
-    <span class="mi">{{ item | strip }}</span><span class="ms"> &middot; </span>
-  {% endfor %}{% endfor %}
-</div></div>
-{% endif %}
-
 <div class="abt-intro">
   {% if section.settings.intro_image != blank %}
     <div class="abt-img">
-      {{ section.settings.intro_image | image_url: width: 900 | image_tag: loading: 'lazy', alt: section.settings.hero_title }}
+      {{ section.settings.intro_image | image_url: width: 900 | image_tag: loading: 'lazy', alt: section.settings.intro_heading }}
     </div>
   {% else %}
     <div class="abt-img"></div>
@@ -90,20 +68,11 @@
 {
   "name": "LB Blueprint About",
   "settings": [
-    { "type": "header", "content": "Hero" },
-    { "type": "image_picker", "id": "hero_bg_image", "label": "Hero Background Image" },
-    { "type": "text", "id": "hero_title", "label": "Hero Title", "default": "About Lacquer Bru" },
-    { "type": "text", "id": "hero_tagline", "label": "Hero Tagline", "default": "Rooted in aerosol culture. Built for premium execution." },
-
-    { "type": "header", "content": "Marquee Strip" },
-    { "type": "textarea", "id": "marquee_text", "label": "Marquee Items (comma separated)", "default": "Graffiti Murals, Digital Art, Brush Packs, Textured Finishes, Commission Work, Cape Town, Aerosoul, 16 Years Experience, Mural Painting, Illustration" },
-
     { "type": "header", "content": "Intro Section" },
     { "type": "image_picker", "id": "intro_image", "label": "Intro Image" },
     { "type": "text", "id": "intro_label", "label": "Section Label", "default": "The Studio" },
     { "type": "text", "id": "intro_heading", "label": "Heading", "default": "Where Urban Expression Meets Premium Craft" },
     { "type": "richtext", "id": "intro_body", "label": "Body Text" },
-
     { "type": "header", "content": "Stats Bar" },
     { "type": "text", "id": "stat1_number", "label": "Stat 1 Number", "default": "16+" },
     { "type": "text", "id": "stat1_label", "label": "Stat 1 Label", "default": "Years of Experience" },
@@ -113,7 +82,6 @@
     { "type": "text", "id": "stat3_label", "label": "Stat 3 Label", "default": "Projects Completed" },
     { "type": "text", "id": "stat4_number", "label": "Stat 4 Number", "default": "∞" },
     { "type": "text", "id": "stat4_label", "label": "Stat 4 Label", "default": "Surfaces Transformed" },
-
     { "type": "header", "content": "Services Section" },
     { "type": "text", "id": "services_label", "label": "Section Label", "default": "What We Do" },
     { "type": "text", "id": "services_heading", "label": "Heading", "default": "Services & Disciplines" },
@@ -130,13 +98,11 @@
     { "type": "textarea", "id": "service_5_desc", "label": "Service 5 Description", "default": "Professional surface finishing for driveways, roofs, garage doors, exterior walls, and large-scale property transformations." },
     { "type": "text", "id": "service_6_name", "label": "Service 6 Name", "default": "Live Event Painting" },
     { "type": "textarea", "id": "service_6_desc", "label": "Service 6 Description", "default": "Live painting at events, activations, exhibitions, and brand experiences. A performance as compelling as the finished piece." },
-
     { "type": "header", "content": "Aerosoul Section" },
     { "type": "text", "id": "aerosoul_word", "label": "Feature Word", "default": "Aerosoul" },
     { "type": "richtext", "id": "aerosoul_body", "label": "Aerosoul Description" },
     { "type": "text", "id": "aerosoul_btn_label", "label": "Button Label", "default": "Experience the Work" },
     { "type": "url", "id": "aerosoul_btn_url", "label": "Button URL" },
-
     { "type": "header", "content": "Bottom CTA" },
     { "type": "text", "id": "cta_heading", "label": "CTA Heading", "default": "Ready to Create Something Unique?" },
     { "type": "text", "id": "cta_subtext", "label": "CTA Subtext", "default": "Every great project starts with a conversation. Tell us what you have in mind." },
