@@ -1,6 +1,863 @@
+{% doc %}
+  @prompt
+    Implement a full light/dark mode toggle system across the entire theme. The theme currently has hardcoded hex colors in every section with no central color variable system. Here is what needs to be done:
+    
+    1. CSS VARIABLES: In the theme's main CSS file (lb-base.css or similar), define two sets of CSS custom properties on :root for light and dark modes:
+    - Dark mode (default): --color-bg: #111111, --color-bg-secondary: #1a1a1a, --color-text: #f0ede6, --color-text-muted: #aaaaaa, --color-accent: #7dd8e8, --color-border: #2a2a2a
+    - Light mode: --color-bg: #ffffff, --color-bg-secondary: #f5f5f5, --color-text: #111111, --color-text-muted: #555555, --color-accent: #3b82f6, --color-border: #e0e0e0
+    
+    2. REPLACE HARDCODED COLORS: In all section CSS files (lb-components.css, lb-blueprints.css, etc.) and section Liquid files, replace hardcoded hex background and text colors with the CSS variables above. Key sections to update:
+    - LB Header: background #0a0a0a → var(--color-bg), text #ffffff → var(--color-text)
+    - LB Footer: background #1a1a1a → var(--color-bg-secondary), text #ffffff → var(--color-text)
+    - Cart page: background #0A0A0A → var(--color-bg), text #FFFFFF → var(--color-text)
+    - All other sections with hardcoded dark/light colors
+    
+    3. TOGGLE MECHANISM: Add a light/dark toggle button (sun/moon icon) to the header that:
+    - Switches a data-theme="dark" / data-theme="light" attribute on the <html> element
+    - Uses CSS [data-theme="light"] { } to override the variables for light mode
+    - Saves the user's preference to localStorage so it persists across pages
+    - Defaults to dark mode
+    
+    4. Keep all accent colors, layout, spacing, fonts and everything else completely unchanged. Only colors should switch., continue inspecting for more as the cart section has dark background yet is static when toggling
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  :root {
+    --color-bg: #111111;
+    --color-bg-secondary: #1a1a1a;
+    --color-text: #f0ede6;
+    --color-text-muted: #aaaaaa;
+    --color-accent: #7dd8e8;
+    --color-border: #2a2a2a;
+    --color-card-bg: #1a1a1a;
+    --color-input-bg: #0a0a0a;
+    --color-input-border: #2a2a2a;
+  }
+
+  [data-theme="light"] {
+    --color-bg: #ffffff;
+    --color-bg-secondary: #f5f5f5;
+    --color-text: #111111;
+    --color-text-muted: #555555;
+    --color-accent: #3b82f6;
+    --color-border: #e0e0e0;
+    --color-card-bg: #f9f9f9;
+    --color-input-bg: #ffffff;
+    --color-input-border: #d0d0d0;
+  }
+
+  body {
+    background-color: var(--color-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  header,
+  .header,
+  [class*="header"],
+  .lb-header,
+  .site-header {
+    background-color: var(--color-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  footer,
+  .footer,
+  [class*="footer"],
+  .lb-footer,
+  .site-footer {
+    background-color: var(--color-bg-secondary) !important;
+    color: var(--color-text) !important;
+  }
+
+  main,
+  .main-content,
+  [role="main"] {
+    background-color: var(--color-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  .cart,
+  .cart-page,
+  .cart-container,
+  .cart-wrapper,
+  [class*="cart"],
+  #cart,
+  form[action="/cart"],
+  .shopify-section[id*="cart"] {
+    background-color: var(--color-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  .cart-item,
+  .cart-items,
+  .cart__item,
+  [class*="cart-item"],
+  [class*="cart__item"] {
+    background-color: var(--color-card-bg) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  .product-card,
+  .product-item,
+  .product,
+  [class*="product-card"],
+  [class*="product-item"] {
+    background-color: var(--color-card-bg) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  .card,
+  [class*="card"] {
+    background-color: var(--color-card-bg) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  h1, h2, h3, h4, h5, h6,
+  .heading,
+  [class*="heading"],
+  [class*="title"] {
+    color: var(--color-text) !important;
+  }
+
+  p,
+  span,
+  div,
+  li,
+  a {
+    color: inherit;
+  }
+
+  a:not(.button):not(.btn):not([class*="button"]):not([class*="btn"]) {
+    color: var(--color-accent);
+  }
+
+  input,
+  textarea,
+  select,
+  .input,
+  [class*="input"],
+  [type="text"],
+  [type="email"],
+  [type="tel"],
+  [type="number"],
+  [type="search"] {
+    background-color: var(--color-input-bg) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-input-border) !important;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-text-muted) !important;
+  }
+
+  .section,
+  [class*="section"],
+  .shopify-section {
+    background-color: var(--color-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  .container,
+  [class*="container"] {
+    color: var(--color-text) !important;
+  }
+
+  table,
+  .table,
+  [class*="table"] {
+    background-color: var(--color-bg) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  th,
+  td {
+    border-color: var(--color-border) !important;
+    color: var(--color-text) !important;
+  }
+
+  .modal,
+  .popup,
+  .drawer,
+  [class*="modal"],
+  [class*="popup"],
+  [class*="drawer"] {
+    background-color: var(--color-bg-secondary) !important;
+    color: var(--color-text) !important;
+  }
+
+  .nav,
+  .navigation,
+  .menu,
+  [class*="nav"],
+  [class*="menu"] {
+    background-color: var(--color-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  .nav a,
+  .navigation a,
+  .menu a,
+  [class*="nav"] a,
+  [class*="menu"] a {
+    color: var(--color-text) !important;
+  }
+
+  .breadcrumb,
+  [class*="breadcrumb"] {
+    color: var(--color-text-muted) !important;
+  }
+
+  .price,
+  [class*="price"] {
+    color: var(--color-text) !important;
+  }
+
+  .badge,
+  .tag,
+  [class*="badge"],
+  [class*="tag"] {
+    background-color: var(--color-card-bg) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  hr,
+  .divider,
+  [class*="divider"] {
+    border-color: var(--color-border) !important;
+    background-color: var(--color-border) !important;
+  }
+
+  .text-muted,
+  .muted,
+  [class*="muted"] {
+    color: var(--color-text-muted) !important;
+  }
+
+  svg:not([fill="none"]) {
+    fill: currentColor;
+  }
+
+  .icon,
+  [class*="icon"] {
+    color: var(--color-text) !important;
+  }
+
+  .overlay,
+  [class*="overlay"] {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+  }
+
+  [data-theme="light"] .overlay,
+  [data-theme="light"] [class*="overlay"] {
+    background-color: rgba(0, 0, 0, 0.3) !important;
+  }
+
+  .announcement-bar,
+  [class*="announcement"] {
+    background-color: var(--color-bg-secondary) !important;
+    color: var(--color-text) !important;
+  }
+
+  .sidebar,
+  [class*="sidebar"] {
+    background-color: var(--color-bg-secondary) !important;
+    color: var(--color-text) !important;
+  }
+
+  .collection,
+  [class*="collection"] {
+    background-color: var(--color-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  .blog,
+  .article,
+  [class*="blog"],
+  [class*="article"] {
+    background-color: var(--color-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  .search,
+  [class*="search"] {
+    background-color: var(--color-input-bg) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-input-border) !important;
+  }
+
+  .pagination,
+  [class*="pagination"] {
+    color: var(--color-text) !important;
+  }
+
+  .pagination a {
+    color: var(--color-text) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  .filter,
+  [class*="filter"] {
+    background-color: var(--color-card-bg) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  .accordion,
+  [class*="accordion"] {
+    background-color: var(--color-card-bg) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  .tab,
+  [class*="tab"] {
+    background-color: var(--color-card-bg) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  .alert,
+  .notice,
+  .message,
+  [class*="alert"],
+  [class*="notice"],
+  [class*="message"] {
+    background-color: var(--color-card-bg) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  .quantity-selector,
+  [class*="quantity"] {
+    background-color: var(--color-input-bg) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-input-border) !important;
+  }
+
+  .variant-selector,
+  [class*="variant"] {
+    background-color: var(--color-input-bg) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-input-border) !important;
+  }
+
+  .review,
+  [class*="review"] {
+    background-color: var(--color-card-bg) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  .testimonial,
+  [class*="testimonial"] {
+    background-color: var(--color-card-bg) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  .hero,
+  [class*="hero"] {
+    background-color: var(--color-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  .banner,
+  [class*="banner"] {
+    background-color: var(--color-bg-secondary) !important;
+    color: var(--color-text) !important;
+  }
+
+  .grid,
+  [class*="grid"] {
+    color: var(--color-text) !important;
+  }
+
+  .list,
+  [class*="list"] {
+    color: var(--color-text) !important;
+  }
+
+  .dropdown,
+  [class*="dropdown"] {
+    background-color: var(--color-bg-secondary) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  .tooltip,
+  [class*="tooltip"] {
+    background-color: var(--color-bg-secondary) !important;
+    color: var(--color-text) !important;
+  }
+
+  .loading,
+  .spinner,
+  [class*="loading"],
+  [class*="spinner"] {
+    color: var(--color-text) !important;
+  }
+
+  .empty-state,
+  [class*="empty"] {
+    color: var(--color-text-muted) !important;
+  }
+
+  .error,
+  [class*="error"] {
+    color: #ff4444 !important;
+  }
+
+  .success,
+  [class*="success"] {
+    color: #00cc66 !important;
+  }
+
+  .warning,
+  [class*="warning"] {
+    color: #ffaa00 !important;
+  }
+
+  label,
+  .label,
+  [class*="label"] {
+    color: var(--color-text) !important;
+  }
+
+  fieldset {
+    border-color: var(--color-border) !important;
+  }
+
+  legend {
+    color: var(--color-text) !important;
+  }
+
+  .form,
+  form,
+  [class*="form"] {
+    color: var(--color-text) !important;
+  }
+
+  .checkbox,
+  .radio,
+  [type="checkbox"],
+  [type="radio"] {
+    border-color: var(--color-input-border) !important;
+  }
+
+  .select-wrapper,
+  [class*="select"] {
+    background-color: var(--color-input-bg) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-input-border) !important;
+  }
+
+  option {
+    background-color: var(--color-input-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  .progress,
+  [class*="progress"] {
+    background-color: var(--color-card-bg) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  .progress-bar,
+  [class*="progress-bar"] {
+    background-color: var(--color-accent) !important;
+  }
+
+  .slider,
+  [class*="slider"] {
+    background-color: var(--color-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  .slide,
+  [class*="slide"] {
+    background-color: var(--color-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  .carousel,
+  [class*="carousel"] {
+    background-color: var(--color-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  .gallery,
+  [class*="gallery"] {
+    background-color: var(--color-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  .video-wrapper,
+  [class*="video"] {
+    background-color: var(--color-bg) !important;
+  }
+
+  .image-wrapper,
+  [class*="image-wrapper"] {
+    background-color: var(--color-bg) !important;
+  }
+
+  .caption,
+  [class*="caption"] {
+    color: var(--color-text-muted) !important;
+  }
+
+  .metadata,
+  [class*="metadata"],
+  [class*="meta"] {
+    color: var(--color-text-muted) !important;
+  }
+
+  .timestamp,
+  .date,
+  [class*="timestamp"],
+  [class*="date"] {
+    color: var(--color-text-muted) !important;
+  }
+
+  .author,
+  [class*="author"] {
+    color: var(--color-text) !important;
+  }
+
+  .category,
+  [class*="category"] {
+    color: var(--color-text-muted) !important;
+  }
+
+  .stock,
+  [class*="stock"] {
+    color: var(--color-text) !important;
+  }
+
+  .sku,
+  [class*="sku"] {
+    color: var(--color-text-muted) !important;
+  }
+
+  .vendor,
+  [class*="vendor"] {
+    color: var(--color-text-muted) !important;
+  }
+
+  .compare-price,
+  [class*="compare"] {
+    color: var(--color-text-muted) !important;
+  }
+
+  .discount,
+  .sale,
+  [class*="discount"],
+  [class*="sale"] {
+    color: #ff4444 !important;
+  }
+
+  .shipping,
+  [class*="shipping"] {
+    color: var(--color-text-muted) !important;
+  }
+
+  .total,
+  [class*="total"] {
+    color: var(--color-text) !important;
+  }
+
+  .subtotal,
+  [class*="subtotal"] {
+    color: var(--color-text) !important;
+  }
+
+  .tax,
+  [class*="tax"] {
+    color: var(--color-text-muted) !important;
+  }
+
+  .summary,
+  [class*="summary"] {
+    background-color: var(--color-card-bg) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  .checkout,
+  [class*="checkout"] {
+    background-color: var(--color-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  .account,
+  [class*="account"] {
+    background-color: var(--color-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  .login,
+  .register,
+  [class*="login"],
+  [class*="register"] {
+    background-color: var(--color-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  .wishlist,
+  [class*="wishlist"] {
+    background-color: var(--color-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  .compare,
+  [class*="compare"] {
+    background-color: var(--color-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  .newsletter,
+  [class*="newsletter"] {
+    background-color: var(--color-card-bg) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  .social,
+  [class*="social"] {
+    color: var(--color-text) !important;
+  }
+
+  .social a {
+    color: var(--color-text) !important;
+  }
+
+  .breadcrumbs,
+  [class*="breadcrumbs"] {
+    color: var(--color-text-muted) !important;
+  }
+
+  .breadcrumbs a {
+    color: var(--color-text-muted) !important;
+  }
+
+  .back-to-top,
+  [class*="back-to-top"] {
+    background-color: var(--color-card-bg) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  .cookie-banner,
+  [class*="cookie"] {
+    background-color: var(--color-bg-secondary) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  .promo,
+  [class*="promo"] {
+    background-color: var(--color-card-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  .featured,
+  [class*="featured"] {
+    background-color: var(--color-card-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  .highlight,
+  [class*="highlight"] {
+    background-color: var(--color-card-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  .widget,
+  [class*="widget"] {
+    background-color: var(--color-card-bg) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  .panel,
+  [class*="panel"] {
+    background-color: var(--color-card-bg) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  .box,
+  [class*="box"] {
+    background-color: var(--color-card-bg) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  .block,
+  [class*="block"]:not([class*="shopify-block"]) {
+    color: var(--color-text) !important;
+  }
+
+  .content,
+  [class*="content"] {
+    color: var(--color-text) !important;
+  }
+
+  .text,
+  [class*="text"] {
+    color: var(--color-text) !important;
+  }
+
+  .description,
+  [class*="description"] {
+    color: var(--color-text) !important;
+  }
+
+  .details,
+  [class*="details"] {
+    color: var(--color-text) !important;
+  }
+
+  .info,
+  [class*="info"] {
+    color: var(--color-text-muted) !important;
+  }
+
+  .note,
+  [class*="note"] {
+    color: var(--color-text-muted) !important;
+  }
+
+  .help,
+  [class*="help"] {
+    color: var(--color-text-muted) !important;
+  }
+
+  .hint,
+  [class*="hint"] {
+    color: var(--color-text-muted) !important;
+  }
+
+  code,
+  pre,
+  .code,
+  [class*="code"] {
+    background-color: var(--color-card-bg) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  blockquote {
+    background-color: var(--color-card-bg) !important;
+    color: var(--color-text) !important;
+    border-left-color: var(--color-accent) !important;
+  }
+
+  .quote,
+  [class*="quote"] {
+    background-color: var(--color-card-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  .callout,
+  [class*="callout"] {
+    background-color: var(--color-card-bg) !important;
+    color: var(--color-text) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  .well,
+  [class*="well"] {
+    background-color: var(--color-card-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  .jumbotron,
+  [class*="jumbotron"] {
+    background-color: var(--color-bg-secondary) !important;
+    color: var(--color-text) !important;
+  }
+
+  .media,
+  [class*="media"] {
+    background-color: var(--color-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  .thumbnail,
+  [class*="thumbnail"] {
+    background-color: var(--color-card-bg) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  .avatar,
+  [class*="avatar"] {
+    background-color: var(--color-card-bg) !important;
+    border-color: var(--color-border) !important;
+  }
+
+  .status,
+  [class*="status"] {
+    color: var(--color-text) !important;
+  }
+
+  .active {
+    color: var(--color-accent) !important;
+  }
+
+  .disabled,
+  [disabled] {
+    color: var(--color-text-muted) !important;
+    opacity: 0.6;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  .visible {
+    display: block !important;
+  }
+{% endstyle %}
+
+<div class="theme-color-system-{{ ai_gen_id }}" {{ block.shopify_attributes }} style="display: none;">
+  {% if block.settings.show_indicator %}
+    <div style="position: fixed; bottom: 10px; left: 10px; padding: 5px 10px; background: var(--color-card-bg); color: var(--color-text); border: 1px solid var(--color-border); border-radius: 4px; font-size: 11px; z-index: 10000; opacity: 0.7;">
+      Theme system active
+    </div>
+  {% endif %}
+</div>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Theme color system",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Color system"
+    },
+    {
+      "type": "paragraph",
+      "content": "This block applies CSS variables globally to override hardcoded colors throughout your theme. It works with the Light/Dark Mode Toggle block."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_indicator",
+      "label": "Show active indicator",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Theme color system"
+    }
+  ]
+}
 {% endschema %}
