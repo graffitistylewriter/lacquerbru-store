@@ -33,35 +33,47 @@
 <style>
   :root,
   [data-theme="dark"] {
-    --lb-bg:          #0A0A0A;
-    --lb-bg-2:        #111111;
-    --lb-bg-3:        #1A1A1A;
-    --lb-text:        #FFFFFF;
-    --lb-muted:       #AAAAAA;
-    --lb-border:      #2A2A2A;
-    --lb-accent:      #7DD8E8;
+    --lb-bg:       #0A0A0A;
+    --lb-bg-2:     #111111;
+    --lb-bg-3:     #1A1A1A;
+    --lb-text:     #FFFFFF;
+    --lb-muted:    #AAAAAA;
+    --lb-border:   #2A2A2A;
+    --lb-accent:   #7DD8E8;
     --lb-header-bg:   #0A0A0A;
     --lb-header-text: #FFFFFF;
-    --lb-ink:         #1A1A1A;
-    --lb-wall:        #2A2A2A;
-    --lb-void:        #0A0A0A;
-    --lb-concrete:    #3D3D3D;
+
+    /* Blueprint variable bridge — dark */
+    --void:     #0A0A0A;
+    --ink:      #1A1A1A;
+    --wall:     #2A2A2A;
+    --concrete: #3D3D3D;
+    --white:    #FFFFFF;
+    --muted:    #AAAAAA;
+    --blue:     #7DD8E8;
   }
+
   [data-theme="light"] {
-    --lb-bg:          #FFFFFF;
-    --lb-bg-2:        #F0F0F0;
-    --lb-bg-3:        #E5E5E5;
-    --lb-text:        #0A0A0A;
-    --lb-muted:       #555555;
-    --lb-border:      #DDDDDD;
-    --lb-accent:      #7DD8E8;
+    --lb-bg:       #FFFFFF;
+    --lb-bg-2:     #F0F0F0;
+    --lb-bg-3:     #E5E5E5;
+    --lb-text:     #0A0A0A;
+    --lb-muted:    #555555;
+    --lb-border:   #DDDDDD;
+    --lb-accent:   #7DD8E8;
     --lb-header-bg:   #FFFFFF;
     --lb-header-text: #0A0A0A;
-    --lb-ink:         #F0F0F0;
-    --lb-wall:        #E0E0E0;
-    --lb-void:        #FFFFFF;
-    --lb-concrete:    #999999;
+
+    /* Blueprint variable bridge — light */
+    --void:     #FFFFFF;
+    --ink:      #F0F0F0;
+    --wall:     #E0E0E0;
+    --concrete: #999999;
+    --white:    #0A0A0A;
+    --muted:    #555555;
+    --blue:     #7DD8E8;
   }
+
   html { transition: background-color 0.3s ease; }
   body {
     background: var(--lb-bg);
@@ -72,6 +84,7 @@
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
   }
 </style>
+
 
   {%- comment -%} Apply saved theme before paint — prevents flash {%- endcomment -%}
   <script>
