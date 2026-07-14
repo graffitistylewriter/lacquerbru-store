@@ -27,7 +27,7 @@
         "btn2_label": "Commission Inquiry",
         "btn2_url": "shopify://pages/commission-contact",
         "content_align": "center",
-        "min_height": 750,
+        "min_height": 700,
         "padding_v": 120,
         "content_max_width": 700,
         "show_scroll_indicator": true,
@@ -196,6 +196,34 @@
     "1784031422bb4a270a": {
       "type": "_blocks",
       "settings": {}
+    },
+    "178404686072e5cdf7": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_92a6610_VYG9F4": {
+          "type": "ai_gen_block_92a6610",
+          "settings": {
+            "show_indicator": false
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_92a6610_VYG9F4"
+      ],
+      "settings": {}
+    },
+    "1784047643baf0f558": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "1784047706c25e8ff5": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "1784047731acb49dcd": {
+      "type": "_blocks",
+      "settings": {}
     }
   },
   "order": [
@@ -215,6 +243,10 @@
     "1784030207f5240a6d",
     "1784030366c4edb756",
     "17840311874042ffb0",
-    "1784031422bb4a270a"
+    "1784031422bb4a270a",
+    "178404686072e5cdf7",
+    "1784047643baf0f558",
+    "1784047706c25e8ff5",
+    "1784047731acb49dcd"
   ]
 }
