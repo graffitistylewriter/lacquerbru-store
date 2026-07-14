@@ -30,37 +30,48 @@
   {{ 'lb-blueprints.css' | asset_url | stylesheet_tag }}
   {{ 'lb-animations.css' | asset_url | stylesheet_tag }}
 
-  <style>
-    :root,
-    [data-theme="dark"] {
-      --lb-bg:          #0A0A0A;
-      --lb-bg-2:        #111111;
-      --lb-bg-3:        #1A1A1A;
-      --lb-text:        #FFFFFF;
-      --lb-muted:       #AAAAAA;
-      --lb-border:      #2A2A2A;
-      --lb-accent:      #7DD8E8;
-      --lb-header-bg:   #0A0A0A;
-      --lb-header-text: #FFFFFF;
-    }
-    [data-theme="light"] {
-      --lb-bg:          #F5F5F0;
-      --lb-bg-2:        #EBEBEB;
-      --lb-bg-3:        #FFFFFF;
-      --lb-text:        #0A0A0A;
-      --lb-muted:       #555555;
-      --lb-border:      #DDDDDD;
-      --lb-accent:      #0A8FA8;
-      --lb-header-bg:   #FFFFFF;
-      --lb-header-text: #0A0A0A;
-    }
-    html { transition: background-color 0.3s ease; }
-    body {
-      background: var(--lb-bg);
-      color: var(--lb-text);
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-  </style>
+<style>
+  :root,
+  [data-theme="dark"] {
+    --lb-bg:          #0A0A0A;
+    --lb-bg-2:        #111111;
+    --lb-bg-3:        #1A1A1A;
+    --lb-text:        #FFFFFF;
+    --lb-muted:       #AAAAAA;
+    --lb-border:      #2A2A2A;
+    --lb-accent:      #7DD8E8;
+    --lb-header-bg:   #0A0A0A;
+    --lb-header-text: #FFFFFF;
+    --lb-ink:         #1A1A1A;
+    --lb-wall:        #2A2A2A;
+    --lb-void:        #0A0A0A;
+    --lb-concrete:    #3D3D3D;
+  }
+  [data-theme="light"] {
+    --lb-bg:          #FFFFFF;
+    --lb-bg-2:        #F0F0F0;
+    --lb-bg-3:        #E5E5E5;
+    --lb-text:        #0A0A0A;
+    --lb-muted:       #555555;
+    --lb-border:      #DDDDDD;
+    --lb-accent:      #7DD8E8;
+    --lb-header-bg:   #FFFFFF;
+    --lb-header-text: #0A0A0A;
+    --lb-ink:         #F0F0F0;
+    --lb-wall:        #E0E0E0;
+    --lb-void:        #FFFFFF;
+    --lb-concrete:    #999999;
+  }
+  html { transition: background-color 0.3s ease; }
+  body {
+    background: var(--lb-bg);
+    color: var(--lb-text);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  *, *::before, *::after {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  }
+</style>
 
   {%- comment -%} Apply saved theme before paint — prevents flash {%- endcomment -%}
   <script>
