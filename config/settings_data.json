@@ -15,7 +15,7 @@
       "lb-header": {
         "type": "lb-header",
         "settings": {
-          "show_announcement": false,
+          "show_announcement": true,
           "announcement_text": "Free shipping on orders over R500 — Shop Now",
           "announcement_url": "",
           "announcement_bg": "#7dd8e8",
@@ -33,7 +33,7 @@
           "nav_bg_scrolled": "#000000",
           "nav_text_color": "#ffffff",
           "nav_accent_color": "#7dd8e8",
-          "nav_height": 72
+          "nav_height": 84
         }
       },
       "lb-footer": {
