@@ -35,7 +35,7 @@
       style="
         background: {{ section.settings.text_band_color }};
         opacity: {{ band_opacity }};
-        height: {{ section.settings.text_band_height }};
+        height: {{ section.settings.text_band_height }}%;
       "
     ></div>
   {%- endif -%}
@@ -266,12 +266,9 @@
     { "type": "checkbox", "id": "show_text_band", "label": "Show Text Band", "default": true },
     { "type": "color", "id": "text_band_color", "label": "Band Colour", "default": "#000000" },
     { "type": "range", "id": "text_band_opacity", "label": "Band Opacity", "min": 0, "max": 100, "step": 5, "default": 35, "unit": "%" },
-    { "type": "select", "id": "text_band_height", "label": "Band Height", "options": [
-      { "value": "60px", "label": "Narrow (60px)" },
-      { "value": "100px", "label": "Medium (100px)" },
-      { "value": "140px", "label": "Tall (140px)" },
-      { "value": "200px", "label": "Extra Tall (200px)" }
-    ], "default": "100px" },
+    { "type": "range", "id": "text_band_height", "label": "Band Height", "min": 0, "max": 100, "step": 1, "default": 30, "unit": "%" },
+
+    { "type": "header", "content": "Full Overlay" },
     { "type": "checkbox", "id": "show_overlay", "label": "Show Overlay", "default": true },
     { "type": "color", "id": "overlay_color", "label": "Overlay Colour", "default": "#000000" },
     { "type": "range", "id": "overlay_opacity", "label": "Overlay Opacity", "min": 0, "max": 90, "step": 5, "default": 55, "unit": "%" },
