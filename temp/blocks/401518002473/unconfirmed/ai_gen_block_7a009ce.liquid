@@ -1,6 +1,268 @@
+{% doc %}
+  @prompt
+    In the LB Hero section, add a "Band Height" range slider setting that controls the height of the overlay element. The slider should allow values from 0% to 100%, letting the merchant choose between a narrow band overlay at the bottom of the hero image or a full-cover overlay that spans the entire hero. The overlay height should update dynamically based on the slider value, using CSS to set the overlay's height as a percentage of the hero container.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .lb-hero-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: {{ block.settings.hero_height }}vh;
+    overflow: hidden;
+    display: block;
+  }
+
+  .lb-hero-image-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .lb-hero-overlay-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: {{ block.settings.band_height }}%;
+    background: {{ block.settings.overlay_color }};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    transition: height 0.3s ease;
+  }
+
+  .lb-hero-content-{{ ai_gen_id }} {
+    text-align: center;
+    color: {{ block.settings.text_color }};
+    max-width: 800px;
+    width: 100%;
+  }
+
+  .lb-hero-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    font-weight: 700;
+    margin: 0 0 16px 0;
+    line-height: 1.2;
+  }
+
+  .lb-hero-subtitle-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subtitle_size }}px;
+    margin: 0 0 24px 0;
+    line-height: 1.5;
+  }
+
+  .lb-hero-button-{{ ai_gen_id }} {
+    display: inline-block;
+    padding: 12px 32px;
+    background-color: {{ block.settings.button_color }};
+    color: {{ block.settings.button_text_color }};
+    text-decoration: none;
+    border-radius: {{ block.settings.button_radius }}px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .lb-hero-button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_color }};
+    transform: translateY(-2px);
+  }
+
+  @media screen and (max-width: 749px) {
+    .lb-hero-{{ ai_gen_id }} {
+      height: {{ block.settings.mobile_height }}vh;
+    }
+
+    .lb-hero-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.7 }}px;
+    }
+
+    .lb-hero-subtitle-{{ ai_gen_id }} {
+      font-size: {{ block.settings.subtitle_size | times: 0.8 }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="lb-hero-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  {% if block.settings.hero_image %}
+    <img
+      src="{{ block.settings.hero_image | image_url: width: 2000 }}"
+      alt="{{ block.settings.hero_image.alt | escape }}"
+      class="lb-hero-image-{{ ai_gen_id }}"
+      loading="lazy"
+      width="{{ block.settings.hero_image.width }}"
+      height="{{ block.settings.hero_image.height }}"
+    >
+  {% else %}
+    <div class="lb-hero-image-placeholder-{{ ai_gen_id }}">
+      {{ 'hero-apparel-1' | placeholder_svg_tag }}
+    </div>
+  {% endif %}
+
+  <div class="lb-hero-overlay-{{ ai_gen_id }}">
+    <div class="lb-hero-content-{{ ai_gen_id }}">
+      {% if block.settings.title != blank %}
+        <h1 class="lb-hero-title-{{ ai_gen_id }}">{{ block.settings.title }}</h1>
+      {% endif %}
+
+      {% if block.settings.subtitle != blank %}
+        <p class="lb-hero-subtitle-{{ ai_gen_id }}">{{ block.settings.subtitle }}</p>
+      {% endif %}
+
+      {% if block.settings.button_text != blank and block.settings.button_link != blank %}
+        <a href="{{ block.settings.button_link }}" class="lb-hero-button-{{ ai_gen_id }}">
+          {{ block.settings.button_text }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "LB Hero",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image"
+    },
+    {
+      "type": "range",
+      "id": "hero_height",
+      "label": "Desktop height",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "unit": "vh",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "label": "Mobile height",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "unit": "vh",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "range",
+      "id": "band_height",
+      "label": "Band height",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "rgba(0, 0, 0, 0.6)"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Welcome to Lacquer Bru"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Premium spray paint and graffiti supplies"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 24,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle size",
+      "min": 14,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button color",
+      "default": "#3b82f6"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Button hover color",
+      "default": "#2563eb"
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Button border radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "LB Hero"
+    }
+  ]
+}
 {% endschema %}
