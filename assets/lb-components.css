@@ -37,6 +37,7 @@
   z-index: 2;
   width: min(920px, 100%);
   animation: lbFadeUp .8s ease both;
+  background: transparent;
 }
 
 .lb-hero__eyebrow {
