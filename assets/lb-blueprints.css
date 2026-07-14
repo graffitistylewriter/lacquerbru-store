@@ -45,7 +45,7 @@ nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:20px 60px;displa
 
 /* LAYOUT */
 .page-wrap{padding-top:72px;}
-section{padding:100px 60px;}
+.lb-blueprint-page{padding:0;}
 .section-label{font-size:10px;font-weight:500;letter-spacing:0.28em;text-transform:uppercase;color:var(--blue);margin-bottom:14px;display:block;}
 .section-h2{font-family:'Oswald',sans-serif;font-size:clamp(30px,4vw,50px);font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:var(--white);margin-bottom:16px;line-height:1.05;}
 .section-sub{font-size:15px;color:var(--muted);line-height:1.85;max-width:560px;}
@@ -86,7 +86,7 @@ footer{background:var(--ink);padding:70px 60px 40px;border-top:0.5px solid var(-
   nav{padding:15px 24px;}
   .nav-links{display:none;}
   .hamburger{display:flex;}
-  section{padding:70px 24px;}
+  .lb-blueprint-page{padding:0;}
   footer{padding:48px 24px 32px;}
   .fg{grid-template-columns:1fr 1fr;gap:28px;}
   .fb{flex-direction:column;text-align:center;}
