@@ -112,7 +112,7 @@
         "item_1_value": "Files delivered immediately after payment",
         "item_2_icon": "🔒",
         "item_2_label": "Secure Checkout",
-        "item_2_value": "Protected transactions",
+        "item_2_value": "Protected Transactions",
         "item_3_icon": "🎨",
         "item_3_label": "Made by an Artist",
         "item_3_value": "Tested in real workflows",
@@ -125,6 +125,32 @@
         "border_color": "#2a2a2a",
         "padding_v": 24
       }
+    },
+    "1784020519a9fd7562": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_cd5e22f_EjpKBb": {
+          "type": "ai_gen_block_cd5e22f",
+          "settings": {
+            "label": "Payments Via",
+            "alignment": "flex-start",
+            "mobile_alignment": "center",
+            "logo_height": 24,
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "show_paypal": true,
+            "show_payfast": true,
+            "show_visa": true,
+            "show_mastercard": true,
+            "show_amex": true
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_cd5e22f_EjpKBb"
+      ],
+      "settings": {}
     }
   },
   "order": [
@@ -132,6 +158,7 @@
     "marquee",
     "featured",
     "about",
-    "trust"
+    "trust",
+    "1784020519a9fd7562"
   ]
 }
