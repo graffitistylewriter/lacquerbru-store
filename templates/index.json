@@ -13,13 +13,6 @@
       "type": "lb-hero",
       "settings": {
         "bg_image": "shopify://shop_images/envynause_2015-12-06_-8m1YCkvQL_1133951999903200267_dd63fccc-4b22-4cc4-a8ab-22542436d5e6.jpg",
-        "show_text_band": true,
-        "text_band_color": "#000000",
-        "text_band_opacity": 45,
-        "text_band_height": "200px",
-        "show_overlay": true,
-        "overlay_color": "#000000",
-        "overlay_opacity": 50,
         "eyebrow": "If Not Unique, Why Bother",
         "heading": "Street Artist.",
         "heading_em": "Digital Creator.",
@@ -238,6 +231,25 @@
     "178404960650f8d073": {
       "type": "_blocks",
       "settings": {}
+    },
+    "178406083099d432f2": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_c14d1eb_N6x96D": {
+          "type": "ai_gen_block_c14d1eb",
+          "settings": {
+            "overlay_color": "#000000",
+            "overlay_opacity": 100,
+            "overlay_width": 100,
+            "overlay_height": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_c14d1eb_N6x96D"
+      ],
+      "settings": {}
     }
   },
   "order": [
@@ -264,6 +276,7 @@
     "1784047731acb49dcd",
     "1784048606a9f8731b",
     "1784049540ca459bd5",
-    "178404960650f8d073"
+    "178404960650f8d073",
+    "178406083099d432f2"
   ]
 }
