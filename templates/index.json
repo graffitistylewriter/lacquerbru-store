@@ -71,7 +71,7 @@
         "bg_color": "#0a0a0a",
         "card_bg": "#1a1a1a",
         "text_color": "#ffffff",
-        "muted_color": "#aaaaaa",
+        "muted_color": "#ffffff",
         "accent_color": "#7dd8e8",
         "heading_color": "#ffffff",
         "padding_top": 100,
