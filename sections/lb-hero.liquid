@@ -1,4 +1,3 @@
-
 <section
   class="lb-hero"
   style="
@@ -19,6 +18,18 @@
     </div>
   {% endif %}
 
+  {%- comment -%} OVERLAY {%- endcomment -%}
+  {% if section.settings.overlay_opacity > 0 %}
+    <div
+      class="lb-hero__overlay"
+      style="
+        background-color: {{ section.settings.overlay_color }};
+        opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+        width: {{ section.settings.overlay_width }}%;
+        height: {{ section.settings.overlay_height }}%;
+      "
+    ></div>
+  {% endif %}
 
   {%- comment -%} CONTENT {%- endcomment -%}
   <div class="lb-hero__content lb-hero__content--{{ section.settings.content_align }}">
@@ -88,7 +99,9 @@
   }
   .lb-hero__overlay {
     position: absolute;
-    inset: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 1;
     pointer-events: none;
   }
@@ -138,7 +151,6 @@
     margin-top: 8px;
   }
 
-  /* SHARED BUTTON STYLES */
   .lb-btn {
     font-size: 11px;
     font-weight: 600;
@@ -162,7 +174,6 @@
     color: #FFFFFF;
     opacity: 0.85;
   }
-
   .lb-btn--ghost {
     background: transparent;
     color: {{ section.settings.text_color }};
@@ -172,20 +183,17 @@
     border-color: {{ section.settings.accent_color }};
     color: {{ section.settings.accent_color }};
   }
-    .lb-btn--commission {
+  .lb-btn--commission {
     background: {{ section.settings.accent_color }};
     color: #FFFFFF;
     border-color: {{ section.settings.accent_color }};
   }
-   .lb-btn--commission:hover {
+  .lb-btn--commission:hover {
     background: {{ section.settings.accent_color }};
     color: #FFFFFF;
     opacity: 0.85;
   }
 
-
-
-  /* SCROLL INDICATOR */
   .lb-hero__scroll {
     position: absolute;
     bottom: 32px;
@@ -230,6 +238,12 @@
   "settings": [
     { "type": "header", "content": "Background" },
     { "type": "image_picker", "id": "bg_image", "label": "Background Image" },
+
+    { "type": "header", "content": "Overlay" },
+    { "type": "color", "id": "overlay_color", "label": "Overlay Colour", "default": "#000000" },
+    { "type": "range", "id": "overlay_opacity", "label": "Overlay Opacity", "min": 0, "max": 100, "step": 5, "default": 40, "unit": "%" },
+    { "type": "range", "id": "overlay_width", "label": "Overlay Width", "min": 10, "max": 100, "step": 5, "default": 100, "unit": "%" },
+    { "type": "range", "id": "overlay_height", "label": "Overlay Height", "min": 10, "max": 100, "step": 5, "default": 100, "unit": "%" },
 
     { "type": "header", "content": "Content" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow Text", "default": "If Not Unique, Why Bother" },
