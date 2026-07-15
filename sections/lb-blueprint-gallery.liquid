@@ -26,7 +26,7 @@
     {%- for item in gallery_items -%}
       {%- assign img = item.image -%}
       {%- assign title = item.title -%}
-      {%- assign cats = item.categories -%}
+      {%- assign cats = item.categories.value -%}
       {%- assign wide = item.wide -%}
       {%- if img != blank -%}
         {%- assign cat_slugs = '' -%}
