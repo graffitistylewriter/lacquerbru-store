@@ -12,24 +12,88 @@
     "hero": {
       "type": "lb-hero",
       "settings": {
+        "overlay_color": "#000000",
+        "overlay_opacity": 40,
+        "overlay_width": 100,
+        "overlay_height": 100,
         "eyebrow": "The Work",
         "heading": "Gallery.",
         "heading_em": "",
         "subtext": "Murals · Portraits · Wildstyle · Digital · Commissions",
         "btn1_label": "Start a Commission",
+        "btn1_url": "",
         "btn2_label": "",
+        "btn2_url": "",
+        "content_align": "left",
+        "min_height": 500,
+        "padding_v": 120,
+        "content_max_width": 700,
         "show_scroll_indicator": true,
-        "min_height": 500
+        "scroll_label": "Scroll",
+        "text_color": "#ffffff",
+        "subtext_color": "#aaaaaa",
+        "accent_color": "#7dd8e8"
       }
     },
     "marquee": {
       "type": "lb-marquee",
-      "settings": {}
+      "settings": {
+        "accessibility_label": "Lacquer Bru creative services",
+        "separator": "&middot;"
+      }
     },
     "gallery": {
       "type": "lb-blueprint-gallery",
-      "settings": {}
+      "settings": {
+        "intro_label": "The Work",
+        "intro_text": "Over 16 years of aerosol culture, digital creation, and immersive visual transformation.",
+        "gallery_title_1": "Wildstyle — Group Production",
+        "gallery_cat_1": "Graffiti · Mural",
+        "gallery_wide_1": true,
+        "gallery_title_2": "Portrait Study",
+        "gallery_cat_2": "Portrait · Mural",
+        "gallery_wide_2": false,
+        "gallery_title_3": "Fire & Motion",
+        "gallery_cat_3": "Character · Mural",
+        "gallery_wide_3": false,
+        "gallery_title_4": "Large Scale Production",
+        "gallery_cat_4": "Mural · Commercial",
+        "gallery_wide_4": false,
+        "gallery_title_5": "Conceptual Piece",
+        "gallery_cat_5": "Conceptual · Mural",
+        "gallery_wide_5": true,
+        "gallery_title_6": "Interior Transformation",
+        "gallery_cat_6": "Interior · Commercial",
+        "gallery_wide_6": true,
+        "gallery_title_7": "Detail Work",
+        "gallery_cat_7": "Graffiti · Detail",
+        "gallery_wide_7": false,
+        "gallery_title_8": "",
+        "gallery_cat_8": "",
+        "gallery_wide_8": false,
+        "gallery_title_9": "",
+        "gallery_cat_9": "",
+        "gallery_wide_9": false,
+        "gallery_title_10": "",
+        "gallery_cat_10": "",
+        "gallery_wide_10": false,
+        "gallery_title_11": "",
+        "gallery_cat_11": "",
+        "gallery_wide_11": false,
+        "gallery_title_12": "",
+        "gallery_cat_12": "",
+        "gallery_wide_12": false,
+        "cta_label": "Commission Your Own Piece",
+        "cta_heading": "See Something You Like?",
+        "cta_subtext": "Every wall, canvas, and surface is an opportunity. Get in touch to discuss your project.",
+        "cta_btn_label": "Start a Commission",
+        "cta_btn_url": ""
+      }
     }
   },
-  "order": ["hero", "marquee", "gallery"]
+  "order": [
+    "hero",
+    "marquee",
+    "gallery"
+  ]
 }
