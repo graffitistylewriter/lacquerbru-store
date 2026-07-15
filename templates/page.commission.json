@@ -12,28 +12,90 @@
     "hero": {
       "type": "lb-hero",
       "settings": {
+        "bg_image": "shopify://shop_images/envynause_Here_s_one_from_my_wall_with__bener1graffiti_in_August_2016_2017-01-11_BPI1-ccgC8P_1425626669678341903.jpg",
+        "overlay_color": "#000000",
+        "overlay_opacity": 40,
+        "overlay_width": 100,
+        "overlay_height": 100,
         "eyebrow": "Work Together",
         "heading": "Commission Inquiry.",
         "heading_em": "",
         "subtext": "Every great piece starts with a conversation.",
         "btn1_label": "",
+        "btn1_url": "",
         "btn2_label": "",
+        "btn2_url": "",
+        "content_align": "left",
+        "min_height": 400,
+        "padding_v": 120,
+        "content_max_width": 700,
         "show_scroll_indicator": false,
-        "min_height": 400
+        "scroll_label": "Scroll",
+        "text_color": "#ffffff",
+        "subtext_color": "#aaaaaa",
+        "accent_color": "#7dd8e8"
       }
     },
     "marquee": {
       "type": "lb-marquee",
-      "settings": {}
+      "settings": {
+        "accessibility_label": "Lacquer Bru creative services",
+        "separator": "&middot;"
+      }
     },
     "commission": {
       "type": "lb-blueprint-commission",
-      "settings": {}
+      "settings": {
+        "info_label": "Work Together",
+        "info_heading": "Let's Create Something Original",
+        "info_body": "Whether you arrive with a clear concept or allow full creative freedom — both approaches are equally valued.",
+        "services_list": "Large scale exterior and interior murals|Textured feature walls and surface finishes|Brand spaces and commercial environments|Private residences and estates|Hospitality venues and retail environments|Vehicle graphics and custom artwork|Event live painting and activations|Digital illustration and design projects|Limited edition fine art print runs",
+        "location_text": "Based in Cape Town, South Africa. Working locally and internationally.",
+        "response_time": "We respond to all inquiries within 24 to 48 hours.",
+        "form_title": "Tell Us About Your Project",
+        "form_subtext": "The more detail you can share the better. Fill in what you know — we'll work through the rest together.",
+        "form_disclaimer": "",
+        "form_btn_label": "Submit Commission Inquiry",
+        "heard_about_options": "Instagram|Word of Mouth|Google|Behance|Referral|Other",
+        "project_type_options": "Mural (Exterior)|Mural (Interior)|Feature Wall|Fine Art Print|Vehicle Graphics|Digital Illustration|Brand Installation|Live Painting / Activation|Other",
+        "preferred_style_options": "Realistic|Abstract|Geometric|Typographic|Mixed Media|Open to Direction",
+        "heard_about_label": "How did you hear about us?",
+        "preferred_style_label": "Preferred Style / Medium",
+        "completion_date_label": "Desired Completion Date",
+        "file_note_heading": "Reference Files",
+        "file_note_text": "To share reference images, mood boards or site photos — email them directly to howzit@lacquerbru.co.za with your name in the subject line.",
+        "work_label": "Previous Work",
+        "work_heading": "Commission Examples",
+        "work_subtext": "A selection of commissioned projects across different environments and scales."
+      }
     },
     "trust": {
       "type": "lb-trust-strip",
-      "settings": {}
+      "settings": {
+        "item_1_icon": "⚡",
+        "item_1_label": "Instant Download",
+        "item_1_value": "Files delivered immediately after payment",
+        "item_2_icon": "🔒",
+        "item_2_label": "Secure Checkout",
+        "item_2_value": "Protected transactions",
+        "item_3_icon": "🎨",
+        "item_3_label": "Made by an Artist",
+        "item_3_value": "Tested in real workflows",
+        "item_4_icon": "💬",
+        "item_4_label": "Real Support",
+        "item_4_value": "Response within 24–48 hours",
+        "bg_color": "#111111",
+        "text_color": "#ffffff",
+        "muted_color": "#aaaaaa",
+        "border_color": "#2a2a2a",
+        "padding_v": 24
+      }
     }
   },
-  "order": ["hero", "marquee", "commission", "trust"]
+  "order": [
+    "hero",
+    "marquee",
+    "commission",
+    "trust"
+  ]
 }
