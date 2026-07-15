@@ -4,25 +4,21 @@
 <section class="lb-blueprint-page lb-blueprint-page--gallery">
 <style>
   #lb-lightbox-img-wrap::after {
-    --lb-watermark-text: '{{ section.settings.watermark_text | escape }}';
-    --lb-watermark-align: {{ section.settings.watermark_align }};
-    {%- if section.settings.watermark_position == 'top' -%}
-      --lb-watermark-top: 1rem;
-      --lb-watermark-bottom: auto;
-    {%- else -%}
-      --lb-watermark-top: auto;
-      --lb-watermark-bottom: 1rem;
-    {%- endif -%}
-    {%- if section.settings.watermark_align == 'left' -%}
-      --lb-watermark-left: 0;
-      --lb-watermark-right: auto;
-    {%- elsif section.settings.watermark_align == 'right' -%}
-      --lb-watermark-left: auto;
-      --lb-watermark-right: 0;
-    {%- else -%}
-      --lb-watermark-left: 0;
-      --lb-watermark-right: 0;
-    {%- endif -%}
+    content: '{{ section.settings.watermark_text | escape }}';
+    position: absolute;
+    {%- if section.settings.watermark_position == 'top' -%}top:0.75rem;bottom:auto;{%- else -%}bottom:0.75rem;top:auto;{%- endif -%}
+    left: 0;
+    right: 0;
+    width: 100%;
+    text-align: {{ section.settings.watermark_align }};
+    color: rgba(255,255,255,0.45);
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    z-index: 3;
+    pointer-events: none;
+    padding: 0 1rem;
+    box-sizing: border-box;
   }
 </style>
 
@@ -82,15 +78,25 @@
   </div>
 
   <div id="lb-lightbox" style="display:none;">
-  <div id="lb-lightbox-overlay"></div>
-  <div id="lb-lightbox-inner">
-    <button id="lb-lightbox-close">&#x2715;</button>
-    <div id="lb-lightbox-img-wrap">
-      <img id="lb-lightbox-img" src="" alt="">
-      <div id="lb-lightbox-shield"></div>
+    <div id="lb-lightbox-overlay"></div>
+    <div id="lb-lightbox-inner">
+      <button id="lb-lightbox-close">&#x2715;</button>
+      <div id="lb-lightbox-img-wrap">
+        <img id="lb-lightbox-img" src="" alt="">
+        <div id="lb-lightbox-shield"></div>
+        {%- if section.settings.watermark_logo != blank -%}
+          <div id="lb-watermark-logo" style="position:absolute;z-index:4;pointer-events:none;padding:0.75rem;width:100%;
+            {%- if section.settings.watermark_logo_position == 'top' -%}top:0;bottom:auto;{%- else -%}bottom:0;top:auto;{%- endif -%}
+            {%- if section.settings.watermark_logo_align == 'left' -%}text-align:left;{%- elsif section.settings.watermark_logo_align == 'right' -%}text-align:right;{%- else -%}text-align:center;{%- endif -%}">
+            <img src="{{ section.settings.watermark_logo | image_url: width: 200 }}"
+              width="{{ section.settings.watermark_logo_width }}"
+              alt="Watermark"
+              style="opacity:0.5;display:inline-block;pointer-events:none;user-select:none;-webkit-user-drag:none;">
+          </div>
+        {%- endif -%}
+      </div>
     </div>
   </div>
-</div>
 
 </section>
 
@@ -127,40 +133,19 @@
   .gal-item.hidden {
     display: none;
   }
-
   #lb-lightbox { position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity 0.3s ease; }
-#lb-lightbox.active { display:flex !important; opacity:1; }
-#lb-lightbox-overlay { position:absolute; inset:0; background:rgba(0,0,0,0.92); }
-#lb-lightbox-inner { position:relative; z-index:1; max-width:90vw; max-height:90vh; }
-#lb-lightbox-img-wrap { position:relative; }
-#lb-lightbox-img { display:block; max-width:90vw; max-height:85vh; object-fit:contain; user-select:none; -webkit-user-drag:none; pointer-events:none; }
-#lb-lightbox-shield { position:absolute; inset:0; z-index:2; }
-#lb-lightbox-close { position:absolute; top:-2.5rem; right:0; background:none; border:none; color:white; font-size:1.5rem; cursor:pointer; line-height:1; }
-.gal-item { cursor:pointer; }
-#lb-lightbox-img-wrap::after {
-  content: var(--lb-watermark-text, '© Lacquer Bru');
-  position: absolute;
-  left: var(--lb-watermark-left, auto);
-  right: var(--lb-watermark-right, 1rem);
-  top: var(--lb-watermark-top, auto);
-  bottom: var(--lb-watermark-bottom, 1rem);
-  width: 100%;
-  text-align: var(--lb-watermark-align, right);
-  color: rgba(255,255,255,0.45);
-  font-size: 0.85rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  z-index: 3;
-  pointer-events: none;
-  padding: 0 1rem;
-  box-sizing: border-box;
-}
-
+  #lb-lightbox.active { display:flex !important; opacity:1; }
+  #lb-lightbox-overlay { position:absolute; inset:0; background:rgba(0,0,0,0.92); }
+  #lb-lightbox-inner { position:relative; z-index:1; max-width:90vw; max-height:90vh; }
+  #lb-lightbox-img-wrap { position:relative; }
+  #lb-lightbox-img { display:block; max-width:90vw; max-height:85vh; object-fit:contain; user-select:none; -webkit-user-drag:none; pointer-events:none; }
+  #lb-lightbox-shield { position:absolute; inset:0; z-index:2; }
+  #lb-lightbox-close { position:absolute; top:-2.5rem; right:0; background:none; border:none; color:white; font-size:1.5rem; cursor:pointer; line-height:1; }
+  .gal-item { cursor:pointer; }
 </style>
 
 <script>
 (function () {
-  // Filter logic
   var filters = document.querySelectorAll('.gal-filter');
   var items = document.querySelectorAll('#gal-masonry .gal-item');
   filters.forEach(function (btn) {
@@ -183,7 +168,6 @@
     });
   });
 
-  // Lightbox logic
   var lightbox = document.getElementById('lb-lightbox');
   var lbImg = document.getElementById('lb-lightbox-img');
   var lbClose = document.getElementById('lb-lightbox-close');
@@ -208,8 +192,6 @@
   lbClose.addEventListener('click', closeLightbox);
   lbOverlay.addEventListener('click', closeLightbox);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeLightbox(); });
-
-  // Block right-click on lightbox image
   lbImg.addEventListener('contextmenu', function (e) { e.preventDefault(); });
 })();
 </script>
@@ -229,8 +211,7 @@
     { "type": "textarea", "id": "cta_subtext", "label": "CTA Subtext", "default": "Every wall, canvas, and surface is an opportunity. Get in touch to discuss your project." },
     { "type": "text", "id": "cta_btn_label", "label": "CTA Button Label", "default": "Start a Commission" },
     { "type": "url", "id": "cta_btn_url", "label": "CTA Button URL" },
-        { "type": "header", "content": "Lightbox Watermark" },
-
+    { "type": "header", "content": "Watermark — Text" },
     { "type": "text", "id": "watermark_text", "label": "Watermark Text", "default": "© Lacquer Bru" },
     { "type": "select", "id": "watermark_align", "label": "Horizontal Alignment", "options": [
         { "value": "left", "label": "Left" },
@@ -238,6 +219,18 @@
         { "value": "right", "label": "Right" }
       ], "default": "right" },
     { "type": "select", "id": "watermark_position", "label": "Vertical Position", "options": [
+        { "value": "top", "label": "Header" },
+        { "value": "bottom", "label": "Footer" }
+      ], "default": "bottom" },
+    { "type": "header", "content": "Watermark — Logo" },
+    { "type": "image_picker", "id": "watermark_logo", "label": "Logo Image" },
+    { "type": "range", "id": "watermark_logo_width", "label": "Logo Width (px)", "min": 40, "max": 200, "step": 10, "default": 80 },
+    { "type": "select", "id": "watermark_logo_align", "label": "Horizontal Alignment", "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ], "default": "left" },
+    { "type": "select", "id": "watermark_logo_position", "label": "Vertical Position", "options": [
         { "value": "top", "label": "Header" },
         { "value": "bottom", "label": "Footer" }
       ], "default": "bottom" }
