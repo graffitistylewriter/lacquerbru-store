@@ -59,12 +59,10 @@
     <label>{{ section.settings.heard_about_label | default: 'How did you hear about us?' }}</label>
     <select name="contact[heard_about]">
       <option value="">Select an option</option>
-      <option>Instagram</option>
-      <option>Word of Mouth</option>
-      <option>Google</option>
-      <option>Behance</option>
-      <option>Referral</option>
-      <option>Other</option>
+      {% assign heard_options = section.settings.heard_about_options | default: 'Instagram|Word of Mouth|Google|Behance|Referral|Other' | split: '|' %}
+      {% for opt in heard_options %}
+        <option>{{ opt | strip }}</option>
+      {% endfor %}
     </select>
   </div>
 
@@ -72,15 +70,10 @@
     <label>Project Type *</label>
     <select name="contact[project_type]" required>
       <option value="">Select a project type</option>
-      <option>Mural (Exterior)</option>
-      <option>Mural (Interior)</option>
-      <option>Feature Wall</option>
-      <option>Fine Art Print</option>
-      <option>Vehicle Graphics</option>
-      <option>Digital Illustration</option>
-      <option>Brand Installation</option>
-      <option>Live Painting / Activation</option>
-      <option>Other</option>
+      {% assign project_options = section.settings.project_type_options | default: 'Mural (Exterior)|Mural (Interior)|Feature Wall|Fine Art Print|Vehicle Graphics|Digital Illustration|Brand Installation|Live Painting / Activation|Other' | split: '|' %}
+      {% for opt in project_options %}
+        <option>{{ opt | strip }}</option>
+      {% endfor %}
     </select>
   </div>
 
@@ -88,12 +81,10 @@
     <label>{{ section.settings.preferred_style_label | default: 'Preferred Style / Medium' }}</label>
     <select name="contact[preferred_style]">
       <option value="">Select a style</option>
-      <option>Realistic</option>
-      <option>Abstract</option>
-      <option>Geometric</option>
-      <option>Typographic</option>
-      <option>Mixed Media</option>
-      <option>Open to Direction</option>
+      {% assign style_options = section.settings.preferred_style_options | default: 'Realistic|Abstract|Geometric|Typographic|Mixed Media|Open to Direction' | split: '|' %}
+      {% for opt in style_options %}
+        <option>{{ opt | strip }}</option>
+      {% endfor %}
     </select>
   </div>
 
