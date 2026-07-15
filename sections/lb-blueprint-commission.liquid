@@ -42,65 +42,90 @@
   </div>
 
   {% form 'contact', class: 'comm-form' %}
-    <div class="form-title">{{ section.settings.form_title }}</div>
-    <p class="form-subtext">{{ section.settings.form_subtext }}</p>
-    <div class="fg-row">
-      <div class="fgrp"><label>First Name *</label><input type="text" name="contact[first_name]" placeholder="Your first name" required></div>
-      <div class="fgrp"><label>Last Name *</label><input type="text" name="contact[last_name]" placeholder="Your last name" required></div>
+  <div class="form-title">{{ section.settings.form_title }}</div>
+  <p class="form-subtext">{{ section.settings.form_subtext }}</p>
+
+  <div class="fg-row">
+    <div class="fgrp"><label>First Name *</label><input type="text" name="contact[first_name]" placeholder="Your first name" required></div>
+    <div class="fgrp"><label>Last Name *</label><input type="text" name="contact[last_name]" placeholder="Your last name" required></div>
+  </div>
+
+  <div class="fg-row">
+    <div class="fgrp"><label>Email Address *</label><input type="email" name="contact[email]" placeholder="your@email.com" required></div>
+    <div class="fgrp"><label>Phone / WhatsApp</label><input type="tel" name="contact[phone]" placeholder="+27 ..."></div>
+  </div>
+
+  <div class="fgrp">
+    <label>{{ section.settings.heard_about_label | default: 'How did you hear about us?' }}</label>
+    <select name="contact[heard_about]">
+      <option value="">Select an option</option>
+      <option>Instagram</option>
+      <option>Word of Mouth</option>
+      <option>Google</option>
+      <option>Behance</option>
+      <option>Referral</option>
+      <option>Other</option>
+    </select>
+  </div>
+
+  <div class="fgrp">
+    <label>Project Type *</label>
+    <select name="contact[project_type]" required>
+      <option value="">Select a project type</option>
+      <option>Mural (Exterior)</option>
+      <option>Mural (Interior)</option>
+      <option>Feature Wall</option>
+      <option>Fine Art Print</option>
+      <option>Vehicle Graphics</option>
+      <option>Digital Illustration</option>
+      <option>Brand Installation</option>
+      <option>Live Painting / Activation</option>
+      <option>Other</option>
+    </select>
+  </div>
+
+  <div class="fgrp">
+    <label>{{ section.settings.preferred_style_label | default: 'Preferred Style / Medium' }}</label>
+    <select name="contact[preferred_style]">
+      <option value="">Select a style</option>
+      <option>Realistic</option>
+      <option>Abstract</option>
+      <option>Geometric</option>
+      <option>Typographic</option>
+      <option>Mixed Media</option>
+      <option>Open to Direction</option>
+    </select>
+  </div>
+
+  <div class="fg-row">
+    <div class="fgrp"><label>Country</label><input type="text" name="contact[country]" placeholder="e.g. South Africa"></div>
+    <div class="fgrp"><label>City</label><input type="text" name="contact[city]" placeholder="e.g. Cape Town"></div>
+  </div>
+
+  <div class="fgrp">
+    <label>{{ section.settings.completion_date_label | default: 'Desired Completion Date' }}</label>
+    <input type="date" name="contact[completion_date]">
+  </div>
+
+  <div class="fgrp">
+    <label>{{ section.settings.file_note_heading | default: 'Reference Files' }}</label>
+    <div class="comm-file-note">
+      <p>{{ section.settings.file_note_text | default: 'To share reference images, mood boards or site photos — email them directly to howzit@lacquerbru.co.za with your name in the subject line.' }}</p>
     </div>
-    <div class="fg-row">
-      <div class="fgrp"><label>Email Address *</label><input type="email" name="contact[email]" placeholder="your@email.com" required></div>
-      <div class="fgrp"><label>Phone / WhatsApp</label><input type="tel" name="contact[phone]" placeholder="+27 ..."></div>
-    </div>
-    <div class="fgrp"><label>Project Type *</label>
-      <select name="contact[project_type]" required>
-        <option value="">Select a project type</option>
-        <option>Exterior Mural</option>
-        <option>Interior Mural</option>
-        <option>Textured Feature Wall</option>
-        <option>Commercial Painting</option>
-        <option>Vehicle Graphics</option>
-        <option>Event Live Painting</option>
-        <option>Digital Illustration</option>
-        <option>Brand / Logo Design</option>
-        <option>Fine Art Print Run</option>
-        <option>Other</option>
-      </select>
-    </div>
-    <div class="fg-row">
-      <div class="fgrp"><label>Location</label><input type="text" name="contact[location]" placeholder="City, Province"></div>
-      <div class="fgrp"><label>Approximate Budget</label>
-        <select name="contact[budget]">
-          <option value="">Select a range</option>
-          <option>Under R5,000</option>
-          <option>R5,000 — R15,000</option>
-          <option>R15,000 — R30,000</option>
-          <option>R30,000 — R60,000</option>
-          <option>R60,000 — R100,000</option>
-          <option>R100,000+</option>
-          <option>To be discussed</option>
-        </select>
-      </div>
-    </div>
-    <div class="fgrp"><label>Timeline</label>
-      <select name="contact[timeline]">
-        <option value="">When do you need it completed?</option>
-        <option>Within 2 weeks</option>
-        <option>Within 1 month</option>
-        <option>Within 3 months</option>
-        <option>Within 6 months</option>
-        <option>Flexible — no rush</option>
-      </select>
-    </div>
-    <div class="fgrp">
-      <label>Project Description *</label>
-      <textarea name="contact[body]" placeholder="Tell us about your project..." required></textarea>
-    </div>
-    {% if section.settings.form_disclaimer != blank %}
-      <p class="form-note">{{ section.settings.form_disclaimer }}</p>
-    {% endif %}
-    <button class="form-sbmt" type="submit">{{ section.settings.form_btn_label | default: 'Submit Commission Inquiry' }}</button>
-  {% endform %}
+  </div>
+
+  <div class="fgrp">
+    <label>Project Description *</label>
+    <textarea name="contact[body]" placeholder="Tell us about your project — the more detail the better." required></textarea>
+  </div>
+
+  {% if section.settings.form_disclaimer != blank %}
+    <p class="form-note">{{ section.settings.form_disclaimer }}</p>
+  {% endif %}
+
+  <button class="form-sbmt" type="submit">{{ section.settings.form_btn_label | default: 'Submit Commission Inquiry' }}</button>
+{% endform %}
+
 </div>
 
 <section class="comm-work">
