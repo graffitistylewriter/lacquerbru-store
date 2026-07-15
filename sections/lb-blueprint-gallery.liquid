@@ -11,7 +11,7 @@
     right: 0;
     width: 100%;
     text-align: {{ section.settings.watermark_align }};
-    color: rgba(255,255,255,0.45);
+    color: rgba(255,255,255,{{ section.settings.watermark_text_opacity | divided_by: 100.0 }});
     font-size: 0.85rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -91,7 +91,7 @@
             <img src="{{ section.settings.watermark_logo | image_url: width: 200 }}"
               width="{{ section.settings.watermark_logo_width }}"
               alt="Watermark"
-              style="opacity:0.5;display:inline-block;pointer-events:none;user-select:none;-webkit-user-drag:none;">
+              style="opacity:{{ section.settings.watermark_logo_opacity | divided_by: 100.0 }};
           </div>
         {%- endif -%}
       </div>
@@ -222,6 +222,7 @@
         { "value": "top", "label": "Header" },
         { "value": "bottom", "label": "Footer" }
       ], "default": "bottom" },
+    { "type": "number", "id": "watermark_text_opacity", "label": "Text Opacity (%)", "default": 45 },
     { "type": "header", "content": "Watermark — Logo" },
     { "type": "image_picker", "id": "watermark_logo", "label": "Logo Image" },
     { "type": "range", "id": "watermark_logo_width", "label": "Logo Width (px)", "min": 40, "max": 200, "step": 10, "default": 80 },
@@ -233,7 +234,8 @@
     { "type": "select", "id": "watermark_logo_position", "label": "Vertical Position", "options": [
         { "value": "top", "label": "Header" },
         { "value": "bottom", "label": "Footer" }
-      ], "default": "bottom" }
+      ], "default": "bottom" },
+    { "type": "number", "id": "watermark_logo_opacity", "label": "Logo Opacity (%)", "default": 50 }
   ],
   "presets": [
     {
