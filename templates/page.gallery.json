@@ -12,6 +12,7 @@
     "hero": {
       "type": "lb-hero",
       "settings": {
+        "bg_image": "shopify://shop_images/envynause_Back_again_in_Hamburg____nvs_crew_official_._At_the_hall_wi_2019-03-28_BvjDqGRg1jD_2009465945831200963_3.jpg",
         "overlay_color": "#000000",
         "overlay_opacity": 40,
         "overlay_width": 100,
@@ -47,6 +48,7 @@
       "settings": {
         "intro_label": "The Work",
         "intro_text": "Over 16 years of aerosol culture, digital creation, and immersive visual transformation.",
+        "gallery_img_1": "shopify://shop_images/envynause______nvs_graffiti_crew_._Work_in_progress_of_my_piece_for_2019-06-13_Byp4BKZgXN2_2065428274615513974.jpg",
         "gallery_title_1": "Wildstyle — Group Production",
         "gallery_cat_1": "Graffiti · Mural",
         "gallery_wide_1": true,
