@@ -86,11 +86,10 @@
     color: var(--lb-text);
     transition: background-color 0.3s ease, color 0.3s ease;
   }
-  *, *::before, *::after {
+  *:not(.lb-hero__bg-img), *::before, *::after {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
   }
 </style>
-
 
   {%- comment -%} Apply saved theme before paint — prevents flash {%- endcomment -%}
   <script>
