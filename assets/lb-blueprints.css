@@ -54,7 +54,7 @@ nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:20px 60px;displa
 /* MARQUEE */
 .marquee-wrap{background:var(--blue);padding:13px 0;overflow:hidden;}
 .marquee-track{display:flex;animation:marquee 28s linear infinite;white-space:nowrap;}
-@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}} 
 .mi{font-family:'Oswald',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--void);padding:0 24px;}
 .ms{color:rgba(10,10,10,0.3);}
 
