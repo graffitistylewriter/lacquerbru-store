@@ -1,108 +1,158 @@
+{%- assign gallery_items = 'lb_gallery_item' | metaobject_list -%}
+{%- assign filter_cats = section.settings.filter_categories | split: '|' -%}
+
 <section class="lb-blueprint-page lb-blueprint-page--gallery">
 
-<div class="gal-intro">
-  {% if section.settings.intro_label != blank %}<span class="section-label">{{ section.settings.intro_label }}</span>{% endif %}
-  <p>{{ section.settings.intro_text }}</p>
-</div>
+  <div class="gal-intro">
+    {%- if section.settings.intro_label != blank -%}
+      <span class="section-label">{{ section.settings.intro_label }}</span>
+    {%- endif -%}
+    <p>{{ section.settings.intro_text }}</p>
+  </div>
 
-<div class="gal-masonry">
-  {% for i in (1..12) %}
-    {% assign img_key = 'gallery_img_' | append: i %}
-    {% assign title_key = 'gallery_title_' | append: i %}
-    {% assign cat_key = 'gallery_cat_' | append: i %}
-    {% assign wide_key = 'gallery_wide_' | append: i %}
-    {% assign img_val = section.settings[img_key] %}
-    {% if img_val != blank %}
-      <div class="gal-item{% if section.settings[wide_key] %} wide{% endif %}">
-        {{ img_val | image_url: width: 1200 | image_tag: loading: 'lazy', width: 1200, height: 800, alt: section.settings[title_key] }}
-        <div class="gal-item-ov">
-          <div class="gal-item-title">{{ section.settings[title_key] }}</div>
-          <div class="gal-item-cat">{{ section.settings[cat_key] }}</div>
+  {%- if filter_cats.size > 0 -%}
+    <div class="gal-filters">
+      <button class="gal-filter active" data-filter="all">All</button>
+      {%- for cat in filter_cats -%}
+        {%- assign cat_clean = cat | strip -%}
+        {%- if cat_clean != blank -%}
+          <button class="gal-filter" data-filter="{{ cat_clean | downcase | replace: ' ', '-' }}">{{ cat_clean }}</button>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  <div class="gal-masonry" id="gal-masonry">
+    {%- for item in gallery_items -%}
+      {%- assign img = item.image.value -%}
+      {%- assign title = item.title.value -%}
+      {%- assign cats = item.categories.value -%}
+      {%- assign wide = item.wide.value -%}
+      {%- if img != blank -%}
+        {%- assign cat_slugs = '' -%}
+        {%- for cat in cats -%}
+          {%- assign slug = cat | downcase | replace: ' ', '-' -%}
+          {%- assign cat_slugs = cat_slugs | append: slug | append: ' ' -%}
+        {%- endfor -%}
+        <div class="gal-item{% if wide == true %} wide{% endif %}" data-cats="{{ cat_slugs | strip }}">
+          {{ img | image_url: width: 1200 | image_tag: loading: 'lazy', width: 1200, height: 800, alt: title }}
+          <div class="gal-item-ov">
+            {%- if title != blank -%}<div class="gal-item-title">{{ title }}</div>{%- endif -%}
+            {%- if cats.size > 0 -%}
+              <div class="gal-item-cat">{{ cats | join: ' · ' }}</div>
+            {%- endif -%}
+          </div>
         </div>
-      </div>
-    {% endif %}
-  {% endfor %}
-</div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
 
-<div class="gal-cta">
-  {% if section.settings.cta_label != blank %}<span class="section-label">{{ section.settings.cta_label }}</span>{% endif %}
-  <h2 class="section-h2">{{ section.settings.cta_heading }}</h2>
-  <p>{{ section.settings.cta_subtext }}</p>
-  {% if section.settings.cta_btn_label != blank %}
-    <a href="{{ section.settings.cta_btn_url }}" class="btn-primary">{{ section.settings.cta_btn_label }}</a>
-  {% endif %}
-</div>
+  <div class="gal-cta">
+    {%- if section.settings.cta_label != blank -%}
+      <span class="section-label">{{ section.settings.cta_label }}</span>
+    {%- endif -%}
+    <h2 class="section-h2">{{ section.settings.cta_heading }}</h2>
+    <p>{{ section.settings.cta_subtext }}</p>
+    {%- if section.settings.cta_btn_label != blank -%}
+      <a href="{{ section.settings.cta_btn_url }}" class="btn-primary">{{ section.settings.cta_btn_label }}</a>
+    {%- endif -%}
+  </div>
 
 </section>
 
+<style>
+  .gal-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+  }
+  .gal-filter {
+    background: transparent;
+    border: 1px solid currentColor;
+    color: inherit;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    padding: 0.5rem 1.25rem;
+    text-transform: uppercase;
+    transition: background 0.2s, color 0.2s;
+  }
+  .gal-filter.active,
+  .gal-filter:hover {
+    background: currentColor;
+  }
+  .gal-filter.active span,
+  .gal-filter:hover {
+    color: var(--color-background, #0a0a0a);
+  }
+  .gal-item {
+    transition: opacity 0.3s ease;
+  }
+  .gal-item.hidden {
+    display: none;
+  }
+</style>
+
+<script>
+  (function () {
+    var filters = document.querySelectorAll('.gal-filter');
+    var items = document.querySelectorAll('#gal-masonry .gal-item');
+
+    filters.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var selected = this.dataset.filter;
+
+        filters.forEach(function (b) { b.classList.remove('active'); });
+        this.classList.add('active');
+
+        items.forEach(function (item) {
+          if (selected === 'all') {
+            item.classList.remove('hidden');
+          } else {
+            var cats = (item.dataset.cats || '').split(' ');
+            if (cats.indexOf(selected) > -1) {
+              item.classList.remove('hidden');
+            } else {
+              item.classList.add('hidden');
+            }
+          }
+        });
+      });
+    });
+  })();
+</script>
+
 {% schema %}
 {
-  "name": "LB Blueprint Gallery",
+  "name": "Portfolio Gallery",
   "settings": [
     { "type": "header", "content": "Intro" },
     { "type": "text", "id": "intro_label", "label": "Section Label", "default": "The Work" },
-    { "type": "textarea", "id": "intro_text", "label": "Intro Text", "default": "Over 16 years of aerosol culture, digital creation, and immersive visual transformation." },
-    { "type": "header", "content": "Gallery Image 1" },
-    { "type": "image_picker", "id": "gallery_img_1", "label": "Image 1" },
-    { "type": "text", "id": "gallery_title_1", "label": "Title 1", "default": "Wildstyle — Group Production" },
-    { "type": "text", "id": "gallery_cat_1", "label": "Category 1", "default": "Graffiti · Mural" },
-    { "type": "checkbox", "id": "gallery_wide_1", "label": "Wide (full width)", "default": true },
-    { "type": "header", "content": "Gallery Image 2" },
-    { "type": "image_picker", "id": "gallery_img_2", "label": "Image 2" },
-    { "type": "text", "id": "gallery_title_2", "label": "Title 2", "default": "Portrait Study" },
-    { "type": "text", "id": "gallery_cat_2", "label": "Category 2", "default": "Portrait · Mural" },
-    { "type": "checkbox", "id": "gallery_wide_2", "label": "Wide", "default": false },
-    { "type": "header", "content": "Gallery Image 3" },
-    { "type": "image_picker", "id": "gallery_img_3", "label": "Image 3" },
-    { "type": "text", "id": "gallery_title_3", "label": "Title 3", "default": "Fire & Motion" },
-    { "type": "text", "id": "gallery_cat_3", "label": "Category 3", "default": "Character · Mural" },
-    { "type": "checkbox", "id": "gallery_wide_3", "label": "Wide", "default": false },
-    { "type": "header", "content": "Gallery Image 4" },
-    { "type": "image_picker", "id": "gallery_img_4", "label": "Image 4" },
-    { "type": "text", "id": "gallery_title_4", "label": "Title 4", "default": "Large Scale Production" },
-    { "type": "text", "id": "gallery_cat_4", "label": "Category 4", "default": "Mural · Commercial" },
-    { "type": "checkbox", "id": "gallery_wide_4", "label": "Wide", "default": false },
-    { "type": "header", "content": "Gallery Image 5" },
-    { "type": "image_picker", "id": "gallery_img_5", "label": "Image 5" },
-    { "type": "text", "id": "gallery_title_5", "label": "Title 5", "default": "Conceptual Piece" },
-    { "type": "text", "id": "gallery_cat_5", "label": "Category 5", "default": "Conceptual · Mural" },
-    { "type": "checkbox", "id": "gallery_wide_5", "label": "Wide", "default": true },
-    { "type": "header", "content": "Gallery Image 6" },
-    { "type": "image_picker", "id": "gallery_img_6", "label": "Image 6" },
-    { "type": "text", "id": "gallery_title_6", "label": "Title 6", "default": "Interior Transformation" },
-    { "type": "text", "id": "gallery_cat_6", "label": "Category 6", "default": "Interior · Commercial" },
-    { "type": "checkbox", "id": "gallery_wide_6", "label": "Wide", "default": true },
-    { "type": "header", "content": "Gallery Images 7–12" },
-    { "type": "image_picker", "id": "gallery_img_7", "label": "Image 7" },
-    { "type": "text", "id": "gallery_title_7", "label": "Title 7", "default": "Detail Work" },
-    { "type": "text", "id": "gallery_cat_7", "label": "Category 7", "default": "Graffiti · Detail" },
-    { "type": "checkbox", "id": "gallery_wide_7", "label": "Wide", "default": false },
-    { "type": "image_picker", "id": "gallery_img_8", "label": "Image 8" },
-    { "type": "text", "id": "gallery_title_8", "label": "Title 8" },
-    { "type": "text", "id": "gallery_cat_8", "label": "Category 8" },
-    { "type": "checkbox", "id": "gallery_wide_8", "label": "Wide", "default": false },
-    { "type": "image_picker", "id": "gallery_img_9", "label": "Image 9" },
-    { "type": "text", "id": "gallery_title_9", "label": "Title 9" },
-    { "type": "text", "id": "gallery_cat_9", "label": "Category 9" },
-    { "type": "checkbox", "id": "gallery_wide_9", "label": "Wide", "default": false },
-    { "type": "image_picker", "id": "gallery_img_10", "label": "Image 10" },
-    { "type": "text", "id": "gallery_title_10", "label": "Title 10" },
-    { "type": "text", "id": "gallery_cat_10", "label": "Category 10" },
-    { "type": "checkbox", "id": "gallery_wide_10", "label": "Wide", "default": false },
-    { "type": "image_picker", "id": "gallery_img_11", "label": "Image 11" },
-    { "type": "text", "id": "gallery_title_11", "label": "Title 11" },
-    { "type": "text", "id": "gallery_cat_11", "label": "Category 11" },
-    { "type": "checkbox", "id": "gallery_wide_11", "label": "Wide", "default": false },
-    { "type": "image_picker", "id": "gallery_img_12", "label": "Image 12" },
-    { "type": "text", "id": "gallery_title_12", "label": "Title 12" },
-    { "type": "text", "id": "gallery_cat_12", "label": "Category 12" },
-    { "type": "checkbox", "id": "gallery_wide_12", "label": "Wide", "default": false },
+    { "type": "textarea", "id": "intro_text", "label": "Intro Text", "default": "A portfolio of murals, digital art, and immersive visual work." },
+    { "type": "header", "content": "Category Filters" },
+    { "type": "textarea", "id": "filter_categories", "label": "Filter Categories (separate with |)", "default": "Commercial|Private|Freestyle|New Work", "info": "These must match the category names used in the Gallery Manager app." },
     { "type": "header", "content": "Bottom CTA" },
     { "type": "text", "id": "cta_label", "label": "CTA Label", "default": "Commission Your Own Piece" },
     { "type": "text", "id": "cta_heading", "label": "CTA Heading", "default": "See Something You Like?" },
     { "type": "textarea", "id": "cta_subtext", "label": "CTA Subtext", "default": "Every wall, canvas, and surface is an opportunity. Get in touch to discuss your project." },
     { "type": "text", "id": "cta_btn_label", "label": "CTA Button Label", "default": "Start a Commission" },
     { "type": "url", "id": "cta_btn_url", "label": "CTA Button URL" }
+  ],
+  "presets": [
+    {
+      "name": "Portfolio Gallery",
+      "settings": {
+        "intro_label": "The Work",
+        "intro_text": "A portfolio of murals, digital art, and immersive visual work.",
+        "filter_categories": "Commercial|Private|Freestyle|New Work",
+        "cta_label": "Commission Your Own Piece",
+        "cta_heading": "See Something You Like?",
+        "cta_subtext": "Every wall, canvas, and surface is an opportunity. Get in touch to discuss your project.",
+        "cta_btn_label": "Start a Commission"
+      }
+    }
   ]
 }
 {% endschema %}
