@@ -28,14 +28,14 @@
       {%- assign title = item.title.value -%}
       {%- assign cats = item.categories.value -%}
       {%- assign wide = item.wide.value -%}
-      {%- if img.preview_image != blank -%}
+      {%- if img.image != blank -%}
         {%- assign cat_slugs = '' -%}
         {%- for cat in cats -%}
           {%- assign slug = cat | downcase | replace: ' ', '-' -%}
           {%- assign cat_slugs = cat_slugs | append: slug | append: ' ' -%}
         {%- endfor -%}
         <div class="gal-item{% if wide == true %} wide{% endif %}" data-cats="{{ cat_slugs | strip }}">
-          {{ img.preview_image | image_url: width: 1200 | image_tag: loading: 'lazy', width: 1200, height: 800, alt: title }}
+          {{ img.image | image_url: width: 1200 | image_tag: loading: 'lazy', width: 1200, height: 800, alt: title }}
           <div class="gal-item-ov">
             {%- if title != blank -%}<div class="gal-item-title">{{ title }}</div>{%- endif -%}
             {%- if cats.size > 0 -%}
