@@ -1,4 +1,4 @@
-{%- assign gallery_items = 'lb_gallery_item' | metaobject_list -%}
+{%- assign gallery_items = shop.metaobjects.lb_gallery_item.values -%}
 {%- assign filter_cats = section.settings.filter_categories | split: '|' -%}
 
 <section class="lb-blueprint-page lb-blueprint-page--gallery">
@@ -23,15 +23,28 @@
   {%- endif -%}
 
   <div class="gal-masonry" id="gal-masonry">
-  {%- for item in gallery_items -%}
-  <div style="color:white;padding:1rem;border:1px solid red;margin:0.5rem;">
-    <p>item: {{ item }}</p>
-    <p>image raw: {{ item.image }}</p>
-    <p>title: {{ item.title }}</p>
-  </div>
-{%- else -%}
-  <p style="color:red;">NO ITEMS FOUND — gallery_items is empty</p>
-{%- endfor -%}
+    {%- for item in gallery_items -%}
+      {%- assign img = item.image -%}
+      {%- assign title = item.title -%}
+      {%- assign cats = item.categories -%}
+      {%- assign wide = item.wide -%}
+      {%- if img != blank -%}
+        {%- assign cat_slugs = '' -%}
+        {%- for cat in cats -%}
+          {%- assign slug = cat | downcase | replace: ' ', '-' -%}
+          {%- assign cat_slugs = cat_slugs | append: slug | append: ' ' -%}
+        {%- endfor -%}
+        <div class="gal-item{% if wide == true %} wide{% endif %}" data-cats="{{ cat_slugs | strip }}">
+          {{ img | image_url: width: 1200 | image_tag: loading: 'lazy', width: 1200, height: 800, alt: title }}
+          <div class="gal-item-ov">
+            {%- if title != blank -%}<div class="gal-item-title">{{ title }}</div>{%- endif -%}
+            {%- if cats.size > 0 -%}
+              <div class="gal-item-cat">{{ cats | join: ' · ' }}</div>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
   </div>
 
   <div class="gal-cta">
@@ -44,6 +57,7 @@
       <a href="{{ section.settings.cta_btn_url }}" class="btn-primary">{{ section.settings.cta_btn_label }}</a>
     {%- endif -%}
   </div>
+
 
 </section>
 
