@@ -144,14 +144,14 @@
 
 {% schema %}
 {
-  "name": "LB Blueprint Commission",
+  "name": "Commission Inquiry Form",
   "settings": [
     { "type": "header", "content": "Info Panel" },
     { "type": "text", "id": "info_label", "label": "Section Label", "default": "Work Together" },
     { "type": "text", "id": "info_heading", "label": "Heading", "default": "Let's Create Something Original" },
     { "type": "textarea", "id": "info_body", "label": "Intro Paragraph", "default": "Whether you arrive with a clear concept or allow full creative freedom — both approaches are equally valued." },
     { "type": "textarea", "id": "services_list", "label": "Services List (separate with |)", "default": "Large scale exterior and interior murals|Textured feature walls and surface finishes|Brand spaces and commercial environments|Private residences and estates|Hospitality venues and retail environments|Vehicle graphics and custom artwork|Event live painting and activations|Digital illustration and design projects|Limited edition fine art print runs" },
-    { "type": "text", "id": "location_text", "label": "Location Text", "default": "Based in Cape Town, South Africa. Working locally and internationally." },
+    { "type": "text", "id": "location_text", "label": "Location Text", "default": "Based in your city. Working locally and internationally." },
     { "type": "text", "id": "response_time", "label": "Response Time Text", "default": "We respond to all inquiries within 24 to 48 hours." },
     { "type": "header", "content": "Contact Form" },
     { "type": "text", "id": "form_title", "label": "Form Title", "default": "Tell Us About Your Project" },
@@ -166,7 +166,7 @@
     { "type": "text", "id": "preferred_style_label", "label": "Preferred Style Label", "default": "Preferred Style / Medium" },
     { "type": "text", "id": "completion_date_label", "label": "Completion Date Label", "default": "Desired Completion Date" },
     { "type": "text", "id": "file_note_heading", "label": "File Upload Heading", "default": "Reference Files" },
-    { "type": "textarea", "id": "file_note_text", "label": "File Upload Note", "default": "To share reference images, mood boards or site photos — email them directly to howzit@lacquerbru.co.za with your name in the subject line." },
+    { "type": "textarea", "id": "file_note_text", "label": "File Upload Note", "default": "To share reference images, mood boards or site photos — email them directly to your store email with your name in the subject line." },
     { "type": "header", "content": "Previous Work Gallery" },
     { "type": "text", "id": "work_label", "label": "Section Label", "default": "Previous Work" },
     { "type": "text", "id": "work_heading", "label": "Heading", "default": "Commission Examples" },
@@ -175,6 +175,27 @@
     { "type": "image_picker", "id": "work_img2", "label": "Work Image 2" },
     { "type": "image_picker", "id": "work_img3", "label": "Work Image 3" },
     { "type": "image_picker", "id": "work_img4", "label": "Work Image 4" }
+  ],
+  "presets": [
+    {
+      "name": "Commission Inquiry Form",
+      "settings": {
+        "info_label": "Work Together",
+        "info_heading": "Let's Create Something Original",
+        "info_body": "Whether you arrive with a clear concept or allow full creative freedom — both approaches are equally valued.",
+        "location_text": "Based in your city. Working locally and internationally.",
+        "response_time": "We respond to all inquiries within 24 to 48 hours.",
+        "form_title": "Tell Us About Your Project",
+        "form_subtext": "The more detail you can share the better. Fill in what you know — we'll work through the rest together.",
+        "form_btn_label": "Submit Commission Inquiry",
+        "heard_about_options": "Instagram|Word of Mouth|Google|Behance|Referral|Other",
+        "project_type_options": "Mural (Exterior)|Mural (Interior)|Feature Wall|Fine Art Print|Vehicle Graphics|Digital Illustration|Brand Installation|Live Painting / Activation|Other",
+        "preferred_style_options": "Realistic|Abstract|Geometric|Typographic|Mixed Media|Open to Direction",
+        "work_label": "Previous Work",
+        "work_heading": "Commission Examples",
+        "work_subtext": "A selection of commissioned projects across different environments and scales."
+      }
+    }
   ]
 }
 {% endschema %}
