@@ -34,7 +34,6 @@
   position: relative;
   z-index: 2;
   width: min(920px, 100%);
-  background: transparent !important;
 }
 
 .lb-hero__eyebrow {
