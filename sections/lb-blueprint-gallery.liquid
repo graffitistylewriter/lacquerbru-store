@@ -24,11 +24,11 @@
 
   <div class="gal-masonry" id="gal-masonry">
     {%- for item in gallery_items -%}
-      {%- assign img = item.image.value -%}
-      {%- assign title = item.title.value -%}
-      {%- assign cats = item.categories.value -%}
-      {%- assign wide = item.wide.value -%}
-      {%- if img.image != blank -%}
+      {%- assign img = item.image -%}
+      {%- assign title = item.title -%}
+      {%- assign cats = item.categories -%}
+      {%- assign wide = item.wide -%}
+      {%- if img != blank -%}
         {%- assign cat_slugs = '' -%}
         {%- for cat in cats -%}
           {%- assign slug = cat | downcase | replace: ' ', '-' -%}
