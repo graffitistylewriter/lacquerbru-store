@@ -104,6 +104,17 @@
   .gal-item.hidden {
     display: none;
   }
+
+  #lb-lightbox { position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity 0.3s ease; }
+#lb-lightbox.active { display:flex !important; opacity:1; }
+#lb-lightbox-overlay { position:absolute; inset:0; background:rgba(0,0,0,0.92); }
+#lb-lightbox-inner { position:relative; z-index:1; max-width:90vw; max-height:90vh; }
+#lb-lightbox-img-wrap { position:relative; }
+#lb-lightbox-img { display:block; max-width:90vw; max-height:85vh; object-fit:contain; user-select:none; -webkit-user-drag:none; pointer-events:none; }
+#lb-lightbox-shield { position:absolute; inset:0; z-index:2; }
+#lb-lightbox-close { position:absolute; top:-2.5rem; right:0; background:none; border:none; color:white; font-size:1.5rem; cursor:pointer; line-height:1; }
+.gal-item { cursor:pointer; }
+
 </style>
 
 <script>
