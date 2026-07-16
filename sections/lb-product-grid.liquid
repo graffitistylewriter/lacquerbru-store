@@ -10,6 +10,26 @@
 {%- assign pt = section.settings.padding_top -%}
 {%- assign pb = section.settings.padding_bottom -%}
 
+{%- comment %} Build product data array for modal navigation {%- endcomment %}
+<script>
+  window.lbGridProducts_{{ section.id }} = [
+    {%- for product in collection.products -%}
+    {
+      "id": {{ product.selected_or_first_available_variant.id | json }},
+      "title": {{ product.title | json }},
+      "vendor": {{ product.vendor | json }},
+      "price": {{ product.price | money | json }},
+      "compare_at_price": {% if product.compare_at_price > product.price %}{{ product.compare_at_price | money | json }}{% else %}null{% endif %},
+      "description": {{ product.description | strip_html | truncate: 400 | json }},
+      "image": {{ product.featured_image | image_url: width: 1200 | json }},
+      "image_alt": {{ product.featured_image.alt | default: product.title | json }},
+      "available": {{ product.available | json }},
+      "url": {{ product.url | json }}
+    }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ];
+</script>
+
 <style>
   #lb-grid-{{ section.id }} {
     background: {{ bg }};
@@ -52,14 +72,10 @@
     gap: {{ gap }}px;
   }
   @media (max-width: 900px) {
-    #lb-grid-{{ section.id }} .lb-grid__grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
+    #lb-grid-{{ section.id }} .lb-grid__grid { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 560px) {
-    #lb-grid-{{ section.id }} .lb-grid__grid {
-      grid-template-columns: 1fr;
-    }
+    #lb-grid-{{ section.id }} .lb-grid__grid { grid-template-columns: 1fr; }
   }
   #lb-grid-{{ section.id }} .lb-grid__card {
     background: {{ card_bg }};
@@ -71,119 +87,163 @@
     transition: border-color 0.2s ease, transform 0.2s ease;
     cursor: pointer;
   }
-  #lb-grid-{{ section.id }} .lb-grid__card:hover {
-    border-color: {{ accent }};
-    transform: translateY(-2px);
-  }
+  #lb-grid-{{ section.id }} .lb-grid__card:hover { border-color: {{ accent }}; transform: translateY(-2px); }
   #lb-grid-{{ section.id }} .lb-grid__img-wrap {
     position: relative;
     aspect-ratio: 4/3;
     overflow: hidden;
     background: #111;
+    cursor: zoom-in;
   }
   #lb-grid-{{ section.id }} .lb-grid__img-wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: 100%; height: 100%; object-fit: cover;
     transition: transform 0.4s ease;
   }
-  #lb-grid-{{ section.id }} .lb-grid__card:hover .lb-grid__img-wrap img {
-    transform: scale(1.04);
-  }
+  #lb-grid-{{ section.id }} .lb-grid__card:hover .lb-grid__img-wrap img { transform: scale(1.04); }
   #lb-grid-{{ section.id }} .lb-grid__badge {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    background: {{ accent }};
-    color: #0a0a0a;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 2px;
+    position: absolute; top: 12px; left: 12px;
+    background: {{ accent }}; color: #0a0a0a;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 4px 10px; border-radius: 2px;
   }
   #lb-grid-{{ section.id }} .lb-grid__body {
-    padding: 20px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    padding: 20px; flex: 1; display: flex; flex-direction: column; gap: 8px;
   }
   #lb-grid-{{ section.id }} .lb-grid__vendor {
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: {{ muted }};
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {{ muted }};
   }
   #lb-grid-{{ section.id }} .lb-grid__title {
-    font-size: 1rem;
-    font-weight: 700;
-    color: {{ text_col }};
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    line-height: 1.3;
-    margin: 0;
+    font-size: 1rem; font-weight: 700; color: {{ text_col }};
+    text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.3; margin: 0;
   }
   #lb-grid-{{ section.id }} .lb-grid__price {
-    font-size: 1rem;
-    color: {{ accent }};
-    font-weight: 600;
-    margin-top: auto;
-    padding-top: 12px;
+    font-size: 1rem; color: {{ accent }}; font-weight: 600; margin-top: auto; padding-top: 12px;
   }
   #lb-grid-{{ section.id }} .lb-grid__price s {
-    color: {{ muted }};
-    font-weight: 400;
-    margin-left: 8px;
-    font-size: 0.85rem;
+    color: {{ muted }}; font-weight: 400; margin-left: 8px; font-size: 0.85rem;
   }
   #lb-grid-{{ section.id }} .lb-grid__atc {
-    margin-top: 12px;
-    width: 100%;
-    background: transparent;
-    border: 1px solid {{ accent }};
-    color: {{ accent }};
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 10px 0;
-    border-radius: 2px;
-    cursor: pointer;
+    margin-top: 12px; width: 100%; background: transparent;
+    border: 1px solid {{ accent }}; color: {{ accent }};
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 10px 0; border-radius: 2px; cursor: pointer;
     transition: background 0.2s ease, color 0.2s ease;
   }
-  #lb-grid-{{ section.id }} .lb-grid__atc:hover {
-    background: {{ accent }};
-    color: #0a0a0a;
-  }
+  #lb-grid-{{ section.id }} .lb-grid__atc:hover { background: {{ accent }}; color: #0a0a0a; }
   #lb-grid-{{ section.id }} .lb-grid__empty {
-    text-align: center;
-    padding: 80px 24px;
-    color: {{ muted }};
+    text-align: center; padding: 80px 24px; color: {{ muted }};
   }
-  #lb-grid-{{ section.id }} .lb-grid__empty-icon {
-    font-size: 2.5rem;
-    margin-bottom: 16px;
-    opacity: 0.4;
-  }
+  #lb-grid-{{ section.id }} .lb-grid__empty-icon { font-size: 2.5rem; margin-bottom: 16px; opacity: 0.4; }
   #lb-grid-{{ section.id }} .lb-grid__empty-heading {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: {{ text_col }};
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 8px;
+    font-size: 1.2rem; font-weight: 700; color: {{ text_col }};
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;
   }
-  #lb-grid-{{ section.id }} .lb-grid__empty-text {
-    font-size: 0.9rem;
-    color: {{ muted }};
+  #lb-grid-{{ section.id }} .lb-grid__empty-text { font-size: 0.9rem; color: {{ muted }}; }
+
+  /* ── MODAL ── */
+  .lb-modal-{{ section.id }} {
+    display: none;
+    position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,0.88);
+    align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .lb-modal-{{ section.id }}.is-open { display: flex; }
+  .lb-modal-{{ section.id }} .lbm__inner {
+    background: #111;
+    border: 1px solid #2a2a2a;
+    border-radius: 4px;
+    max-width: 960px; width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+  }
+  @media (max-width: 700px) {
+    .lb-modal-{{ section.id }} .lbm__inner { grid-template-columns: 1fr; }
+  }
+  .lb-modal-{{ section.id }} .lbm__img-wrap {
+    position: relative; aspect-ratio: 1/1; overflow: hidden; background: #0a0a0a;
+  }
+  .lb-modal-{{ section.id }} .lbm__img-wrap img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .lb-modal-{{ section.id }} .lbm__body {
+    padding: 40px 36px;
+    display: flex; flex-direction: column; gap: 16px;
+    color: #fff;
+  }
+  .lb-modal-{{ section.id }} .lbm__vendor {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: {{ muted }};
+  }
+  .lb-modal-{{ section.id }} .lbm__title {
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem); font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.2; margin: 0;
+  }
+  .lb-modal-{{ section.id }} .lbm__price {
+    font-size: 1.2rem; color: {{ accent }}; font-weight: 600;
+  }
+  .lb-modal-{{ section.id }} .lbm__price s {
+    color: {{ muted }}; font-weight: 400; margin-left: 8px; font-size: 0.9rem;
+  }
+  .lb-modal-{{ section.id }} .lbm__desc {
+    font-size: 0.9rem; color: {{ muted }}; line-height: 1.7;
+    flex: 1;
+  }
+  .lb-modal-{{ section.id }} .lbm__atc {
+    width: 100%; background: {{ accent }}; color: #0a0a0a;
+    border: none; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 14px 0; border-radius: 2px; cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+  .lb-modal-{{ section.id }} .lbm__atc:hover { opacity: 0.85; }
+  .lb-modal-{{ section.id }} .lbm__atc:disabled { opacity: 0.4; cursor: not-allowed; }
+  .lb-modal-{{ section.id }} .lbm__view-link {
+    display: block; text-align: center;
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: {{ muted }}; text-decoration: none;
+    transition: color 0.2s;
+  }
+  .lb-modal-{{ section.id }} .lbm__view-link:hover { color: {{ accent }}; }
+  .lb-modal-{{ section.id }} .lbm__close {
+    position: absolute; top: 16px; right: 16px;
+    background: none; border: none; color: {{ muted }};
+    font-size: 1.4rem; cursor: pointer; line-height: 1;
+    transition: color 0.2s;
+    z-index: 2;
+  }
+  .lb-modal-{{ section.id }} .lbm__close:hover { color: #fff; }
+  .lb-modal-{{ section.id }} .lbm__nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: rgba(0,0,0,0.6); border: 1px solid #2a2a2a;
+    color: #fff; font-size: 1.2rem;
+    width: 40px; height: 40px; border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s;
+    z-index: 2;
+  }
+  .lb-modal-{{ section.id }} .lbm__nav:hover { border-color: {{ accent }}; background: rgba(0,0,0,0.9); }
+  .lb-modal-{{ section.id }} .lbm__prev { left: -20px; }
+  .lb-modal-{{ section.id }} .lbm__next { right: -20px; }
+  @media (max-width: 700px) {
+    .lb-modal-{{ section.id }} .lbm__prev { left: 8px; }
+    .lb-modal-{{ section.id }} .lbm__next { right: 8px; }
+    .lb-modal-{{ section.id }} .lbm__body { padding: 24px 20px; }
+  }
+  .lb-modal-{{ section.id }} .lbm__counter {
+    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+    font-size: 10px; letter-spacing: 0.1em; color: {{ muted }};
+  }
+  .lb-modal-{{ section.id }} .lbm__feedback {
+    font-size: 11px; text-align: center; color: {{ accent }};
+    min-height: 16px; letter-spacing: 0.08em;
   }
 </style>
 
 <section id="lb-grid-{{ section.id }}">
   <div class="lb-grid__inner">
-
     <div class="lb-grid__header">
       <div>
         {%- if section.settings.label != blank -%}
@@ -199,15 +259,11 @@
     {%- if collection.products_count > 0 -%}
       <div class="lb-grid__grid">
         {%- for product in collection.products -%}
-          <div class="lb-grid__card" data-product-url="{{ product.url }}">
-            <div class="lb-grid__img-wrap">
+          <div class="lb-grid__card" data-index="{{ forloop.index0 }}">
+            <div class="lb-grid__img-wrap lb-modal-trigger" data-index="{{ forloop.index0 }}">
               {%- if product.featured_image -%}
-                <img
-                  src="{{ product.featured_image | image_url: width: 800 }}"
-                  alt="{{ product.featured_image.alt | escape }}"
-                  loading="lazy"
-                  width="800"
-                >
+                <img src="{{ product.featured_image | image_url: width: 800 }}"
+                  alt="{{ product.featured_image.alt | escape }}" loading="lazy" width="800">
               {%- else -%}
                 <div style="width:100%;height:100%;background:#1a1a1a;"></div>
               {%- endif -%}
@@ -221,14 +277,14 @@
               {%- if section.settings.show_vendor -%}
                 <p class="lb-grid__vendor">{{ product.vendor }}</p>
               {%- endif -%}
-              <h3 class="lb-grid__title">{{ product.title }}</h3>
+              <h3 class="lb-grid__title lb-modal-trigger" data-index="{{ forloop.index0 }}">{{ product.title }}</h3>
               <p class="lb-grid__price">
                 {{ product.price | money }}
                 {%- if product.compare_at_price > product.price -%}
                   <s>{{ product.compare_at_price | money }}</s>
                 {%- endif -%}
               </p>
-              <form action="/cart/add" method="post">
+              <form class="lb-atc-form" data-section="{{ section.id }}">
                 <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                 <button type="submit" class="lb-grid__atc"
                   {%- unless product.available -%} disabled style="opacity:0.4;cursor:not-allowed;"{%- endunless -%}>
@@ -239,7 +295,6 @@
           </div>
         {%- endfor -%}
       </div>
-
     {%- else -%}
       <div class="lb-grid__empty">
         <div class="lb-grid__empty-icon">◻</div>
@@ -247,17 +302,166 @@
         <p class="lb-grid__empty-text">{{ section.settings.empty_text | default: 'New products are on their way. Check back soon.' }}</p>
       </div>
     {%- endif -%}
-
   </div>
 </section>
 
+<!-- MODAL -->
+<div class="lb-modal-{{ section.id }}" id="lbModal_{{ section.id }}" role="dialog" aria-modal="true">
+  <div class="lbm__inner">
+    <button class="lbm__close" aria-label="Close">✕</button>
+    <button class="lbm__nav lbm__prev" aria-label="Previous">&#8592;</button>
+    <button class="lbm__nav lbm__next" aria-label="Next">&#8594;</button>
+    <div class="lbm__img-wrap">
+      <img class="lbm__img" src="" alt="">
+    </div>
+    <div class="lbm__body">
+      <p class="lbm__vendor"></p>
+      <h2 class="lbm__title"></h2>
+      <p class="lbm__price"></p>
+      <p class="lbm__desc"></p>
+      <form class="lbm__form">
+        <input type="hidden" name="id" class="lbm__variant-id">
+        <button type="submit" class="lbm__atc">Add to Cart</button>
+      </form>
+      <p class="lbm__feedback"></p>
+      <a class="lbm__view-link" href="#">View Full Product Page →</a>
+    </div>
+    <span class="lbm__counter"></span>
+  </div>
+</div>
+
 <script>
-  document.querySelectorAll('#lb-grid-{{ section.id }} .lb-grid__card').forEach(function(card) {
-    card.addEventListener('click', function(e) {
-      if (e.target.closest('form')) return;
-      window.location.href = card.dataset.productUrl;
+(function() {
+  var products = window.lbGridProducts_{{ section.id }} || [];
+  var modal = document.getElementById('lbModal_{{ section.id }}');
+  if (!modal || !products.length) return;
+
+  var currentIndex = 0;
+  var touchStartX = 0;
+
+  var img = modal.querySelector('.lbm__img');
+  var vendor = modal.querySelector('.lbm__vendor');
+  var title = modal.querySelector('.lbm__title');
+  var price = modal.querySelector('.lbm__price');
+  var desc = modal.querySelector('.lbm__desc');
+  var variantId = modal.querySelector('.lbm__variant-id');
+  var atcBtn = modal.querySelector('.lbm__atc');
+  var feedback = modal.querySelector('.lbm__feedback');
+  var viewLink = modal.querySelector('.lbm__view-link');
+  var counter = modal.querySelector('.lbm__counter');
+
+  function openModal(index) {
+    currentIndex = index;
+    render();
+    modal.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.classList.remove('is-open');
+    document.body.style.overflow = '';
+    feedback.textContent = '';
+  }
+
+  function render() {
+    var p = products[currentIndex];
+    img.src = p.image || '';
+    img.alt = p.image_alt || '';
+    vendor.textContent = p.vendor || '';
+    title.textContent = p.title || '';
+    var priceHtml = p.price;
+    if (p.compare_at_price) priceHtml += ' <s>' + p.compare_at_price + '</s>';
+    price.innerHTML = priceHtml;
+    desc.textContent = p.description || '';
+    variantId.value = p.id;
+    viewLink.href = p.url;
+    counter.textContent = (currentIndex + 1) + ' / ' + products.length;
+    atcBtn.disabled = !p.available;
+    atcBtn.textContent = p.available ? 'Add to Cart' : 'Sold Out';
+    feedback.textContent = '';
+  }
+
+  function prev() { currentIndex = (currentIndex - 1 + products.length) % products.length; render(); }
+  function next() { currentIndex = (currentIndex + 1) % products.length; render(); }
+
+  // Open triggers
+  document.querySelectorAll('#lb-grid-{{ section.id }} .lb-modal-trigger').forEach(function(el) {
+    el.addEventListener('click', function() {
+      openModal(parseInt(el.dataset.index));
     });
   });
+
+  // Nav
+  modal.querySelector('.lbm__prev').addEventListener('click', function(e) { e.stopPropagation(); prev(); });
+  modal.querySelector('.lbm__next').addEventListener('click', function(e) { e.stopPropagation(); next(); });
+
+  // Close
+  modal.querySelector('.lbm__close').addEventListener('click', closeModal);
+  modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', function(e) {
+    if (!modal.classList.contains('is-open')) return;
+    if (e.key === 'Escape') closeModal();
+    if (e.key === 'ArrowLeft') prev();
+    if (e.key === 'ArrowRight') next();
+  });
+
+  // Touch swipe
+  modal.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; }, { passive: true });
+  modal.addEventListener('touchend', function(e) {
+    var diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) { diff > 0 ? next() : prev(); }
+  });
+
+  // ATC
+  modal.querySelector('.lbm__form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    atcBtn.disabled = true;
+    atcBtn.textContent = 'Adding...';
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: parseInt(variantId.value), quantity: 1 })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function() {
+      feedback.textContent = '✓ Added to cart';
+      atcBtn.textContent = 'Add to Cart';
+      atcBtn.disabled = false;
+      document.dispatchEvent(new CustomEvent('cart:refresh'));
+    })
+    .catch(function() {
+      feedback.textContent = 'Something went wrong. Try again.';
+      atcBtn.textContent = 'Add to Cart';
+      atcBtn.disabled = false;
+    });
+  });
+
+  // Grid card ATC (outside modal)
+  document.querySelectorAll('#lb-grid-{{ section.id }} .lb-atc-form').forEach(function(form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var btn = form.querySelector('button');
+      var id = form.querySelector('input[name="id"]').value;
+      btn.disabled = true;
+      btn.textContent = 'Adding...';
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: parseInt(id), quantity: 1 })
+      })
+      .then(function(r) { return r.json(); })
+      .then(function() {
+        btn.textContent = '✓ Added';
+        setTimeout(function() { btn.textContent = 'Add to Cart'; btn.disabled = false; }, 2000);
+        document.dispatchEvent(new CustomEvent('cart:refresh'));
+      })
+      .catch(function() {
+        btn.textContent = 'Error';
+        setTimeout(function() { btn.textContent = 'Add to Cart'; btn.disabled = false; }, 2000);
+      });
+    });
+  });
+})();
 </script>
 
 {% schema %}
