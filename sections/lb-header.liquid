@@ -175,6 +175,13 @@
         >{{ link.title }}</a>
       {% endif %}
     {% endfor %}
+    {% if section.settings.cta_label != blank %}
+      <a href="{{ section.settings.cta_url }}" class="lb-mobile-menu__cta-nav">
+        {{ section.settings.cta_label }}
+      </a>
+    {% endif %}
+  </nav>
+
   </nav>
 
   <div class="lb-mobile-menu__footer">
