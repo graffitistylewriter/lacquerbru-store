@@ -56,7 +56,15 @@
         {% endif %}
       </li>
     {% endfor %}
+    {% if section.settings.cta_label != blank %}
+      <li class="lb-nav__item lb-nav__item--cta">
+        <a href="{{ section.settings.cta_url }}" class="lb-nav__cta lb-nav__cta--inline">
+          {{ section.settings.cta_label }}
+        </a>
+      </li>
+    {% endif %}
   </ul>
+
 
   {%- comment -%} ACTIONS {%- endcomment -%}
   <div class="lb-nav__actions">
@@ -176,11 +184,7 @@
     <a href="{{ routes.cart_url }}" class="lb-mobile-menu__util">
       Cart{% if cart.item_count > 0 %} ({{ cart.item_count }}){% endif %}
     </a>
-    {% if section.settings.cta_label != blank %}
-      <a href="{{ section.settings.cta_url }}" class="lb-nav__cta lb-mobile-menu__cta">
-        {{ section.settings.cta_label }}
-      </a>
-    {% endif %}
+  
   </div>
 </div>
 
@@ -437,6 +441,12 @@
   .lb-mobile-menu__util { font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.2s; }
   .lb-mobile-menu__util:hover { color: var(--lb-nav-accent); }
   .lb-mobile-menu__cta { margin-top: 8px; }
+  .lb-nav__item--cta {
+    margin-left: 16px;
+  }
+  .lb-nav__cta--inline {
+    padding: 9px 20px;
+  }
 
   {% if section.settings.sticky_header %}
   .lb-page-offset { padding-top: var(--lb-nav-height); }
