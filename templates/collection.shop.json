@@ -97,13 +97,13 @@
         "compat2"
       ],
       "settings": {
-        "product": "",
+        "product": "my-flare-pack",
         "eyebrow": "Available Now · Digital Download",
         "heading": "The Flare Pack",
         "description": "",
         "cta_label": "Add to Cart",
         "license_note": "Personal license included.",
-        "guarantee": "Secure checkout · Instant delivery · 3 download attempts · 14-day link validity",
+        "guarantee": "Secure checkout · Instant delivery",
         "bg_word": "FLARE",
         "pack_name": "FLARE",
         "pack_subtitle": "Procreate Brush Pack by Lacquer Bru",
