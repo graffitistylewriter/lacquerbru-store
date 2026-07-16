@@ -75,38 +75,10 @@
   #lb-grid-{{ section.id }} .lb-grid__toolbar {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 12px;
     margin-bottom: 40px;
-    flex-wrap: wrap;
   }
-  #lb-grid-{{ section.id }} .lb-grid__search-wrap {
-    flex: 1;
-    min-width: 200px;
-    position: relative;
-  }
-  #lb-grid-{{ section.id }} .lb-grid__search-icon {
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: {{ muted }};
-    font-size: 14px;
-    pointer-events: none;
-  }
-  #lb-grid-{{ section.id }} .lb-grid__search {
-    width: 100%;
-    background: #1a1a1a;
-    border: 1px solid #2a2a2a;
-    border-radius: 2px;
-    color: {{ text_col }};
-    font-size: 13px;
-    padding: 10px 14px 10px 38px;
-    outline: none;
-    transition: border-color 0.2s;
-    box-sizing: border-box;
-  }
-  #lb-grid-{{ section.id }} .lb-grid__search::placeholder { color: {{ muted }}; }
-  #lb-grid-{{ section.id }} .lb-grid__search:focus { border-color: {{ accent }}; }
   #lb-grid-{{ section.id }} .lb-grid__sort {
     background: #1a1a1a;
     border: 1px solid #2a2a2a;
@@ -121,11 +93,9 @@
     min-width: 180px;
   }
   #lb-grid-{{ section.id }} .lb-grid__sort:focus { border-color: {{ accent }}; }
-  #lb-grid-{{ section.id }} .lb-grid__results-count {
-    font-size: 11px;
-    color: {{ muted }};
-    letter-spacing: 0.08em;
-    white-space: nowrap;
+  @media (max-width: 560px) {
+    #lb-grid-{{ section.id }} .lb-grid__sort { min-width: unset; width: 100%; }
+    #lb-grid-{{ section.id }} .lb-grid__toolbar { justify-content: stretch; }
   }
 
   /* ── GRID ── */
@@ -136,8 +106,6 @@
   }
   @media (max-width: 900px) {
     #lb-grid-{{ section.id }} .lb-grid__grid { grid-template-columns: repeat(2, 1fr); }
-    #lb-grid-{{ section.id }} .lb-grid__toolbar { flex-direction: column; align-items: stretch; }
-    #lb-grid-{{ section.id }} .lb-grid__sort { min-width: unset; }
   }
   @media (max-width: 560px) {
     #lb-grid-{{ section.id }} .lb-grid__grid { grid-template-columns: 1fr; }
@@ -317,17 +285,6 @@
     {%- if collection.products_count > 0 -%}
 
       <div class="lb-grid__toolbar">
-        <div class="lb-grid__search-wrap">
-          <span class="lb-grid__search-icon">⌕</span>
-          <input
-            class="lb-grid__search"
-            id="lbSearch_{{ section.id }}"
-            type="search"
-            placeholder="Search products..."
-            aria-label="Search products"
-            autocomplete="off"
-          >
-        </div>
         <select class="lb-grid__sort" id="lbSort_{{ section.id }}" aria-label="Sort products">
           <option value="featured">Featured</option>
           <option value="price-asc">Price: Low → High</option>
@@ -385,7 +342,7 @@
       <div class="lb-grid__empty" id="lbEmpty_{{ section.id }}">
         <div class="lb-grid__empty-icon">◻</div>
         <p class="lb-grid__empty-heading">No Results Found</p>
-        <p class="lb-grid__empty-text">Try a different search term or clear the filter.</p>
+        <p class="lb-grid__empty-text">Try adjusting the sort or browse a different category.</p>
       </div>
 
     {%- else -%}
@@ -431,7 +388,6 @@
   var grid = document.getElementById('lbGridEl_{{ section.id }}');
   var emptyEl = document.getElementById('lbEmpty_{{ section.id }}');
   var countEl = document.getElementById('lbCount_{{ section.id }}');
-  var searchEl = document.getElementById('lbSearch_{{ section.id }}');
   var sortEl = document.getElementById('lbSort_{{ section.id }}');
   if (!grid) return;
 
@@ -440,24 +396,12 @@
   var currentModalIndex = 0;
   var touchStartX = 0;
 
-  // ── SEARCH + SORT ──
   function getVisibleCards() {
     return cards.filter(function(c) { return !c.hasAttribute('data-hidden'); });
   }
 
-  function applyFilters() {
-    var query = searchEl ? searchEl.value.toLowerCase().trim() : '';
+  function applySort() {
     var sort = sortEl ? sortEl.value : 'featured';
-
-    // Filter
-    cards.forEach(function(card) {
-      var title = card.dataset.title || '';
-      var match = !query || title.indexOf(query) !== -1;
-      if (match) card.removeAttribute('data-hidden');
-      else card.setAttribute('data-hidden', '');
-    });
-
-    // Sort visible cards
     var visible = getVisibleCards();
     visible.sort(function(a, b) {
       if (sort === 'price-asc') return parseInt(a.dataset.price) - parseInt(b.dataset.price);
@@ -465,23 +409,17 @@
       if (sort === 'newest') return parseInt(b.dataset.created) - parseInt(a.dataset.created);
       if (sort === 'az') return a.dataset.title.localeCompare(b.dataset.title);
       if (sort === 'za') return b.dataset.title.localeCompare(a.dataset.title);
-      return parseInt(a.dataset.index) - parseInt(b.dataset.index); // featured = original order
+      return parseInt(a.dataset.index) - parseInt(b.dataset.index);
     });
     visible.forEach(function(card) { grid.appendChild(card); });
-
-    // Update count + empty state
     var count = visible.length;
     if (countEl) countEl.textContent = count + ' ' + (count === 1 ? 'product' : 'products');
     if (emptyEl) emptyEl.classList.toggle('is-visible', count === 0);
-
-    // Update modal navigation to only visible products
     visibleIndices = visible.map(function(c) { return parseInt(c.dataset.index); });
   }
 
-  if (searchEl) searchEl.addEventListener('input', applyFilters);
-  if (sortEl) sortEl.addEventListener('change', applyFilters);
+  if (sortEl) sortEl.addEventListener('change', applySort);
 
-  // ── MODAL ──
   if (!modal || !allProducts.length) return;
 
   var img = modal.querySelector('.lbm__img');
@@ -538,16 +476,12 @@
     render();
   }
 
-  // Open triggers
   document.querySelectorAll('#lb-grid-{{ section.id }} .lb-modal-trigger').forEach(function(el) {
     el.addEventListener('click', function() { openModal(parseInt(el.dataset.index)); });
   });
 
-  // Nav
   modal.querySelector('.lbm__prev').addEventListener('click', function(e) { e.stopPropagation(); prev(); });
   modal.querySelector('.lbm__next').addEventListener('click', function(e) { e.stopPropagation(); next(); });
-
-  // Close
   modal.querySelector('.lbm__close').addEventListener('click', closeModal);
   modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
   document.addEventListener('keydown', function(e) {
@@ -557,14 +491,12 @@
     if (e.key === 'ArrowRight') next();
   });
 
-  // Touch swipe
   modal.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; }, { passive: true });
   modal.addEventListener('touchend', function(e) {
     var diff = touchStartX - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 50) { diff > 0 ? next() : prev(); }
   });
 
-  // Modal ATC
   modal.querySelector('.lbm__form').addEventListener('submit', function(e) {
     e.preventDefault();
     atcBtn.disabled = true;
@@ -588,7 +520,6 @@
     });
   });
 
-  // Grid card ATC
   document.querySelectorAll('#lb-grid-{{ section.id }} .lb-atc-form').forEach(function(form) {
     form.addEventListener('submit', function(e) {
       e.preventDefault();
