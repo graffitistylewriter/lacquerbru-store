@@ -29,18 +29,6 @@
     <p>{{ section.settings.intro_text }}</p>
   </div>
 
-  {%- if filter_cats.size > 0 -%}
-    <div class="gal-filters">
-      <button class="gal-filter active" data-filter="all">All</button>
-      {%- for cat in filter_cats -%}
-        {%- assign cat_clean = cat | strip -%}
-        {%- if cat_clean != blank -%}
-          <button class="gal-filter" data-filter="{{ cat_clean | downcase | replace: ' ', '-' }}">{{ cat_clean }}</button>
-        {%- endif -%}
-      {%- endfor -%}
-    </div>
-  {%- endif -%}
-
   <div class="gal-masonry" id="gal-masonry">
     {%- for item in gallery_items -%}
       {%- assign img = item.image -%}
