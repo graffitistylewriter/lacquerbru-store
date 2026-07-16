@@ -331,27 +331,21 @@
         "footnote": "No spam. Just new drops. Unsubscribe anytime."
       }
     },
-    "featured": {
-      "type": "lb-featured-products",
+    "product_grid": {
+      "type": "lb-product-grid",
       "settings": {
-        "label": "Available Now",
-        "heading": "The Collection",
-        "subtext": "Digital assets built for working creatives. More drops coming.",
-        "view_all_label": "View All Products",
-        "collection": "",
-        "product_limit": 6,
+        "label": "The Collection",
+        "heading": "All Products",
         "columns": "3",
         "grid_gap": 24,
         "show_vendor": true,
-        "show_badge": true,
         "bg_color": "#0a0a0a",
         "card_bg": "#1a1a1a",
         "text_color": "#ffffff",
         "muted_color": "#aaaaaa",
         "accent_color": "#7dd8e8",
-        "heading_color": "#ffffff",
-        "padding_top": 100,
-        "padding_bottom": 100
+        "padding_top": 80,
+        "padding_bottom": 96
       }
     }
   },
@@ -366,6 +360,6 @@
     "reviews",
     "faq",
     "notify_signup",
-    "featured"
+    "product_grid"
   ]
 }
