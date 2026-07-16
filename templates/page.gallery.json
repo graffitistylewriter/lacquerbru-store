@@ -20,7 +20,7 @@
         "eyebrow": "The Work",
         "heading": "Gallery.",
         "heading_em": "",
-        "subtext": "Murals · Portraits · Wildstyle · Digital · Commissions",
+        "subtext": "Murals · Portraits · Wildstyle · Digital · Commissions · Artist",
         "btn1_label": "Start a Commission",
         "btn1_url": "",
         "btn2_label": "",
@@ -56,7 +56,12 @@
         "cta_btn_url": "",
         "watermark_text": "© Lacquer Bru",
         "watermark_align": "center",
-        "watermark_position": "bottom"
+        "watermark_position": "bottom",
+        "watermark_text_opacity": 45,
+        "watermark_logo_width": 80,
+        "watermark_logo_align": "left",
+        "watermark_logo_position": "bottom",
+        "watermark_logo_opacity": 50
       }
     }
   },
