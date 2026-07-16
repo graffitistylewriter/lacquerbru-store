@@ -70,7 +70,14 @@
     <div id="lb-lightbox-inner">
       <button id="lb-lightbox-close">&#x2715;</button>
       <div id="lb-lightbox-img-wrap">
-        <img id="lb-lightbox-img" src="" alt="">
+      lbImg.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+
+      // Protect grid thumbnails
+      document.querySelectorAll('#gal-masonry .gal-item img').forEach(function (img) {
+        img.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+        img.setAttribute('draggable', 'false');
+      });
+
         <div id="lb-lightbox-shield"></div>
         {%- if section.settings.watermark_logo != blank -%}
           <div id="lb-watermark-logo" style="position:absolute;z-index:4;pointer-events:none;padding:0.75rem;width:100%;
