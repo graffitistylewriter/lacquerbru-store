@@ -75,6 +75,16 @@
     </div>
   {% endif %}
 
+  {%- comment -%} FILTER BAR {%- endcomment -%}
+  {%- assign filter_cats = 'Commercial|Private|Freestyle|New Work' | split: '|' -%}
+  <div class="lb-hero__filters">
+    <button class="gal-filter active" data-filter="all">All</button>
+    {%- for cat in filter_cats -%}
+      {%- assign cat_clean = cat | strip -%}
+      <button class="gal-filter" data-filter="{{ cat_clean | downcase | replace: ' ', '-' }}">{{ cat_clean }}</button>
+    {%- endfor -%}
+  </div>
+
 </section>
 
 <style>
@@ -225,14 +235,6 @@
     50% { opacity: 1; transform: scaleY(1); }
   }
 
-  @media (max-width: 768px) {
-    .lb-hero__content { padding: {{ section.settings.padding_v | divided_by: 1.5 | round }}px 24px; }
-    .lb-hero__scroll { left: 24px; }
-    .lb-btn { padding: 14px 28px; }
-
-    .lb-hero__filters .gal-filter { padding: 12px 16px; font-size: 9px; }
-  }
-
   .lb-hero__filters {
     position: absolute;
     bottom: 0;
@@ -271,16 +273,13 @@
     color: #ffffff !important;
   }
 
+  @media (max-width: 768px) {
+    .lb-hero__content { padding: {{ section.settings.padding_v | divided_by: 1.5 | round }}px 24px; }
+    .lb-hero__scroll { left: 24px; }
+    .lb-btn { padding: 14px 28px; }
+    .lb-hero__filters .gal-filter { padding: 12px 16px; font-size: 9px; }
+  }
 </style>
-
-{%- assign filter_cats = 'Commercial|Private|Freestyle|New Work' | split: '|' -%}
-<div class="lb-hero__filters">
-  <button class="gal-filter active" data-filter="all">All</button>
-  {%- for cat in filter_cats -%}
-    {%- assign cat_clean = cat | strip -%}
-    <button class="gal-filter" data-filter="{{ cat_clean | downcase | replace: ' ', '-' }}">{{ cat_clean }}</button>
-  {%- endfor -%}
-</div>
 
 {% schema %}
 {
