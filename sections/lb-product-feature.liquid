@@ -1,3 +1,5 @@
+{% if collection.handle == 'shop' or request.page_type != 'collection' %}
+
 <section class="lb-product-feature" style="background:{{ section.settings.bg_color }};padding:{{ section.settings.padding_top }}px 60px {{ section.settings.padding_bottom }}px;">
 
   <div class="lpf-inner">
@@ -120,6 +122,8 @@
   }
 </style>
 
+{% endif %}
+
 {% schema %}
 {
   "name": "LB Product Feature",
@@ -184,3 +188,4 @@
   ]
 }
 {% endschema %}
+
