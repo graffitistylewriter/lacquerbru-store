@@ -75,15 +75,39 @@
     </div>
   {% endif %}
 
-  {%- comment -%} FILTER BAR {%- endcomment -%}
-  {%- assign filter_cats = 'Commercial|Private|Freestyle|New Work' | split: '|' -%}
-  <div class="lb-hero__filters">
-    <button class="gal-filter active" data-filter="all">All</button>
-    {%- for cat in filter_cats -%}
-      {%- assign cat_clean = cat | strip -%}
-      <button class="gal-filter" data-filter="{{ cat_clean | downcase | replace: ' ', '-' }}">{{ cat_clean }}</button>
-    {%- endfor -%}
-  </div>
+{%- comment -%} FILTER BAR — Gallery and Product/Collection templates only {%- endcomment -%}
+{%- assign show_filters = false -%}
+{%- assign show_shop_filters = false -%}
+
+{%- if template.name == 'collection' or template.name == 'list-collections' -%}
+  {%- assign show_filters = true -%}
+  {%- assign show_shop_filters = true -%}
+{%- elsif template.name == 'page' and template.suffix contains 'gallery' -%}
+  {%- assign show_filters = true -%}
+{%- endif -%}
+
+{%- if show_filters -%}
+  {%- if show_shop_filters -%}
+    {%- assign filter_cats = 'All Products|Brush Packs|Prints & Canvas|Merchandise|Digital Downloads' | split: '|' -%}
+    <div class="lb-hero__filters">
+      <button class="gal-filter active" data-filter="all">All Products</button>
+      {%- for cat in filter_cats offset: 1 -%}
+        {%- assign cat_clean = cat | strip -%}
+        <button class="gal-filter" data-filter="{{ cat_clean | downcase | replace: ' ', '-' | replace: '&', 'and' }}">{{ cat_clean }}</button>
+      {%- endfor -%}
+    </div>
+  {%- else -%}
+    {%- assign filter_cats = 'Commercial|Private|Freestyle|New Work' | split: '|' -%}
+    <div class="lb-hero__filters">
+      <button class="gal-filter active" data-filter="all">All</button>
+      {%- for cat in filter_cats -%}
+        {%- assign cat_clean = cat | strip -%}
+        <button class="gal-filter" data-filter="{{ cat_clean | downcase | replace: ' ', '-' }}">{{ cat_clean }}</button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+{%- endif -%}
+
 
 </section>
 
