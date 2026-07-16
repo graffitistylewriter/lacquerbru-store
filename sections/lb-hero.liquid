@@ -229,8 +229,58 @@
     .lb-hero__content { padding: {{ section.settings.padding_v | divided_by: 1.5 | round }}px 24px; }
     .lb-hero__scroll { left: 24px; }
     .lb-btn { padding: 14px 28px; }
+
+    .lb-hero__filters .gal-filter { padding: 12px 16px; font-size: 9px; }
   }
+
+  .lb-hero__filters {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .lb-hero__filters .gal-filter {
+    background: rgba(10,10,10,0.75);
+    color: #aaaaaa;
+    border: none;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 16px 28px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .lb-hero__filters .gal-filter:first-child {
+    border-left: 1px solid rgba(255,255,255,0.08);
+  }
+  .lb-hero__filters .gal-filter:hover {
+    background: rgba(20,20,20,0.9);
+    color: #ffffff;
+  }
+  .lb-hero__filters .gal-filter.active {
+    background: #5BC8E8 !important;
+    color: #ffffff !important;
+  }
+
 </style>
+
+{%- assign filter_cats = 'Commercial|Private|Freestyle|New Work' | split: '|' -%}
+<div class="lb-hero__filters">
+  <button class="gal-filter active" data-filter="all">All</button>
+  {%- for cat in filter_cats -%}
+    {%- assign cat_clean = cat | strip -%}
+    <button class="gal-filter" data-filter="{{ cat_clean | downcase | replace: ' ', '-' }}">{{ cat_clean }}</button>
+  {%- endfor -%}
+</div>
 
 {% schema %}
 {
