@@ -184,8 +184,13 @@
     <a href="{{ routes.cart_url }}" class="lb-mobile-menu__util">
       Cart{% if cart.item_count > 0 %} ({{ cart.item_count }}){% endif %}
     </a>
-  
+    {% if section.settings.cta_label != blank %}
+      <a href="{{ section.settings.cta_url }}" class="lb-nav__cta lb-mobile-menu__cta">
+        {{ section.settings.cta_label }}
+      </a>
+    {% endif %}
   </div>
+
 </div>
 
 {%- comment -%} OVERLAY — tap left side to close drawer {%- endcomment -%}
