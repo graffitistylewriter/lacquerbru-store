@@ -12,32 +12,106 @@
     "shop_hero": {
       "type": "lb-shop-hero",
       "settings": {
+        "bg_image": "shopify://shop_images/envynause_Remembering_some_good_times_from_when_I_was_still_living_in_2018-06-19_BkN9aPhDvd5_1805369109849765753.jpg",
         "heading": "Brush Packs",
-        "tagline": "Built by a working artist. Tested on real work. Made for yours."
+        "tagline": "Built by a working artist. Tested on real work. Made for yours.",
+        "category_menu": "shop-categories"
       }
     },
     "marquee": {
       "type": "lb-marquee",
-      "settings": {}
+      "settings": {
+        "accessibility_label": "Lacquer Bru creative services",
+        "separator": "&middot;"
+      }
     },
-
     "product_feature": {
       "type": "lb-product-feature",
       "blocks": {
-        "badge1": { "type": "badge", "settings": { "text": "Procreate 5+" } },
-        "badge2": { "type": "badge", "settings": { "text": ".brushset Format" } },
-        "badge3": { "type": "badge", "settings": { "text": "Instant Download" } },
-        "inc1": { "type": "include_item", "settings": { "text": "Delivered as a single file" } },
-        "inc2": { "type": "include_item", "settings": { "text": "Imports directly in seconds" } },
-        "inc3": { "type": "include_item", "settings": { "text": "Installation guide included" } },
-        "inc4": { "type": "include_item", "settings": { "text": "Free updates when new versions release" } },
-        "compat1": { "type": "compat_item", "settings": { "label": "Procreate 5+", "available": true } },
-        "compat2": { "type": "compat_item", "settings": { "label": "All iPad Models", "available": true } }
+        "badge1": {
+          "type": "badge",
+          "settings": {
+            "text": "Procreate 5+"
+          }
+        },
+        "badge2": {
+          "type": "badge",
+          "settings": {
+            "text": ".brushset Format"
+          }
+        },
+        "badge3": {
+          "type": "badge",
+          "settings": {
+            "text": "Instant Download"
+          }
+        },
+        "inc1": {
+          "type": "include_item",
+          "settings": {
+            "text": "Delivered as a single file"
+          }
+        },
+        "inc2": {
+          "type": "include_item",
+          "settings": {
+            "text": "Imports directly in seconds"
+          }
+        },
+        "inc3": {
+          "type": "include_item",
+          "settings": {
+            "text": "Installation guide included"
+          }
+        },
+        "inc4": {
+          "type": "include_item",
+          "settings": {
+            "text": "Free updates when new versions release"
+          }
+        },
+        "compat1": {
+          "type": "compat_item",
+          "settings": {
+            "label": "Procreate 5+",
+            "available": true
+          }
+        },
+        "compat2": {
+          "type": "compat_item",
+          "settings": {
+            "label": "All iPad Models",
+            "available": true
+          }
+        }
       },
-      "block_order": ["badge1","badge2","badge3","inc1","inc2","inc3","inc4","compat1","compat2"],
-      "settings": {}
+      "block_order": [
+        "badge1",
+        "badge2",
+        "badge3",
+        "inc1",
+        "inc2",
+        "inc3",
+        "inc4",
+        "compat1",
+        "compat2"
+      ],
+      "settings": {
+        "product": "",
+        "eyebrow": "Available Now · Digital Download",
+        "heading": "The Flare Pack",
+        "description": "",
+        "cta_label": "Add to Cart",
+        "license_note": "Personal license included.",
+        "guarantee": "Secure checkout · Instant delivery · 3 download attempts · 14-day link validity",
+        "bg_word": "FLARE",
+        "pack_name": "FLARE",
+        "pack_subtitle": "Procreate Brush Pack by Lacquer Bru",
+        "bg_color": "#0a0a0a",
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
     },
-
     "trust_strip": {
       "type": "lb-trust-strip",
       "settings": {
@@ -52,15 +126,21 @@
         "item_3_value": "Pack updates delivered at no extra cost",
         "item_4_icon": "💬",
         "item_4_label": "Real Support",
-        "item_4_value": "Issues? We respond within 24–48 hours"
+        "item_4_value": "Issues? We respond within 24–48 hours",
+        "bg_color": "#111111",
+        "text_color": "#ffffff",
+        "muted_color": "#aaaaaa",
+        "border_color": "#2a2a2a",
+        "padding_v": 24
       }
     },
-
     "about_pack": {
       "type": "lb-about-pack",
       "settings": {
+        "image_tag": "16+ Years of Aerosol Culture",
         "label": "Why These Brushes Are Different",
-        "heading": "Built From the Inside Out"
+        "heading": "Built From the Inside Out",
+        "body": "<p>Most brush packs are built by designers. This pack was built by a working artist &mdash; tested under real deadlines, across real projects, and refined until it felt exactly right.</p>"
       }
     },
     "how_it_works": {
@@ -69,6 +149,7 @@
         "s1": {
           "type": "step",
           "settings": {
+            "icon": "",
             "title": "Add to Cart & Pay",
             "description": "Select your pack and complete checkout securely. Takes under two minutes."
           }
@@ -76,6 +157,7 @@
         "s2": {
           "type": "step",
           "settings": {
+            "icon": "",
             "title": "Check Your Inbox",
             "description": "Your download link arrives by email immediately after payment."
           }
@@ -83,13 +165,22 @@
         "s3": {
           "type": "step",
           "settings": {
+            "icon": "",
             "title": "Download & Import",
             "description": "Unzip your file and import it directly. Ready to use instantly."
           }
         }
       },
-      "block_order": ["s1", "s2", "s3"],
-      "settings": {}
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "settings": {
+        "label": "Getting Started",
+        "heading": "How It Works",
+        "subheading": "From purchase to creating — the whole process takes under five minutes."
+      }
     },
     "licensing": {
       "type": "lb-licensing",
@@ -108,6 +199,7 @@
         "l2": {
           "type": "license_card",
           "settings": {
+            "featured": false,
             "type_label": "Available on Request",
             "name": "Commercial License",
             "description": "Need to use these assets to create products sold themselves?",
@@ -116,8 +208,15 @@
           }
         }
       },
-      "block_order": ["l1", "l2"],
-      "settings": {}
+      "block_order": [
+        "l1",
+        "l2"
+      ],
+      "settings": {
+        "label": "Licensing",
+        "heading": "How You Can Use These Brushes",
+        "subheading": "Every purchase includes a Personal License."
+      }
     },
     "reviews": {
       "type": "lb-reviews",
@@ -150,8 +249,25 @@
           }
         }
       },
-      "block_order": ["r1", "r2", "r3"],
-      "settings": {}
+      "block_order": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "settings": {
+        "label": "From the Community",
+        "heading": "What Artists Are Saying",
+        "subtext": "Real feedback from artists using these tools every day.",
+        "columns": "3",
+        "bg_color": "#0a0a0a",
+        "card_bg": "#1a1a1a",
+        "text_color": "#ffffff",
+        "muted_color": "#aaaaaa",
+        "accent_color": "#7dd8e8",
+        "star_color": "#f5a623",
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
     },
     "faq": {
       "type": "lb-faq",
@@ -159,34 +275,61 @@
         "f1": {
           "type": "faq_item",
           "settings": {
-            "question": "Which apps are these brushes compatible with?"
+            "question": "Which apps are these brushes compatible with?",
+            "answer": ""
           }
         },
         "f2": {
           "type": "faq_item",
           "settings": {
-            "question": "How do I install the brushes?"
+            "question": "How do I install the brushes?",
+            "answer": ""
           }
         },
         "f3": {
           "type": "faq_item",
           "settings": {
-            "question": "I didn't receive my download email — what now?"
+            "question": "I didn't receive my download email — what now?",
+            "answer": ""
           }
         },
         "f4": {
           "type": "faq_item",
           "settings": {
-            "question": "Can I get a refund on a digital product?"
+            "question": "Can I get a refund on a digital product?",
+            "answer": ""
           }
         }
       },
-      "block_order": ["f1", "f2", "f3", "f4"],
-      "settings": {}
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "f4"
+      ],
+      "settings": {
+        "label": "Support",
+        "heading": "Frequently Asked Questions",
+        "header_align": "left",
+        "max_width": 900,
+        "bg_color": "#0a0a0a",
+        "text_color": "#ffffff",
+        "muted_color": "#aaaaaa",
+        "accent_color": "#7dd8e8",
+        "border_color": "#2a2a2a",
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
     },
     "notify_signup": {
       "type": "lb-notify-signup",
-      "settings": {}
+      "settings": {
+        "heading": "More Is Coming",
+        "subheading": "Be the first to know — and the first to buy.",
+        "placeholder": "your@email.com",
+        "button_text": "Notify Me",
+        "footnote": "No spam. Just new drops. Unsubscribe anytime."
+      }
     },
     "featured": {
       "type": "lb-featured-products",
@@ -195,11 +338,22 @@
         "heading": "The Collection",
         "subtext": "Digital assets built for working creatives. More drops coming.",
         "view_all_label": "View All Products",
+        "collection": "",
         "product_limit": 6,
-        "columns": "3"
+        "columns": "3",
+        "grid_gap": 24,
+        "show_vendor": true,
+        "show_badge": true,
+        "bg_color": "#0a0a0a",
+        "card_bg": "#1a1a1a",
+        "text_color": "#ffffff",
+        "muted_color": "#aaaaaa",
+        "accent_color": "#7dd8e8",
+        "heading_color": "#ffffff",
+        "padding_top": 100,
+        "padding_bottom": 100
       }
     }
-
   },
   "order": [
     "shop_hero",
