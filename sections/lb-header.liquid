@@ -191,11 +191,6 @@
     <a href="{{ routes.cart_url }}" class="lb-mobile-menu__util">
       Cart{% if cart.item_count > 0 %} ({{ cart.item_count }}){% endif %}
     </a>
-    {% if section.settings.cta_label != blank %}
-      <a href="{{ section.settings.cta_url }}" class="lb-nav__cta lb-mobile-menu__cta">
-        {{ section.settings.cta_label }}
-      </a>
-    {% endif %}
   </div>
 
 </div>
@@ -459,6 +454,24 @@
   .lb-nav__cta--inline {
     padding: 9px 20px;
   }
+  .lb-mobile-menu__cta-nav {
+  display: inline-block;
+  margin-top: 16px;
+  background: #7DD8E8;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 13px 24px;
+  text-decoration: none;
+  border: 1.5px solid #7DD8E8;
+  transition: opacity 0.2s;
+  width: 100%;
+  text-align: center;
+  }
+  .lb-mobile-menu__cta-nav:hover { opacity: 0.85; }
+
 
   {% if section.settings.sticky_header %}
   .lb-page-offset { padding-top: var(--lb-nav-height); }
