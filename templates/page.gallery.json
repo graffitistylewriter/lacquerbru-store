@@ -9,6 +9,24 @@
  */
 {
   "sections": {
+    "marquee": {
+      "type": "lb-marquee",
+      "blocks": {
+        "marquee_item_gRf9Tq": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Graffiti Murals"
+          }
+        }
+      },
+      "block_order": [
+        "marquee_item_gRf9Tq"
+      ],
+      "settings": {
+        "accessibility_label": "Lacquer Bru creative services",
+        "separator": "·"
+      }
+    },
     "hero": {
       "type": "lb-hero",
       "settings": {
@@ -36,13 +54,6 @@
         "accent_color": "#7dd8e8"
       }
     },
-    "marquee": {
-      "type": "lb-marquee",
-      "settings": {
-        "accessibility_label": "Lacquer Bru creative services",
-        "separator": "&middot;"
-      }
-    },
     "gallery": {
       "type": "lb-blueprint-gallery",
       "settings": {
@@ -66,8 +77,8 @@
     }
   },
   "order": [
-    "hero",
     "marquee",
+    "hero",
     "gallery"
   ]
 }
