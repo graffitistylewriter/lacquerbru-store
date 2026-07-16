@@ -21,6 +21,23 @@
       "settings": {}
     },
 
+    "product_feature": {
+      "type": "lb-product-feature",
+      "blocks": {
+        "badge1": { "type": "badge", "settings": { "text": "Procreate 5+" } },
+        "badge2": { "type": "badge", "settings": { "text": ".brushset Format" } },
+        "badge3": { "type": "badge", "settings": { "text": "Instant Download" } },
+        "inc1": { "type": "include_item", "settings": { "text": "Delivered as a single file" } },
+        "inc2": { "type": "include_item", "settings": { "text": "Imports directly in seconds" } },
+        "inc3": { "type": "include_item", "settings": { "text": "Installation guide included" } },
+        "inc4": { "type": "include_item", "settings": { "text": "Free updates when new versions release" } },
+        "compat1": { "type": "compat_item", "settings": { "label": "Procreate 5+", "available": true } },
+        "compat2": { "type": "compat_item", "settings": { "label": "All iPad Models", "available": true } }
+      },
+      "block_order": ["badge1","badge2","badge3","inc1","inc2","inc3","inc4","compat1","compat2"],
+      "settings": {}
+    },
+
     "trust_strip": {
       "type": "lb-trust-strip",
       "settings": {
@@ -187,6 +204,7 @@
   "order": [
     "shop_hero",
     "marquee",
+    "product_feature",
     "trust_strip",
     "about_pack",
     "how_it_works",
