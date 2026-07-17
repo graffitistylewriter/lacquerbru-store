@@ -36,19 +36,90 @@
         "accent_color": "#7dd8e8"
       }
     },
-    "marquee": {
+    "lb_marquee_aLgJrk": {
       "type": "lb-marquee",
       "blocks": {
-        "marquee_item_FQgRwN": {
+        "marquee_item_E8YXXR": {
           "type": "marquee_item",
           "settings": {
-            "text": "Aerosoul          ·          16 Years Experience          ·          Mural Painting          ·          Illustration          ·          Graffiti Murals          ·          Digital Art          ·          Brush Packs          ·          Textured Finishes          ·          Commission Work          ·          Cape Town"
+            "text": "Graffiti Murals"
+          }
+        },
+        "marquee_item_EecyGc": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Graffiti Murals"
+          }
+        },
+        "marquee_item_xmQw6V": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Digital Art"
+          }
+        },
+        "marquee_item_VAqdfC": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Brush Packs"
+          }
+        },
+        "marquee_item_xiAJX6": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Textured Finishes"
+          }
+        },
+        "marquee_item_CJmjMz": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Commission Work"
+          }
+        },
+        "marquee_item_n7QgHg": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Cape Town"
+          }
+        },
+        "marquee_item_j44jKm": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Aerosoul"
+          }
+        },
+        "marquee_item_hebAcF": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "16 Years Experience"
+          }
+        },
+        "marquee_item_RTBQn9": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Mural Painting"
+          }
+        },
+        "marquee_item_xxMP8b": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Illustration"
           }
         }
       },
       "block_order": [
-        "marquee_item_FQgRwN"
+        "marquee_item_E8YXXR",
+        "marquee_item_EecyGc",
+        "marquee_item_xmQw6V",
+        "marquee_item_VAqdfC",
+        "marquee_item_xiAJX6",
+        "marquee_item_CJmjMz",
+        "marquee_item_n7QgHg",
+        "marquee_item_j44jKm",
+        "marquee_item_hebAcF",
+        "marquee_item_RTBQn9",
+        "marquee_item_xxMP8b"
       ],
+      "name": "LB Marquee",
       "settings": {
         "accessibility_label": "Lacquer Bru creative services",
         "separator": "·"
@@ -79,6 +150,28 @@
         "accent_color": "#7dd8e8",
         "padding_top": 100,
         "padding_bottom": 100
+      }
+    },
+    "lb_cta_banner_cXmyMN": {
+      "type": "lb-cta-banner",
+      "name": "CTA Banner",
+      "settings": {
+        "show_overlay": true,
+        "overlay_color": "#000000",
+        "overlay_opacity": 60,
+        "label": "",
+        "heading": "Ready to Create Something Unique?",
+        "subtext": "Every great project starts with a conversation. Tell us what you have in mind.",
+        "btn1_label": "Start a Commission",
+        "btn1_url": "",
+        "btn2_label": "",
+        "btn2_url": "",
+        "align": "left",
+        "bg_color": "#111111",
+        "text_color": "#FFFFFF",
+        "subtext_color": "#AAAAAA",
+        "accent_color": "#7DD8E8",
+        "padding_v": 100
       }
     },
     "featured": {
@@ -126,13 +219,47 @@
         "border_color": "#2a2a2a",
         "padding_v": 24
       }
+    },
+    "marquee": {
+      "type": "lb-marquee",
+      "blocks": {
+        "marquee_item_FNdVLn": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "IF NOT UNIQUE, WHY BOTHER?"
+          }
+        },
+        "marquee_item_FXfQia": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "LETS CREATE SOMETHING TOGETHER"
+          }
+        },
+        "marquee_item_FQgRwN": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "JOIN OUR NEWSLETTER"
+          }
+        }
+      },
+      "block_order": [
+        "marquee_item_FNdVLn",
+        "marquee_item_FXfQia",
+        "marquee_item_FQgRwN"
+      ],
+      "settings": {
+        "accessibility_label": "Lacquer Bru creative services",
+        "separator": "·"
+      }
     }
   },
   "order": [
     "hero",
-    "marquee",
+    "lb_marquee_aLgJrk",
     "about",
+    "lb_cta_banner_cXmyMN",
     "featured",
-    "trust"
+    "trust",
+    "marquee"
   ]
 }
