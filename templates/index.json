@@ -54,36 +54,14 @@
         "separator": "·"
       }
     },
-    "featured": {
-      "type": "lb-featured-products",
-      "settings": {
-        "label": "Featured",
-        "heading": "Handpicked for You",
-        "subtext": "New drops, best sellers, and artist favourites — curated from the Lacquer Bru studio.",
-        "view_all_label": "View All Products",
-        "collection": "featured-products",
-        "product_limit": 4,
-        "columns": "3",
-        "grid_gap": 24,
-        "show_vendor": true,
-        "show_badge": true,
-        "bg_color": "#0a0a0a",
-        "card_bg": "#1a1a1a",
-        "text_color": "#ffffff",
-        "muted_color": "#aaaaaa",
-        "accent_color": "#7dd8e8",
-        "heading_color": "#ffffff",
-        "padding_top": 100,
-        "padding_bottom": 100
-      }
-    },
     "about": {
       "type": "lb-about-strip",
       "settings": {
+        "image": "shopify://shop_images/envynause__NASTY___VICIOUS_Finished_another_mean_wall_with_my_big_bro_2018-04-19_BhwR6UQjSlp_1760986228574726505.jpg",
         "image_side": "left",
-        "label": "The Studio",
-        "heading": "Where Urban Expression Meets Premium Craft",
-        "body": "",
+        "label": "HOWZIT BRU, WELCOME",
+        "heading": "< Insert HEADING HERE >",
+        "body": "<p>&lt;Insert Body Text Here&gt;</p>",
         "btn_label": "Read the Full Story",
         "btn_url": "",
         "show_stats": true,
@@ -103,8 +81,32 @@
         "padding_bottom": 100
       }
     },
+    "featured": {
+      "type": "lb-featured-products",
+      "settings": {
+        "label": "Featured",
+        "heading": "Handpicked for You",
+        "subtext": "New drops &  Best sellers",
+        "view_all_label": "View All Products",
+        "collection": "featured-products",
+        "product_limit": 4,
+        "columns": "4",
+        "grid_gap": 24,
+        "show_vendor": true,
+        "show_badge": true,
+        "bg_color": "#0a0a0a",
+        "card_bg": "#1a1a1a",
+        "text_color": "#ffffff",
+        "muted_color": "#aaaaaa",
+        "accent_color": "#7dd8e8",
+        "heading_color": "#ffffff",
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
+    },
     "trust": {
       "type": "lb-trust-strip",
+      "disabled": true,
       "settings": {
         "item_1_icon": "⚡",
         "item_1_label": "Instant Download",
@@ -129,8 +131,8 @@
   "order": [
     "hero",
     "marquee",
-    "featured",
     "about",
+    "featured",
     "trust"
   ]
 }
