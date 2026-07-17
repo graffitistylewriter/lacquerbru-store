@@ -22,7 +22,7 @@
         "heading_em": "Digital Creator",
         "subtext": "Graffiti murals, digital art, and creative assets born from 16 years of aerosol culture in Cape Town.",
         "btn1_label": "Shop the Collection",
-        "btn1_url": "shopify://pages/shop",
+        "btn1_url": "shopify://collections/shop",
         "btn2_label": "Commission Inquiry",
         "btn2_url": "shopify://pages/commission-contact",
         "content_align": "center",
@@ -47,9 +47,7 @@
           }
         }
       },
-      "block_order": [
-        "marquee_item_FQgRwN"
-      ],
+      "block_order": ["marquee_item_FQgRwN"],
       "settings": {
         "accessibility_label": "Lacquer Bru creative services",
         "separator": "·"
@@ -58,11 +56,11 @@
     "featured": {
       "type": "lb-featured-products",
       "settings": {
-        "label": "Available Now",
-        "heading": "The Collection",
-        "subtext": "Digital assets built for working creatives.",
+        "label": "Featured",
+        "heading": "Handpicked for You",
+        "subtext": "New drops, best sellers, and artist favourites — curated from the Lacquer Bru studio.",
         "view_all_label": "View All Products",
-        "collection": "procreate-brush-packs",
+        "collection": "featured-products",
         "product_limit": 4,
         "columns": "3",
         "grid_gap": 24,
@@ -71,7 +69,7 @@
         "bg_color": "#0a0a0a",
         "card_bg": "#1a1a1a",
         "text_color": "#ffffff",
-        "muted_color": "#ffffff",
+        "muted_color": "#aaaaaa",
         "accent_color": "#7dd8e8",
         "heading_color": "#ffffff",
         "padding_top": 100,
@@ -125,135 +123,6 @@
         "border_color": "#2a2a2a",
         "padding_v": 24
       }
-    },
-    "1784020519a9fd7562": {
-      "type": "_blocks",
-      "settings": {}
-    },
-    "1784023657398c7ca3": {
-      "type": "_blocks",
-      "settings": {}
-    },
-    "1784024586e53a876f": {
-      "type": "_blocks",
-      "settings": {}
-    },
-    "17840251663087e853": {
-      "type": "_blocks",
-      "blocks": {
-        "ai_gen_block_91c9c74_eGN8NG": {
-          "type": "ai_gen_block_91c9c74",
-          "settings": {
-            "title": "We Accept",
-            "title_color": "#f0ede6",
-            "title_size": 16,
-            "alignment": "center",
-            "desktop_width_percent": 100,
-            "show_paypal": true,
-            "show_visa": true,
-            "show_mastercard": true,
-            "show_amex": false,
-            "icon_size": 60,
-            "icon_spacing": 10
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_91c9c74_eGN8NG"
-      ],
-      "settings": {}
-    },
-    "178402562841220d57": {
-      "type": "_blocks",
-      "settings": {}
-    },
-    "17840257605f6bd2c8": {
-      "type": "_blocks",
-      "settings": {}
-    },
-    "178402582755ac5889": {
-      "type": "_blocks",
-      "settings": {}
-    },
-    "1784029770acda479a": {
-      "type": "_blocks",
-      "settings": {}
-    },
-    "1784030207f5240a6d": {
-      "type": "_blocks",
-      "settings": {}
-    },
-    "1784030366c4edb756": {
-      "type": "_blocks",
-      "settings": {}
-    },
-    "17840311874042ffb0": {
-      "type": "_blocks",
-      "settings": {}
-    },
-    "1784031422bb4a270a": {
-      "type": "_blocks",
-      "settings": {}
-    },
-    "178404686072e5cdf7": {
-      "type": "_blocks",
-      "blocks": {
-        "ai_gen_block_92a6610_VYG9F4": {
-          "type": "ai_gen_block_92a6610",
-          "settings": {
-            "show_indicator": false
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_92a6610_VYG9F4"
-      ],
-      "settings": {}
-    },
-    "1784047643baf0f558": {
-      "type": "_blocks",
-      "settings": {}
-    },
-    "1784047706c25e8ff5": {
-      "type": "_blocks",
-      "settings": {}
-    },
-    "1784047731acb49dcd": {
-      "type": "_blocks",
-      "settings": {}
-    },
-    "1784048606a9f8731b": {
-      "type": "_blocks",
-      "settings": {}
-    },
-    "1784049540ca459bd5": {
-      "type": "_blocks",
-      "settings": {}
-    },
-    "178404960650f8d073": {
-      "type": "_blocks",
-      "settings": {}
-    },
-    "178406083099d432f2": {
-      "type": "_blocks",
-      "blocks": {
-        "ai_gen_block_c14d1eb_N6x96D": {
-          "type": "ai_gen_block_c14d1eb",
-          "settings": {
-            "overlay_color": "#000000",
-            "overlay_opacity": 100,
-            "overlay_width": 100,
-            "overlay_height": 100
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_c14d1eb_N6x96D"
-      ],
-      "settings": {}
     }
   },
   "order": [
@@ -261,26 +130,6 @@
     "marquee",
     "featured",
     "about",
-    "trust",
-    "1784020519a9fd7562",
-    "1784023657398c7ca3",
-    "1784024586e53a876f",
-    "17840251663087e853",
-    "178402562841220d57",
-    "17840257605f6bd2c8",
-    "178402582755ac5889",
-    "1784029770acda479a",
-    "1784030207f5240a6d",
-    "1784030366c4edb756",
-    "17840311874042ffb0",
-    "1784031422bb4a270a",
-    "178404686072e5cdf7",
-    "1784047643baf0f558",
-    "1784047706c25e8ff5",
-    "1784047731acb49dcd",
-    "1784048606a9f8731b",
-    "1784049540ca459bd5",
-    "178404960650f8d073",
-    "178406083099d432f2"
+    "trust"
   ]
 }
