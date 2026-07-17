@@ -16,7 +16,7 @@
         "overlay_color": "#000000",
         "overlay_opacity": 50,
         "overlay_width": 100,
-        "overlay_height": 50,
+        "overlay_height": 25,
         "eyebrow": "If Not Unique, Why Bother",
         "heading": "Graffiti Writer",
         "heading_em": "Digital Creator",
@@ -43,11 +43,13 @@
           "type": "marquee_item",
           "disabled": true,
           "settings": {
-            "text": "Graffiti Murals"
+            "text": "Graffiti Murals | Commercial Projects |"
           }
         }
       },
-      "block_order": ["marquee_item_FQgRwN"],
+      "block_order": [
+        "marquee_item_FQgRwN"
+      ],
       "settings": {
         "accessibility_label": "Lacquer Bru creative services",
         "separator": "·"
