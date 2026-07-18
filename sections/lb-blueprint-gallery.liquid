@@ -32,6 +32,17 @@
     <p>{{ section.settings.intro_text }}</p>
   </div>
 
+  {%- comment -%} ── FILTER BAR (FIX: was missing from HTML) ── {%- endcomment -%}
+  {%- if filter_cats.size > 0 -%}
+    <div class="gal-filters">
+      <button class="gal-filter active" data-filter="all"><span>All</span></button>
+      {%- for cat in filter_cats -%}
+        {%- assign cat_slug = cat | downcase | replace: ' ', '-' -%}
+        <button class="gal-filter" data-filter="{{ cat_slug }}"><span>{{ cat }}</span></button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
   <div class="gal-masonry" id="gal-masonry">
     {%- for item in gallery_items -%}
       {%- assign img = item.image -%}
@@ -187,12 +198,26 @@
 </section>
 
 <style>
+  /* ── MASONRY GRID ── */
+  .gal-masonry { columns: 2; column-gap: 8px; }
+  .gal-item { break-inside: avoid; margin-bottom: 8px; overflow: hidden; position: relative; cursor: pointer; transition: opacity 0.3s ease; }
+  .gal-item.wide { column-span: all; }
+  .gal-item img { display: block; width: 100%; height: auto; }
+  .gal-item.hidden { display: none; }
+
+  @media (min-width: 768px) { .gal-masonry { columns: 3; } }
+
+  /* ── FILTERS ── */
   .gal-filters { display:flex; flex-wrap:wrap; gap:0.75rem; margin-bottom:2.5rem; }
   .gal-filter { background:transparent; border:1px solid currentColor; color:inherit; cursor:pointer; font-family:inherit; font-size:0.8rem; letter-spacing:0.1em; padding:0.5rem 1.25rem; text-transform:uppercase; transition:background 0.2s, color 0.2s; }
   .gal-filter.active, .gal-filter:hover { background:currentColor; }
-  .gal-filter.active span, .gal-filter:hover { color:var(--color-background, #0a0a0a); }
-  .gal-item { transition:opacity 0.3s ease; }
-  .gal-item.hidden { display:none; }
+  .gal-filter.active span, .gal-filter:hover span { color:var(--color-background, #0a0a0a); }
+
+  /* ── ITEM OVERLAY ── */
+  .gal-item-ov { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:flex-end; padding:1rem; background:linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%); opacity:0; transition:opacity 0.25s ease; }
+  .gal-item:hover .gal-item-ov { opacity:1; }
+  .gal-item-title { font-size:0.8rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#fff; }
+  .gal-item-cat { font-size:0.65rem; letter-spacing:0.12em; text-transform:uppercase; color:#aaa; margin-top:2px; }
   .gal-item-project-cta { font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:#7dd8e8; margin-top:6px; font-weight:600; }
 
   /* ── STANDARD LIGHTBOX ── */
@@ -204,7 +229,6 @@
   #lb-lightbox-img { display:block; max-width:90vw; max-height:85vh; object-fit:contain; user-select:none; -webkit-user-drag:none; pointer-events:none; }
   #lb-lightbox-shield { position:absolute; inset:0; z-index:2; }
   #lb-lightbox-close { position:absolute; top:-2.5rem; right:0; background:none; border:none; color:white; font-size:1.5rem; cursor:pointer; line-height:1; }
-  .gal-item { cursor:pointer; }
 
   /* ── PROJECT LIGHTBOX ── */
   #lb-project-lightbox { position:fixed; inset:0; z-index:10000; display:flex; align-items:stretch; justify-content:flex-end; opacity:0; pointer-events:none; transition:opacity 0.3s ease; }
@@ -215,8 +239,6 @@
   #lb-project-lightbox-close { position:sticky; top:0; float:right; margin:16px 16px 0 0; background:none; border:none; color:#ffffff; font-size:18px; cursor:pointer; z-index:10; transition:color 0.2s; }
   #lb-project-lightbox-close:hover { color:#7dd8e8; }
   #lb-project-lightbox-content { padding-bottom:60px; }
-
-  /* Hero */
   #lbpl-hero { position:relative; height:55vh; overflow:hidden; }
   #lbpl-hero-img { width:100%; height:100%; object-fit:cover; display:block; }
   #lbpl-hero-overlay { position:absolute; inset:0; background:linear-gradient(to bottom, rgba(10,10,10,0) 30%, rgba(10,10,10,0.95) 100%); }
@@ -224,270 +246,7 @@
   #lbpl-kicker { font-size:9px; letter-spacing:0.22em; text-transform:uppercase; color:#7dd8e8; margin:0 0 8px; }
   #lbpl-title { font-size:clamp(1.4rem, 3vw, 2rem); font-weight:900; text-transform:uppercase; letter-spacing:0.04em; color:#ffffff; margin:0 0 10px; line-height:1.1; }
   #lbpl-summary { font-size:13px; color:#aaaaaa; line-height:1.6; margin:0; }
-
-  /* Meta strip */
   #lbpl-meta-strip { display:flex; gap:32px; flex-wrap:wrap; padding:20px 32px; border-bottom:1px solid #1e1e1e; background:#111111; }
   .lbpl-meta-item { display:flex; flex-direction:column; gap:3px; }
   .lbpl-meta-label { font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:#555555; }
-  .lbpl-meta-value { font-size:12px; font-weight:600; color:#ffffff; letter-spacing:0.04em; }
-
-  /* Story */
-  #lbpl-story-wrap { padding:40px 32px 0; }
-  .lbpl-section-label { font-size:9px; letter-spacing:0.22em; text-transform:uppercase; color:#7dd8e8; margin:0 0 16px; }
-  #lbpl-story { font-size:13px; color:#cccccc; line-height:1.9; }
-
-  /* Gallery */
-  #lbpl-gallery-wrap { padding:40px 32px 0; }
-  #lbpl-gallery-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:16px; }
-  #lbpl-gallery-grid img { width:100%; aspect-ratio:4/3; object-fit:cover; display:block; }
-  #lbpl-gallery-grid img:first-child { grid-column:1/-1; aspect-ratio:16/7; }
-
-  /* Footer */
-  #lbpl-footer { padding:32px 32px 0; }
-  #lbpl-full-link { font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:#555555; text-decoration:none; transition:color 0.2s; }
-  #lbpl-full-link:hover { color:#7dd8e8; }
-
-  /* ── MASONRY GRID ── */
-  .gal-masonry {
-    columns: 2;
-    column-gap: 8px;
-  }
-  .gal-item {
-    break-inside: avoid;
-    margin-bottom: 8px;
-    overflow: hidden;
-    position: relative;
-  }
-  .gal-item.wide {
-    column-span: all; /* spans full width for wide items */
-  }
-  .gal-item img {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-
-  @media (min-width: 768px) {
-    .gal-masonry {
-      columns: 3;
-    }
-  }
-
-</style>
-
-<script>
-(function () {
-  /* ── FILTERS ── */
-  var filters = document.querySelectorAll('.gal-filter');
-  var items = document.querySelectorAll('#gal-masonry .gal-item');
-  filters.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var selected = this.dataset.filter;
-      filters.forEach(function (b) { b.classList.remove('active'); });
-      this.classList.add('active');
-      items.forEach(function (item) {
-        if (selected === 'all') {
-          item.classList.remove('hidden');
-        } else {
-          var cats = (item.dataset.cats || '').split(' ');
-          if (cats.indexOf(selected) > -1) {
-            item.classList.remove('hidden');
-          } else {
-            item.classList.add('hidden');
-          }
-        }
-      });
-    });
-  });
-
-  /* ── STANDARD LIGHTBOX ── */
-  var lightbox = document.getElementById('lb-lightbox');
-  var lbImg = document.getElementById('lb-lightbox-img');
-  var lbClose = document.getElementById('lb-lightbox-close');
-  var lbOverlay = document.getElementById('lb-lightbox-overlay');
-
-  function openStandardLightbox(src, alt) {
-    lbImg.src = src;
-    lbImg.alt = alt;
-    lightbox.style.display = 'flex';
-    setTimeout(function () { lightbox.classList.add('active'); }, 10);
-  }
-  function closeStandardLightbox() {
-    lightbox.classList.remove('active');
-    setTimeout(function () { lightbox.style.display = 'none'; lbImg.src = ''; }, 300);
-  }
-  lbClose.addEventListener('click', closeStandardLightbox);
-  lbOverlay.addEventListener('click', closeStandardLightbox);
-
-  /* ── PROJECT LIGHTBOX ── */
-  var plLightbox = document.getElementById('lb-project-lightbox');
-  var plBackdrop = document.getElementById('lb-project-lightbox-backdrop');
-  var plClose = document.getElementById('lb-project-lightbox-close');
-  var plHeroImg = document.getElementById('lbpl-hero-img');
-  var plKicker = document.getElementById('lbpl-kicker');
-  var plTitle = document.getElementById('lbpl-title');
-  var plSummary = document.getElementById('lbpl-summary');
-  var plClient = document.getElementById('lbpl-meta-client');
-  var plClientWrap = document.getElementById('lbpl-meta-client-wrap');
-  var plType = document.getElementById('lbpl-meta-type');
-  var plTypeWrap = document.getElementById('lbpl-meta-type-wrap');
-  var plYear = document.getElementById('lbpl-meta-year');
-  var plYearWrap = document.getElementById('lbpl-meta-year-wrap');
-  var plStory = document.getElementById('lbpl-story');
-  var plStoryWrap = document.getElementById('lbpl-story-wrap');
-  var plGalleryGrid = document.getElementById('lbpl-gallery-grid');
-  var plGalleryWrap = document.getElementById('lbpl-gallery-wrap');
-  var plFullLink = document.getElementById('lbpl-full-link');
-
-  function openProjectLightbox(handle) {
-    var safeKey = handle.replace(/-/g, '_');
-    var dataEl = document.getElementById('project-data-' + safeKey);
-    if (!dataEl) return false;
-    var data;
-    try { data = JSON.parse(dataEl.textContent); } catch(e) { return false; }
-
-    /* Hero */
-    plHeroImg.src = data.hero || '';
-    plHeroImg.alt = data.title || '';
-    plKicker.textContent = [data.category, data.year].filter(Boolean).join(' · ');
-    plTitle.textContent = data.title || '';
-    plSummary.textContent = data.summary || '';
-
-    /* Meta */
-    if (data.client) { plClient.textContent = data.client; plClientWrap.style.display = ''; }
-    else { plClientWrap.style.display = 'none'; }
-    if (data.category) { plType.textContent = data.category; plTypeWrap.style.display = ''; }
-    else { plTypeWrap.style.display = 'none'; }
-    if (data.year) { plYear.textContent = data.year; plYearWrap.style.display = ''; }
-    else { plYearWrap.style.display = 'none'; }
-
-    /* Story */
-    if (data.story) { plStory.innerHTML = data.story; plStoryWrap.style.display = ''; }
-    else { plStoryWrap.style.display = 'none'; }
-
-    /* Gallery */
-    plGalleryGrid.innerHTML = '';
-    if (data.gallery && data.gallery.length > 0) {
-      data.gallery.forEach(function(src) {
-        var img = document.createElement('img');
-        img.src = src;
-        img.alt = data.title;
-        img.loading = 'lazy';
-        plGalleryGrid.appendChild(img);
-      });
-      plGalleryWrap.style.display = '';
-    } else {
-      plGalleryWrap.style.display = 'none';
-    }
-
-    /* Full page link */
-    plFullLink.href = '/pages/project/' + handle;
-
-    /* Open panel */
-    plLightbox.classList.add('is-open');
-    plLightbox.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-
-    /* Scroll panel to top */
-    document.getElementById('lb-project-lightbox-panel').scrollTop = 0;
-
-    return true;
-  }
-
-  function closeProjectLightbox() {
-    plLightbox.classList.remove('is-open');
-    plLightbox.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-  }
-
-  plClose.addEventListener('click', closeProjectLightbox);
-  plBackdrop.addEventListener('click', closeProjectLightbox);
-
-  /* ── ITEM CLICK ROUTER ── */
-  document.querySelectorAll('.gal-item').forEach(function (item) {
-    item.addEventListener('click', function () {
-      var projectHandle = item.dataset.projectHandle;
-      if (projectHandle) {
-        openProjectLightbox(projectHandle);
-      } else {
-        var src = item.querySelector('img').src;
-        var alt = item.querySelector('img').alt;
-        openStandardLightbox(src, alt);
-      }
-    });
-  });
-
-  /* ── KEYBOARD ── */
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') {
-      if (plLightbox.classList.contains('is-open')) closeProjectLightbox();
-      else closeStandardLightbox();
-    }
-  });
-
-  /* ── PROTECT THUMBNAILS ── */
-  document.querySelectorAll('#gal-masonry .gal-item img').forEach(function (img) {
-    img.addEventListener('contextmenu', function (e) { e.preventDefault(); });
-    img.setAttribute('draggable', 'false');
-    img.addEventListener('contextmenu', function (e) { e.preventDefault(); });
-  });
-})();
-</script>
-
-{% schema %}
-{
-  "name": "Portfolio Gallery",
-  "settings": [
-    { "type": "header", "content": "Intro" },
-    { "type": "text", "id": "intro_label", "label": "Section Label", "default": "The Work" },
-    { "type": "textarea", "id": "intro_text", "label": "Intro Text", "default": "A portfolio of murals, digital art, and immersive visual work." },
-    { "type": "header", "content": "Category Filters" },
-    { "type": "textarea", "id": "filter_categories", "label": "Filter Categories (separate with |)", "default": "Commercial|Private|Freestyle|New Work", "info": "These must match the category names used in the Gallery Manager app." },
-    { "type": "header", "content": "Bottom CTA" },
-    { "type": "text", "id": "cta_label", "label": "CTA Label", "default": "Commission Your Own Piece" },
-    { "type": "text", "id": "cta_heading", "label": "CTA Heading", "default": "See Something You Like?" },
-    { "type": "textarea", "id": "cta_subtext", "label": "CTA Subtext", "default": "Every wall, canvas, and surface is an opportunity. Get in touch to discuss your project." },
-    { "type": "text", "id": "cta_btn_label", "label": "CTA Button Label", "default": "Start a Commission" },
-    { "type": "url", "id": "cta_btn_url", "label": "CTA Button URL" },
-    { "type": "header", "content": "Watermark — Text" },
-    { "type": "text", "id": "watermark_text", "label": "Watermark Text", "default": "© Lacquer Bru" },
-    { "type": "select", "id": "watermark_align", "label": "Horizontal Alignment", "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ], "default": "right" },
-    { "type": "select", "id": "watermark_position", "label": "Vertical Position", "options": [
-        { "value": "top", "label": "Header" },
-        { "value": "bottom", "label": "Footer" }
-      ], "default": "bottom" },
-    { "type": "number", "id": "watermark_text_opacity", "label": "Text Opacity (%)", "default": 45 },
-    { "type": "header", "content": "Watermark — Logo" },
-    { "type": "image_picker", "id": "watermark_logo", "label": "Logo Image" },
-    { "type": "range", "id": "watermark_logo_width", "label": "Logo Width (px)", "min": 40, "max": 200, "step": 10, "default": 80 },
-    { "type": "select", "id": "watermark_logo_align", "label": "Horizontal Alignment", "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ], "default": "left" },
-    { "type": "select", "id": "watermark_logo_position", "label": "Vertical Position", "options": [
-        { "value": "top", "label": "Header" },
-        { "value": "bottom", "label": "Footer" }
-      ], "default": "bottom" },
-    { "type": "number", "id": "watermark_logo_opacity", "label": "Logo Opacity (%)", "default": 50 }
-  ],
-  "presets": [
-    {
-      "name": "Portfolio Gallery",
-      "settings": {
-        "intro_label": "The Work",
-        "intro_text": "A portfolio of murals, digital art, and immersive visual work.",
-        "filter_categories": "Commercial|Private|Freestyle|New Work",
-        "cta_label": "Commission Your Own Piece",
-        "cta_heading": "See Something You Like?",
-        "cta_subtext": "Every wall, canvas, and surface is an opportunity. Get in touch to discuss your project.",
-        "cta_btn_label": "Start a Commission"
-      }
-    }
-  ]
-}
-{% endschema %}
+  .lbpl-meta-value { font-size:12px; font-weight:600; color:#ffffff;
