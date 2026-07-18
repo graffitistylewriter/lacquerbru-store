@@ -13,7 +13,7 @@
       "type": "lb-shop-hero",
       "settings": {
         "bg_image": "shopify://shop_images/envynause_Another_quickie___._._._.__envy__throwups__throwies__envious_2020-02-16_B8n5xGapGLj_2245017002062406371.jpg",
-        "heading": "Brush Packs",
+        "heading": "SHOP",
         "tagline": "Built by a working artist. Tested on real work. Made for yours.",
         "category_menu": "shop-categories"
       }
@@ -199,19 +199,11 @@
     "product_grid": {
       "type": "lb-product-grid",
       "settings": {
-        "label": "The Collection",
+        "eyebrow": "Shop",
         "heading": "All Products",
-        "empty_text": "New products are on their way. Check back soon.",
-        "columns": "3",
-        "grid_gap": 24,
-        "show_vendor": true,
-        "bg_color": "#0a0a0a",
-        "card_bg": "#1a1a1a",
-        "text_color": "#ffffff",
-        "muted_color": "#aaaaaa",
-        "accent_color": "#7dd8e8",
-        "padding_top": 80,
-        "padding_bottom": 96
+        "copy": "",
+        "collection": "",
+        "limit": 6
       }
     },
     "licensing": {
