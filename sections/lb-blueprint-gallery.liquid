@@ -1,7 +1,5 @@
 {%- assign gallery_items = shop.metaobjects.lb_gallery_item.values -%}
 {%- assign filter_cats = section.settings.filter_categories | split: '|' -%}
-
-{%- comment -%} Pre-load all project metaobjects for lightbox use {%- endcomment -%}
 {%- assign all_projects = shop.metaobjects.project.values -%}
 
 <section class="lb-blueprint-page lb-blueprint-page--gallery">
@@ -32,7 +30,6 @@
     <p>{{ section.settings.intro_text }}</p>
   </div>
 
-  {%- comment -%} ── FILTER BAR (FIX: was missing from HTML) ── {%- endcomment -%}
   {%- if filter_cats.size > 0 -%}
     <div class="gal-filters">
       <button class="gal-filter active" data-filter="all"><span>All</span></button>
@@ -45,19 +42,21 @@
 
   <div class="gal-masonry" id="gal-masonry">
     {%- for item in gallery_items -%}
-      {%- assign img = item.image -%}
-      {%- assign title = item.title -%}
+
+      {%- assign img = item.image.value -%}
+      {%- assign title = item.title.value -%}
       {%- assign cats = item.categories.value -%}
-      {%- assign wide = item.wide -%}
+      {%- assign wide = item.wide.value -%}
       {%- assign project_handle = item.project_handle.value -%}
+
       {%- if img != blank -%}
+
         {%- assign cat_slugs = '' -%}
         {%- for cat in cats -%}
           {%- assign slug = cat | downcase | replace: ' ', '-' -%}
           {%- assign cat_slugs = cat_slugs | append: slug | append: ' ' -%}
         {%- endfor -%}
 
-        {%- comment -%} Find matching project if handle exists {%- endcomment -%}
         {%- assign linked_project = nil -%}
         {%- if project_handle != blank -%}
           {%- for p in all_projects -%}
@@ -71,11 +70,9 @@
         <div
           class="gal-item{% if wide == true %} wide{% endif %}"
           data-cats="{{ cat_slugs | strip }}"
-          {% if linked_project != nil %}
-            data-project-handle="{{ project_handle }}"
-          {% endif %}
+          {% if linked_project != nil %}data-project-handle="{{ project_handle }}"{% endif %}
         >
-          {{ img | image_url: width: 1200 | image_tag: loading: 'lazy', width: 1200, height: 800, alt: title }}
+          {{ img | image_url: width: 1200 | image_tag: loading: 'lazy', alt: title }}
           <div class="gal-item-ov">
             {%- if title != blank -%}<div class="gal-item-title">{{ title }}</div>{%- endif -%}
             {%- if cats.size > 0 -%}
@@ -87,7 +84,6 @@
           </div>
         </div>
 
-        {%- comment -%} Embed project data as hidden JSON for lightbox {%- endcomment -%}
         {%- if linked_project != nil -%}
           <script type="application/json" id="project-data-{{ project_handle | replace: '-', '_' }}">
           {
@@ -110,6 +106,7 @@
         {%- endif -%}
 
       {%- endif -%}
+
     {%- endfor -%}
   </div>
 
@@ -124,7 +121,6 @@
     {%- endif -%}
   </div>
 
-  {%- comment -%} ── STANDARD PHOTO LIGHTBOX ── {%- endcomment -%}
   <div id="lb-lightbox" style="display:none;">
     <div id="lb-lightbox-overlay"></div>
     <div id="lb-lightbox-inner">
@@ -146,13 +142,11 @@
     </div>
   </div>
 
-  {%- comment -%} ── PROJECT LIGHTBOX ── {%- endcomment -%}
   <div id="lb-project-lightbox" aria-hidden="true">
     <div id="lb-project-lightbox-backdrop"></div>
     <div id="lb-project-lightbox-panel">
       <button id="lb-project-lightbox-close" aria-label="Close">✕</button>
       <div id="lb-project-lightbox-content">
-        <!-- Hero -->
         <div id="lbpl-hero">
           <img id="lbpl-hero-img" src="" alt="">
           <div id="lbpl-hero-overlay"></div>
@@ -162,7 +156,6 @@
             <p id="lbpl-summary"></p>
           </div>
         </div>
-        <!-- Meta strip -->
         <div id="lbpl-meta-strip">
           <div class="lbpl-meta-item" id="lbpl-meta-client-wrap">
             <span class="lbpl-meta-label">Client</span>
@@ -177,17 +170,14 @@
             <span class="lbpl-meta-value" id="lbpl-meta-year"></span>
           </div>
         </div>
-        <!-- Story -->
         <div id="lbpl-story-wrap">
           <p class="lbpl-section-label">Project Story</p>
           <div id="lbpl-story"></div>
         </div>
-        <!-- Gallery -->
         <div id="lbpl-gallery-wrap">
           <p class="lbpl-section-label">Project Gallery</p>
           <div id="lbpl-gallery-grid"></div>
         </div>
-        <!-- Full page link -->
         <div id="lbpl-footer">
           <a id="lbpl-full-link" href="#">View Full Project Page →</a>
         </div>
@@ -204,7 +194,6 @@
   .gal-item.wide { column-span: all; }
   .gal-item img { display: block; width: 100%; height: auto; }
   .gal-item.hidden { display: none; }
-
   @media (min-width: 768px) { .gal-masonry { columns: 3; } }
 
   /* ── FILTERS ── */
@@ -264,6 +253,7 @@
 
 <script>
 (function () {
+
   /* ── FILTERS ── */
   var filters = document.querySelectorAll('.gal-filter');
   var items = document.querySelectorAll('#gal-masonry .gal-item');
@@ -407,6 +397,7 @@
     img.addEventListener('contextmenu', function (e) { e.preventDefault(); });
     img.setAttribute('draggable', 'false');
   });
+
 })();
 </script>
 
