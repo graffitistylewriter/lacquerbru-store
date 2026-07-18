@@ -99,17 +99,35 @@
       "settings": {
         "product": "my-flare-pack",
         "eyebrow": "Available Now · Digital Download",
-        "heading": "The Flare Pack",
-        "description": "",
-        "cta_label": "Add to Cart",
+        "heading": "CROP SERIES",
+        "description": "A Brush Set created using actual crop circle image references, Out of this World!",
+        "cta_label": "",
         "license_note": "Personal license included.",
         "guarantee": "Secure checkout · Instant delivery",
-        "bg_word": "FLARE",
-        "pack_name": "FLARE",
+        "bg_word": "BRU",
+        "pack_name": "MISSING IMAGE",
         "pack_subtitle": "Procreate Brush Pack by Lacquer Bru",
         "bg_color": "#0a0a0a",
         "padding_top": 100,
         "padding_bottom": 100
+      }
+    },
+    "product_grid": {
+      "type": "lb-product-grid",
+      "settings": {
+        "label": "The Collection",
+        "heading": "All Products",
+        "empty_text": "New products are on their way. Check back soon.",
+        "columns": "3",
+        "grid_gap": 24,
+        "show_vendor": true,
+        "bg_color": "#0a0a0a",
+        "card_bg": "#1a1a1a",
+        "text_color": "#ffffff",
+        "muted_color": "#aaaaaa",
+        "accent_color": "#7dd8e8",
+        "padding_top": 80,
+        "padding_bottom": 96
       }
     },
     "trust_strip": {
@@ -330,36 +348,19 @@
         "button_text": "Notify Me",
         "footnote": "No spam. Just new drops. Unsubscribe anytime."
       }
-    },
-    "product_grid": {
-      "type": "lb-product-grid",
-      "settings": {
-        "label": "The Collection",
-        "heading": "All Products",
-        "columns": "3",
-        "grid_gap": 24,
-        "show_vendor": true,
-        "bg_color": "#0a0a0a",
-        "card_bg": "#1a1a1a",
-        "text_color": "#ffffff",
-        "muted_color": "#aaaaaa",
-        "accent_color": "#7dd8e8",
-        "padding_top": 80,
-        "padding_bottom": 96
-      }
     }
   },
   "order": [
     "shop_hero",
     "marquee",
     "product_feature",
+    "product_grid",
     "trust_strip",
     "about_pack",
     "how_it_works",
     "licensing",
     "reviews",
     "faq",
-    "notify_signup",
-    "product_grid"
+    "notify_signup"
   ]
 }
