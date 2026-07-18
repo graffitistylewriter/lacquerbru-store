@@ -27,16 +27,14 @@
 
     {%- for item in gallery_items -%}
 
-      {%- assign img_ref = item.image -%}
-      {%- assign img_url = img_ref.value | image_url: width: 1200 -%}
-      {%- if img_url == blank -%}{%- assign img_url = img_ref.value.image.url -%}{%- endif -%}
-      {%- if img_url == blank -%}{%- assign img_url = img_ref.value.src -%}{%- endif -%}
+      {%- assign img_url = item.image.value | image_url: width: 1200 -%}
       {%- assign item_title = item.title.value -%}
       {%- assign cats = item.categories.value -%}
       {%- assign wide = item.wide.value -%}
       {%- assign project_handle = item.project_handle.value -%}
 
       {%- if img_url != blank -%}
+
 
         {%- assign cat_slugs = '' -%}
         {%- for cat in cats -%}
