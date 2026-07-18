@@ -1,0 +1,191 @@
+{%- assign blog = blogs[section.settings.blog_handle] -%}
+{%- assign articles = blog.articles -%}
+
+<section class="lb-featured-articles" style="background:{{ section.settings.bg_color }};padding:{{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;">
+
+  <div class="lb-featured-articles__inner">
+
+    <div class="lb-featured-articles__header">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="lb-kicker" style="color:{{ section.settings.accent_color }};">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      <h2 style="color:{{ section.settings.text_color }};">{{ section.settings.heading }}</h2>
+      {%- if section.settings.subtext != blank -%}
+        <p class="lb-featured-articles__subtext" style="color:{{ section.settings.muted_color }};">{{ section.settings.subtext }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="lb-featured-articles__grid">
+      {%- assign count = 0 -%}
+      {%- for article in articles -%}
+        {%- if count >= section.settings.limit -%}{%- break -%}{%- endif -%}
+        <article class="lb-article-card">
+          <a href="{{ article.url }}" class="lb-article-card__link">
+            {%- if article.image -%}
+              <div class="lb-article-card__img-wrap">
+                {{ article.image | image_url: width: 800 | image_tag:
+                  loading: 'lazy',
+                  alt: article.title,
+                  class: 'lb-article-card__img'
+                }}
+              </div>
+            {%- endif -%}
+            <div class="lb-article-card__body">
+              <p class="lb-article-card__date" style="color:{{ section.settings.accent_color }};">
+                {{ article.published_at | date: "%B %d, %Y" }}
+              </p>
+              <h3 class="lb-article-card__title" style="color:{{ section.settings.text_color }};">{{ article.title }}</h3>
+              {%- if article.excerpt != blank -%}
+                <p class="lb-article-card__excerpt" style="color:{{ section.settings.muted_color }};">{{ article.excerpt | truncate: 120 }}</p>
+              {%- endif -%}
+              <span class="lb-article-card__cta" style="color:{{ section.settings.accent_color }};">Read More →</span>
+            </div>
+          </a>
+        </article>
+        {%- assign count = count | plus: 1 -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.view_all_label != blank -%}
+      <div class="lb-featured-articles__footer">
+        <a href="/blogs/{{ section.settings.blog_handle }}" class="lb-btn lb-btn--outline" style="color:{{ section.settings.accent_color }};border-color:{{ section.settings.accent_color }};">
+          {{ section.settings.view_all_label }}
+        </a>
+      </div>
+    {%- endif -%}
+
+  </div>
+
+</section>
+
+<style>
+  .lb-featured-articles__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 60px;
+  }
+  .lb-featured-articles__header {
+    margin-bottom: 48px;
+  }
+  .lb-featured-articles__header h2 {
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin: 8px 0 12px;
+  }
+  .lb-featured-articles__subtext {
+    font-size: 14px;
+    line-height: 1.7;
+    max-width: 520px;
+    margin: 0;
+  }
+  .lb-featured-articles__grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns }}, 1fr);
+    gap: 32px;
+  }
+  .lb-article-card { display: flex; flex-direction: column; }
+  .lb-article-card__link { text-decoration: none; display: flex; flex-direction: column; height: 100%; }
+  .lb-article-card__img-wrap {
+    overflow: hidden;
+    aspect-ratio: 16/9;
+    margin-bottom: 20px;
+  }
+  .lb-article-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+  .lb-article-card:hover .lb-article-card__img { transform: scale(1.04); }
+  .lb-article-card__body { display: flex; flex-direction: column; flex: 1; }
+  .lb-article-card__date {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin: 0 0 10px;
+  }
+  .lb-article-card__title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    line-height: 1.2;
+    margin: 0 0 12px;
+  }
+  .lb-article-card__excerpt {
+    font-size: 13px;
+    line-height: 1.7;
+    margin: 0 0 16px;
+    flex: 1;
+  }
+  .lb-article-card__cta {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .lb-featured-articles__footer {
+    margin-top: 48px;
+    text-align: center;
+  }
+  .lb-btn--outline {
+    display: inline-block;
+    padding: 14px 40px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1.5px solid;
+    transition: all 0.2s;
+    background: transparent;
+  }
+  .lb-btn--outline:hover {
+    background: currentColor;
+  }
+  @media (max-width: 860px) {
+    .lb-featured-articles__inner { padding: 0 24px; }
+    .lb-featured-articles__grid { grid-template-columns: 1fr; gap: 24px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "LB Featured Articles",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "From the Studio" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Latest Articles" },
+    { "type": "textarea", "id": "subtext", "label": "Subtext", "default": "Thoughts on art, culture, and the creative process." },
+    { "type": "text", "id": "blog_handle", "label": "Blog Handle", "default": "news", "info": "The handle of the blog to pull articles from." },
+    { "type": "range", "id": "limit", "label": "Articles to Show", "min": 1, "max": 6, "step": 1, "default": 3 },
+    { "type": "select", "id": "columns", "label": "Columns (desktop)", "options": [
+      { "value": "1", "label": "1" },
+      { "value": "2", "label": "2" },
+      { "value": "3", "label": "3" }
+    ], "default": "2" },
+    { "type": "text", "id": "view_all_label", "label": "View All Button Label", "default": "View All Articles" },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#0a0a0a" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#ffffff" },
+    { "type": "color", "id": "muted_color", "label": "Muted", "default": "#aaaaaa" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#7dd8e8" },
+    { "type": "range", "id": "padding_top", "label": "Top Padding", "min": 0, "max": 160, "step": 10, "default": 100, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom Padding", "min": 0, "max": 160, "step": 10, "default": 100, "unit": "px" }
+  ],
+  "presets": [
+    {
+      "name": "LB Featured Articles",
+      "settings": {
+        "eyebrow": "From the Studio",
+        "heading": "Latest Articles",
+        "blog_handle": "news",
+        "limit": 3,
+        "columns": "2"
+      }
+    }
+  ]
+}
+{% endschema %}
