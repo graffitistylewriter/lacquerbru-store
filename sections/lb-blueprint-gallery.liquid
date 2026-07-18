@@ -246,6 +246,33 @@
   #lbpl-footer { padding:32px 32px 0; }
   #lbpl-full-link { font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:#555555; text-decoration:none; transition:color 0.2s; }
   #lbpl-full-link:hover { color:#7dd8e8; }
+
+  /* ── MASONRY GRID ── */
+  .gal-masonry {
+    columns: 2;
+    column-gap: 8px;
+  }
+  .gal-item {
+    break-inside: avoid;
+    margin-bottom: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+  .gal-item.wide {
+    column-span: all; /* spans full width for wide items */
+  }
+  .gal-item img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (min-width: 768px) {
+    .gal-masonry {
+      columns: 3;
+    }
+  }
+
 </style>
 
 <script>
