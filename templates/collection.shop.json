@@ -12,17 +12,92 @@
     "shop_hero": {
       "type": "lb-shop-hero",
       "settings": {
-        "bg_image": "shopify://shop_images/envynause_Remembering_some_good_times_from_when_I_was_still_living_in_2018-06-19_BkN9aPhDvd5_1805369109849765753.jpg",
+        "bg_image": "shopify://shop_images/envynause_Another_quickie___._._._.__envy__throwups__throwies__envious_2020-02-16_B8n5xGapGLj_2245017002062406371.jpg",
         "heading": "Brush Packs",
         "tagline": "Built by a working artist. Tested on real work. Made for yours.",
         "category_menu": "shop-categories"
       }
     },
-    "marquee": {
+    "lb_marquee_nTnPGX": {
       "type": "lb-marquee",
+      "blocks": {
+        "marquee_item_bUUnmX": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Graffiti Murals"
+          }
+        },
+        "marquee_item_yBnqCA": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Digital Art"
+          }
+        },
+        "marquee_item_WicBxH": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Brush Packs"
+          }
+        },
+        "marquee_item_TetaRQ": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Textured Finishes"
+          }
+        },
+        "marquee_item_FURFQc": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Commission Work"
+          }
+        },
+        "marquee_item_APtghY": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Cape Town"
+          }
+        },
+        "marquee_item_fHmaGW": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Aerosoul"
+          }
+        },
+        "marquee_item_Bm9hRW": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "16 Years Experience"
+          }
+        },
+        "marquee_item_zwhCfi": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Mural Painting"
+          }
+        },
+        "marquee_item_z7hw7G": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Illustration"
+          }
+        }
+      },
+      "block_order": [
+        "marquee_item_bUUnmX",
+        "marquee_item_yBnqCA",
+        "marquee_item_WicBxH",
+        "marquee_item_TetaRQ",
+        "marquee_item_FURFQc",
+        "marquee_item_APtghY",
+        "marquee_item_fHmaGW",
+        "marquee_item_Bm9hRW",
+        "marquee_item_zwhCfi",
+        "marquee_item_z7hw7G"
+      ],
+      "name": "LB Marquee",
       "settings": {
         "accessibility_label": "Lacquer Bru creative services",
-        "separator": "&middot;"
+        "separator": "·"
       }
     },
     "product_feature": {
@@ -112,6 +187,15 @@
         "padding_bottom": 100
       }
     },
+    "about_pack": {
+      "type": "lb-about-pack",
+      "settings": {
+        "image_tag": "16+ Years of Aerosol Culture",
+        "label": "Why These Brushes Are Different",
+        "heading": "Built From the Inside Out",
+        "body": "<p>Most brush packs are built by designers. This pack was built by a working artist — tested under real deadlines, across real projects, and refined until it felt exactly right.</p>"
+      }
+    },
     "product_grid": {
       "type": "lb-product-grid",
       "settings": {
@@ -128,6 +212,42 @@
         "accent_color": "#7dd8e8",
         "padding_top": 80,
         "padding_bottom": 96
+      }
+    },
+    "licensing": {
+      "type": "lb-licensing",
+      "blocks": {
+        "l1": {
+          "type": "license_card",
+          "settings": {
+            "featured": true,
+            "type_label": "Included with Purchase",
+            "name": "Personal License",
+            "description": "Included automatically with every purchase at no extra cost.",
+            "list_items": "Use in personal artwork and projects\nCreate and sell artwork made with these brushes\nUse for client work where you are the creative\nPrint and display artwork created with the pack",
+            "note": "You may NOT resell, redistribute, or share the brush files themselves."
+          }
+        },
+        "l2": {
+          "type": "license_card",
+          "settings": {
+            "featured": false,
+            "type_label": "Available on Request",
+            "name": "Commercial License",
+            "description": "Need to use these assets to create products sold themselves?",
+            "list_items": "Create digital products for commercial sale\nUse in templates sold to other designers\nBroadcast and advertising use\nBranding and product packaging",
+            "note": "Contact us to discuss commercial licensing pricing."
+          }
+        }
+      },
+      "block_order": [
+        "l1",
+        "l2"
+      ],
+      "settings": {
+        "label": "Licensing",
+        "heading": "How You Can Use These Brushes",
+        "subheading": "Every purchase includes a Personal License."
       }
     },
     "trust_strip": {
@@ -150,15 +270,6 @@
         "muted_color": "#aaaaaa",
         "border_color": "#2a2a2a",
         "padding_v": 24
-      }
-    },
-    "about_pack": {
-      "type": "lb-about-pack",
-      "settings": {
-        "image_tag": "16+ Years of Aerosol Culture",
-        "label": "Why These Brushes Are Different",
-        "heading": "Built From the Inside Out",
-        "body": "<p>Most brush packs are built by designers. This pack was built by a working artist &mdash; tested under real deadlines, across real projects, and refined until it felt exactly right.</p>"
       }
     },
     "how_it_works": {
@@ -198,42 +309,6 @@
         "label": "Getting Started",
         "heading": "How It Works",
         "subheading": "From purchase to creating — the whole process takes under five minutes."
-      }
-    },
-    "licensing": {
-      "type": "lb-licensing",
-      "blocks": {
-        "l1": {
-          "type": "license_card",
-          "settings": {
-            "featured": true,
-            "type_label": "Included with Purchase",
-            "name": "Personal License",
-            "description": "Included automatically with every purchase at no extra cost.",
-            "list_items": "Use in personal artwork and projects\nCreate and sell artwork made with these brushes\nUse for client work where you are the creative\nPrint and display artwork created with the pack",
-            "note": "You may NOT resell, redistribute, or share the brush files themselves."
-          }
-        },
-        "l2": {
-          "type": "license_card",
-          "settings": {
-            "featured": false,
-            "type_label": "Available on Request",
-            "name": "Commercial License",
-            "description": "Need to use these assets to create products sold themselves?",
-            "list_items": "Create digital products for commercial sale\nUse in templates sold to other designers\nBroadcast and advertising use\nBranding and product packaging",
-            "note": "Contact us to discuss commercial licensing pricing."
-          }
-        }
-      },
-      "block_order": [
-        "l1",
-        "l2"
-      ],
-      "settings": {
-        "label": "Licensing",
-        "heading": "How You Can Use These Brushes",
-        "subheading": "Every purchase includes a Personal License."
       }
     },
     "reviews": {
@@ -352,13 +427,13 @@
   },
   "order": [
     "shop_hero",
-    "marquee",
+    "lb_marquee_nTnPGX",
     "product_feature",
-    "product_grid",
-    "trust_strip",
     "about_pack",
-    "how_it_works",
+    "product_grid",
     "licensing",
+    "trust_strip",
+    "how_it_works",
     "reviews",
     "faq",
     "notify_signup"
