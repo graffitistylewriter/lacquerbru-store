@@ -85,10 +85,10 @@
             "summary": {{ linked_project.summary.value | default: '' | json }},
             "story": {{ linked_project.story.value | default: '' | json }},
             "featured": {{ linked_project.featured.value | json }},
-            "hero": {{ linked_project.featured_image.value.image.src | json }},
+            "hero": {{ linked_project.featured_image.value | image_url: width: 1600 | json }},
             "gallery": [
               {%- for gimg in linked_project.gallery.value -%}
-                {{ gimg.image.src | json }}
+                {{ gimg | image_url: width: 1200 | json }}{% unless forloop.last %},{% endunless %}
               {%- endfor -%}
             ]
           }
@@ -181,28 +181,21 @@
 </section>
 
 <style>
-  /* ── MASONRY ── */
   .gal-masonry { columns: 2; column-gap: 8px; }
   @media (min-width: 768px) { .gal-masonry { columns: 3; } }
   .gal-item { break-inside: avoid; margin-bottom: 8px; overflow: hidden; position: relative; cursor: pointer; }
   .gal-item.wide { column-span: all; }
   .gal-item img { display: block; width: 100%; height: auto; }
   .gal-item.hidden { display: none; }
-
-  /* ── OVERLAY ── */
   .gal-item-ov { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 1rem; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%); opacity: 0; transition: opacity 0.25s ease; }
   .gal-item:hover .gal-item-ov { opacity: 1; }
   .gal-item-title { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #fff; }
   .gal-item-cat { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: #aaa; margin-top: 2px; }
   .gal-item-project-cta { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #7dd8e8; margin-top: 6px; font-weight: 600; }
-
-  /* ── FILTERS ── */
   .gal-filters { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 2.5rem; }
   .gal-filter { background: transparent; border: 1px solid currentColor; color: inherit; cursor: pointer; font-family: inherit; font-size: 0.8rem; letter-spacing: 0.1em; padding: 0.5rem 1.25rem; text-transform: uppercase; transition: background 0.2s, color 0.2s; }
   .gal-filter.active, .gal-filter:hover { background: currentColor; }
   .gal-filter.active span, .gal-filter:hover span { color: var(--color-background, #0a0a0a); }
-
-  /* ── STANDARD LIGHTBOX ── */
   #lb-lightbox { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; }
   #lb-lightbox.active { display: flex !important; opacity: 1; }
   #lb-lightbox-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.92); }
@@ -211,8 +204,6 @@
   #lb-lightbox-img { display: block; max-width: 90vw; max-height: 85vh; object-fit: contain; user-select: none; pointer-events: none; }
   #lb-lightbox-shield { position: absolute; inset: 0; z-index: 2; }
   #lb-lightbox-close { position: absolute; top: -2.5rem; right: 0; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
-
-  /* ── PROJECT LIGHTBOX ── */
   #lb-project-lightbox { position: fixed; inset: 0; z-index: 10000; display: flex; align-items: stretch; justify-content: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
   #lb-project-lightbox.is-open { opacity: 1; pointer-events: all; }
   #lb-project-lightbox-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.85); }
@@ -246,8 +237,6 @@
 
 <script>
 (function () {
-
-  /* ── FILTERS ── */
   var filters = document.querySelectorAll('.gal-filter');
   var items = document.querySelectorAll('#gal-masonry .gal-item');
   filters.forEach(function (btn) {
@@ -266,15 +255,13 @@
     });
   });
 
-  /* ── STANDARD LIGHTBOX ── */
   var lightbox = document.getElementById('lb-lightbox');
   var lbImg = document.getElementById('lb-lightbox-img');
   var lbClose = document.getElementById('lb-lightbox-close');
   var lbOverlay = document.getElementById('lb-lightbox-overlay');
 
   function openStandardLightbox(src, alt) {
-    lbImg.src = src;
-    lbImg.alt = alt;
+    lbImg.src = src; lbImg.alt = alt;
     lightbox.style.display = 'flex';
     setTimeout(function () { lightbox.classList.add('active'); }, 10);
   }
@@ -285,7 +272,6 @@
   lbClose.addEventListener('click', closeStandardLightbox);
   lbOverlay.addEventListener('click', closeStandardLightbox);
 
-  /* ── PROJECT LIGHTBOX ── */
   var plLightbox = document.getElementById('lb-project-lightbox');
   var plBackdrop = document.getElementById('lb-project-lightbox-backdrop');
   var plClose = document.getElementById('lb-project-lightbox-close');
@@ -311,37 +297,23 @@
     if (!dataEl) return false;
     var data;
     try { data = JSON.parse(dataEl.textContent); } catch(e) { return false; }
-
-    plHeroImg.src = data.hero || '';
-    plHeroImg.alt = data.title || '';
+    plHeroImg.src = data.hero || ''; plHeroImg.alt = data.title || '';
     plKicker.textContent = [data.category, data.year].filter(Boolean).join(' · ');
     plTitle.textContent = data.title || '';
     plSummary.textContent = data.summary || '';
-
-    if (data.client) { plClient.textContent = data.client; plClientWrap.style.display = ''; }
-    else { plClientWrap.style.display = 'none'; }
-    if (data.category) { plType.textContent = data.category; plTypeWrap.style.display = ''; }
-    else { plTypeWrap.style.display = 'none'; }
-    if (data.year) { plYear.textContent = data.year; plYearWrap.style.display = ''; }
-    else { plYearWrap.style.display = 'none'; }
-
-    if (data.story) { plStory.innerHTML = data.story; plStoryWrap.style.display = ''; }
-    else { plStoryWrap.style.display = 'none'; }
-
+    if (data.client) { plClient.textContent = data.client; plClientWrap.style.display = ''; } else { plClientWrap.style.display = 'none'; }
+    if (data.category) { plType.textContent = data.category; plTypeWrap.style.display = ''; } else { plTypeWrap.style.display = 'none'; }
+    if (data.year) { plYear.textContent = data.year; plYearWrap.style.display = ''; } else { plYearWrap.style.display = 'none'; }
+    if (data.story) { plStory.innerHTML = data.story; plStoryWrap.style.display = ''; } else { plStoryWrap.style.display = 'none'; }
     plGalleryGrid.innerHTML = '';
     if (data.gallery && data.gallery.length > 0) {
       data.gallery.forEach(function (src) {
         var img = document.createElement('img');
-        img.src = src;
-        img.alt = data.title;
-        img.loading = 'lazy';
+        img.src = src; img.alt = data.title; img.loading = 'lazy';
         plGalleryGrid.appendChild(img);
       });
       plGalleryWrap.style.display = '';
-    } else {
-      plGalleryWrap.style.display = 'none';
-    }
-
+    } else { plGalleryWrap.style.display = 'none'; }
     plFullLink.href = '/pages/project/' + handle;
     plLightbox.classList.add('is-open');
     plLightbox.setAttribute('aria-hidden', 'false');
@@ -359,7 +331,6 @@
   plClose.addEventListener('click', closeProjectLightbox);
   plBackdrop.addEventListener('click', closeProjectLightbox);
 
-  /* ── ITEM CLICK ROUTER ── */
   document.querySelectorAll('.gal-item').forEach(function (item) {
     item.addEventListener('click', function () {
       var projectHandle = item.dataset.projectHandle;
@@ -372,7 +343,6 @@
     });
   });
 
-  /* ── KEYBOARD ── */
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
       if (plLightbox.classList.contains('is-open')) closeProjectLightbox();
@@ -380,12 +350,10 @@
     }
   });
 
-  /* ── PROTECT THUMBNAILS ── */
   document.querySelectorAll('#gal-masonry .gal-item img').forEach(function (img) {
     img.addEventListener('contextmenu', function (e) { e.preventDefault(); });
     img.setAttribute('draggable', 'false');
   });
-
 })();
 </script>
 
