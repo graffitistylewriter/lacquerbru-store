@@ -12,33 +12,202 @@
     "hero": {
       "type": "lb-hero",
       "settings": {
-        "eyebrow": "The Studio",
-        "heading": "About Lacquer Bru.",
-        "heading_em": "Aerosoul.",
-        "subtext": "Rooted in aerosol culture. Built for premium execution.",
+        "bg_image": "shopify://shop_images/envynause_Work_from_a_while_ago_with_my_big_bro__bener1graffiti_-_In_m_2019-05-29_ByCv3mvATe3_2054414909382408119.jpg",
+        "overlay_color": "#000000",
+        "overlay_opacity": 40,
+        "overlay_width": 100,
+        "overlay_height": 100,
+        "eyebrow": "HOWZIT, MY BRU!",
+        "heading": "WORKS OF",
+        "heading_em": "AEROSOUL",
+        "subtext": "Premium Creations, Textures & Experiences.\nRooted in Lettering & Design",
         "btn1_label": "Start a Commission",
-        "btn2_label": "",
+        "btn1_url": "shopify://pages/commission-contact",
+        "btn2_label": "See Our Portfolio",
+        "btn2_url": "shopify://pages/gallery",
+        "content_align": "left",
+        "min_height": 550,
+        "padding_v": 80,
+        "content_max_width": 650,
         "show_scroll_indicator": true,
-        "min_height": 500
+        "scroll_label": "Scroll",
+        "text_color": "#ffffff",
+        "subtext_color": "#aaaaaa",
+        "accent_color": "#7dd8e8"
       }
     },
-    "marquee": {
+    "lb_marquee_L4wnbX": {
       "type": "lb-marquee",
-      "settings": {}
-    },
-    "about": {
-      "type": "lb-about-strip",
+      "blocks": {
+        "marquee_item_74Ah63": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Graffiti Murals"
+          }
+        },
+        "marquee_item_D43jDK": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Digital Art"
+          }
+        },
+        "marquee_item_MgNBCF": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Brush Packs"
+          }
+        },
+        "marquee_item_aPmKVY": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Textured Finishes"
+          }
+        },
+        "marquee_item_cTHVtP": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Commission Work"
+          }
+        },
+        "marquee_item_cBLY4V": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Cape Town"
+          }
+        },
+        "marquee_item_A9eNTB": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Aerosoul"
+          }
+        },
+        "marquee_item_McCciH": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "16 Years Experience"
+          }
+        },
+        "marquee_item_ga9ynY": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Mural Painting"
+          }
+        },
+        "marquee_item_CdTtir": {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Illustration"
+          }
+        }
+      },
+      "block_order": [
+        "marquee_item_74Ah63",
+        "marquee_item_D43jDK",
+        "marquee_item_MgNBCF",
+        "marquee_item_aPmKVY",
+        "marquee_item_cTHVtP",
+        "marquee_item_cBLY4V",
+        "marquee_item_A9eNTB",
+        "marquee_item_McCciH",
+        "marquee_item_ga9ynY",
+        "marquee_item_CdTtir"
+      ],
+      "name": "LB Marquee",
       "settings": {
-        "label": "The Studio",
-        "heading": "Where Urban Expression Meets Premium Craft",
-        "image_side": "left",
-        "show_stats": true
+        "accessibility_label": "Lacquer Bru creative services",
+        "separator": "·"
       }
     },
     "trust": {
       "type": "lb-trust-strip",
-      "settings": {}
+      "settings": {
+        "item_1_icon": "⚡",
+        "item_1_label": "Instant Download",
+        "item_1_value": "Files delivered immediately after payment",
+        "item_2_icon": "🔒",
+        "item_2_label": "Secure Checkout",
+        "item_2_value": "Protected transactions",
+        "item_3_icon": "🎨",
+        "item_3_label": "Made by an Artist",
+        "item_3_value": "Tested in real workflows",
+        "item_4_icon": "💬",
+        "item_4_label": "Real Support",
+        "item_4_value": "Response within 24–48 hours",
+        "bg_color": "#111111",
+        "text_color": "#ffffff",
+        "muted_color": "#aaaaaa",
+        "border_color": "#2a2a2a",
+        "padding_v": 24
+      }
+    },
+    "lb_commission_strip_aJQDWL": {
+      "type": "lb-commission-strip",
+      "name": "LB Commission Strip",
+      "settings": {
+        "heading": "Let's Build Something Together",
+        "content": "",
+        "button_text": "Request A Quote",
+        "button_link": ""
+      }
+    },
+    "lb_reviews_PM3AzR": {
+      "type": "lb-reviews",
+      "blocks": {
+        "review_ChpMDp": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "body": "Add your first review here.",
+            "author": "Customer Name",
+            "verified": true
+          }
+        },
+        "review_FgjrJx": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "body": "Add another review here.",
+            "author": "Customer Name",
+            "verified": true
+          }
+        },
+        "review_8dPMjM": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "body": "Add a third review here.",
+            "author": "Customer Name",
+            "verified": true
+          }
+        }
+      },
+      "block_order": [
+        "review_ChpMDp",
+        "review_FgjrJx",
+        "review_8dPMjM"
+      ],
+      "name": "Reviews",
+      "settings": {
+        "label": "From our Community",
+        "heading": "CLIENT TESTIMONIALS",
+        "subtext": "Real feedback from Real people",
+        "columns": "3",
+        "bg_color": "#0A0A0A",
+        "card_bg": "#1A1A1A",
+        "text_color": "#FFFFFF",
+        "muted_color": "#AAAAAA",
+        "accent_color": "#7DD8E8",
+        "star_color": "#F5A623",
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
     }
   },
-  "order": ["hero", "marquee", "about", "trust"]
+  "order": [
+    "hero",
+    "lb_marquee_L4wnbX",
+    "trust",
+    "lb_commission_strip_aJQDWL",
+    "lb_reviews_PM3AzR"
+  ]
 }
