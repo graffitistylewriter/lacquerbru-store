@@ -27,8 +27,7 @@
 
     {%- for item in gallery_items -%}
 
-      {%- assign img_file = item.image.value -%}
-      {%- assign img_url = img_file.image.url -%}
+      {%- assign img_url = item.image.value | image_url: width: 1200 -%}
       {%- assign item_title = item.title.value -%}
       {%- assign cats = item.categories.value -%}
       {%- assign wide = item.wide.value -%}
