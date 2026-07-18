@@ -97,6 +97,24 @@
         "limit": 3
       }
     },
+    "featured-articles": {
+      "type": "lb-featured-articles",
+      "settings": {
+        "eyebrow": "From the Studio",
+        "heading": "Latest Articles",
+        "subtext": "Thoughts on art, culture, and the creative process.",
+        "blog_handle": "news",
+        "limit": 2,
+        "columns": "2",
+        "view_all_label": "View All Articles",
+        "bg_color": "#0a0a0a",
+        "text_color": "#ffffff",
+        "muted_color": "#aaaaaa",
+        "accent_color": "#7dd8e8",
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
+    },
     "about": {
       "type": "lb-about-strip",
       "settings": {
@@ -188,6 +206,7 @@
     "lb_marquee_aLgJrk",
     "featured",
     "featured-projects",
+    "featured-articles",
     "about",
     "lb_cta_banner_cXmyMN",
     "trust",
