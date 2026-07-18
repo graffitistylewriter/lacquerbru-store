@@ -44,7 +44,7 @@
       {%- assign wide = item.wide.value -%}
       {%- assign project_handle = item.project_handle.value -%}
 
-      {%- if img != blank -%}
+      {%- if img_url != blank -%}
 
         {%- assign cat_slugs = '' -%}
         {%- for cat in cats -%}
@@ -67,12 +67,15 @@
           data-cats="{{ cat_slugs | strip }}"
           {% if linked_project != nil %}data-project-handle="{{ project_handle }}"{% endif %}
         >
-          <img
-            src="{{ img | image_url: width: 1200 }}"
-            alt="{{ item_title | escape }}"
-            width="1200"
-            loading="lazy"
-          >
+        {%- assign img = item.image.value -%}
+        {%- assign img_url = img.preview_image.src -%}
+
+        <img
+          src="{{ img_url }}"
+          alt="{{ item_title | escape }}"
+          loading="lazy"
+        >
+
           <div class="gal-item-ov">
             {%- if item_title != blank -%}
               <div class="gal-item-title">{{ item_title }}</div>
