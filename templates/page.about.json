@@ -118,38 +118,6 @@
         "separator": "·"
       }
     },
-    "trust": {
-      "type": "lb-trust-strip",
-      "settings": {
-        "item_1_icon": "⚡",
-        "item_1_label": "Instant Download",
-        "item_1_value": "Files delivered immediately after payment",
-        "item_2_icon": "🔒",
-        "item_2_label": "Secure Checkout",
-        "item_2_value": "Protected transactions",
-        "item_3_icon": "🎨",
-        "item_3_label": "Made by an Artist",
-        "item_3_value": "Tested in real workflows",
-        "item_4_icon": "💬",
-        "item_4_label": "Real Support",
-        "item_4_value": "Response within 24–48 hours",
-        "bg_color": "#111111",
-        "text_color": "#ffffff",
-        "muted_color": "#aaaaaa",
-        "border_color": "#2a2a2a",
-        "padding_v": 24
-      }
-    },
-    "lb_commission_strip_aJQDWL": {
-      "type": "lb-commission-strip",
-      "name": "LB Commission Strip",
-      "settings": {
-        "heading": "Let's Build Something Together",
-        "content": "",
-        "button_text": "Request A Quote",
-        "button_link": ""
-      }
-    },
     "lb_reviews_PM3AzR": {
       "type": "lb-reviews",
       "blocks": {
@@ -201,13 +169,47 @@
         "padding_top": 100,
         "padding_bottom": 100
       }
+    },
+    "lb_commission_strip_aJQDWL": {
+      "type": "lb-commission-strip",
+      "name": "LB Commission Strip",
+      "settings": {
+        "heading": "Let's Build Something Together",
+        "content": "",
+        "button_text": "Request A Quote",
+        "button_link": ""
+      }
+    },
+    "lb_featured_products_Yjqhcx": {
+      "type": "lb-featured-products",
+      "name": "Featured Products",
+      "settings": {
+        "label": "Available Now",
+        "heading": "LATEST ARTICLES",
+        "subtext": "Pick a collection above or add products manually using the blocks below.",
+        "view_all_label": "VIEW ARTICLES",
+        "collection": "blog",
+        "product_limit": 4,
+        "columns": "3",
+        "grid_gap": 24,
+        "show_vendor": true,
+        "show_badge": true,
+        "bg_color": "#0A0A0A",
+        "card_bg": "#1A1A1A",
+        "text_color": "#FFFFFF",
+        "muted_color": "#AAAAAA",
+        "accent_color": "#7DD8E8",
+        "heading_color": "#FFFFFF",
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
     }
   },
   "order": [
     "hero",
     "lb_marquee_L4wnbX",
-    "trust",
+    "lb_reviews_PM3AzR",
     "lb_commission_strip_aJQDWL",
-    "lb_reviews_PM3AzR"
+    "lb_featured_products_Yjqhcx"
   ]
 }
