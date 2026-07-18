@@ -181,11 +181,11 @@
 </section>
 
 <style>
-  .gal-masonry { columns: 2; column-gap: 8px; }
-  @media (min-width: 768px) { .gal-masonry { columns: 3; } }
-  .gal-item { break-inside: avoid; margin-bottom: 8px; overflow: hidden; position: relative; cursor: pointer; }
-  .gal-item.wide { column-span: all; }
-  .gal-item img { display: block; width: 100%; height: auto; }
+  .gal-masonry { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  @media (min-width: 768px) { .gal-masonry { grid-template-columns: repeat(3, 1fr); } }
+  .gal-item { overflow: hidden; position: relative; cursor: pointer; aspect-ratio: 4/3; }
+  .gal-item.wide { grid-column: span 2; aspect-ratio: 16/7; }
+  .gal-item img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .gal-item.hidden { display: none; }
   .gal-item-ov { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 1rem; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%); opacity: 0; transition: opacity 0.25s ease; }
   .gal-item:hover .gal-item-ov { opacity: 1; }
