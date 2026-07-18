@@ -1,576 +1,277 @@
-{% comment %} lb-product-grid.liquid {% endcomment %}
+{% assign projects = shop.metaobjects.project.values %}
 
-{%- assign bg = section.settings.bg_color -%}
-{%- assign card_bg = section.settings.card_bg -%}
-{%- assign text_col = section.settings.text_color -%}
-{%- assign muted = section.settings.muted_color -%}
-{%- assign accent = section.settings.accent_color -%}
-{%- assign cols = section.settings.columns | plus: 0 -%}
-{%- assign gap = section.settings.grid_gap -%}
-{%- assign pt = section.settings.padding_top -%}
-{%- assign pb = section.settings.padding_bottom -%}
+<section class="lb-project-grid">
 
-<script>
-  window.lbGridProducts_{{ section.id }} = [
-    {%- for product in collection.products -%}
-    {
-      "id": {{ product.selected_or_first_available_variant.id | json }},
-      "title": {{ product.title | json }},
-      "vendor": {{ product.vendor | json }},
-      "price": {{ product.price | money | json }},
-      "price_raw": {{ product.price }},
-      "compare_at_price": {% if product.compare_at_price > product.price %}{{ product.compare_at_price | money | json }}{% else %}null{% endif %},
-      "description": {{ product.description | strip_html | truncate: 400 | json }},
-      "image": {{ product.featured_image | image_url: width: 1200 | json }},
-      "image_alt": {{ product.featured_image.alt | default: product.title | json }},
-      "available": {{ product.available | json }},
-      "url": {{ product.url | json }},
-      "created_at": {{ product.created_at | date: '%s' | json }},
-      "index": {{ forloop.index0 }}
-    }{% unless forloop.last %},{% endunless %}
-    {%- endfor -%}
-  ];
-</script>
-
-<style>
-  #lb-grid-{{ section.id }} {
-    background: {{ bg }};
-    padding: {{ pt }}px 0 {{ pb }}px;
-  }
-  #lb-grid-{{ section.id }} .lb-grid__inner {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
-  #lb-grid-{{ section.id }} .lb-grid__header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: 32px;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  #lb-grid-{{ section.id }} .lb-grid__label {
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: {{ accent }};
-    margin-bottom: 8px;
-  }
-  #lb-grid-{{ section.id }} .lb-grid__heading {
-    font-size: clamp(1.6rem, 3vw, 2.4rem);
-    font-weight: 700;
-    color: {{ text_col }};
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin: 0;
-  }
-  #lb-grid-{{ section.id }} .lb-grid__count {
-    font-size: 12px;
-    color: {{ muted }};
-    letter-spacing: 0.08em;
-  }
-
-  /* ── TOOLBAR ── */
-  #lb-grid-{{ section.id }} .lb-grid__toolbar {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-bottom: 40px;
-  }
-  #lb-grid-{{ section.id }} .lb-grid__sort {
-    background: #1a1a1a;
-    border: 1px solid #2a2a2a;
-    border-radius: 2px;
-    color: {{ text_col }};
-    font-size: 12px;
-    letter-spacing: 0.06em;
-    padding: 10px 14px;
-    outline: none;
-    cursor: pointer;
-    transition: border-color 0.2s;
-    min-width: 180px;
-  }
-  #lb-grid-{{ section.id }} .lb-grid__sort:focus { border-color: {{ accent }}; }
-  @media (max-width: 560px) {
-    #lb-grid-{{ section.id }} .lb-grid__sort { min-width: unset; width: 100%; }
-    #lb-grid-{{ section.id }} .lb-grid__toolbar { justify-content: stretch; }
-  }
-
-  /* ── GRID ── */
-  #lb-grid-{{ section.id }} .lb-grid__grid {
-    display: grid;
-    grid-template-columns: repeat({{ cols }}, 1fr);
-    gap: {{ gap }}px;
-  }
-  @media (max-width: 900px) {
-    #lb-grid-{{ section.id }} .lb-grid__grid { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (max-width: 560px) {
-    #lb-grid-{{ section.id }} .lb-grid__grid { grid-template-columns: 1fr; }
-  }
-  #lb-grid-{{ section.id }} .lb-grid__card {
-    background: {{ card_bg }};
-    border: 1px solid #2a2a2a;
-    border-radius: 4px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: border-color 0.2s ease, transform 0.2s ease;
-  }
-  #lb-grid-{{ section.id }} .lb-grid__card:hover { border-color: {{ accent }}; transform: translateY(-2px); }
-  #lb-grid-{{ section.id }} .lb-grid__card[data-hidden] { display: none; }
-  #lb-grid-{{ section.id }} .lb-grid__img-wrap {
-    position: relative;
-    aspect-ratio: 4/3;
-    overflow: hidden;
-    background: #111;
-    cursor: zoom-in;
-  }
-  #lb-grid-{{ section.id }} .lb-grid__img-wrap img {
-    width: 100%; height: 100%; object-fit: cover;
-    transition: transform 0.4s ease;
-  }
-  #lb-grid-{{ section.id }} .lb-grid__card:hover .lb-grid__img-wrap img { transform: scale(1.04); }
-  #lb-grid-{{ section.id }} .lb-grid__badge {
-    position: absolute; top: 12px; left: 12px;
-    background: {{ accent }}; color: #0a0a0a;
-    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
-    text-transform: uppercase; padding: 4px 10px; border-radius: 2px;
-  }
-  #lb-grid-{{ section.id }} .lb-grid__body {
-    padding: 20px; flex: 1; display: flex; flex-direction: column; gap: 8px;
-  }
-  #lb-grid-{{ section.id }} .lb-grid__vendor {
-    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: {{ muted }};
-  }
-  #lb-grid-{{ section.id }} .lb-grid__title {
-    font-size: 1rem; font-weight: 700; color: {{ text_col }};
-    text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.3; margin: 0;
-    cursor: pointer;
-  }
-  #lb-grid-{{ section.id }} .lb-grid__price {
-    font-size: 1rem; color: {{ accent }}; font-weight: 600; margin-top: auto; padding-top: 12px;
-  }
-  #lb-grid-{{ section.id }} .lb-grid__price s {
-    color: {{ muted }}; font-weight: 400; margin-left: 8px; font-size: 0.85rem;
-  }
-  #lb-grid-{{ section.id }} .lb-grid__atc {
-    margin-top: 12px; width: 100%; background: transparent;
-    border: 1px solid {{ accent }}; color: {{ accent }};
-    font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
-    padding: 10px 0; border-radius: 2px; cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease;
-  }
-  #lb-grid-{{ section.id }} .lb-grid__atc:hover { background: {{ accent }}; color: #0a0a0a; }
-
-  /* ── EMPTY STATE ── */
-  #lb-grid-{{ section.id }} .lb-grid__empty {
-    display: none;
-    text-align: center; padding: 80px 24px; color: {{ muted }};
-  }
-  #lb-grid-{{ section.id }} .lb-grid__empty.is-visible { display: block; }
-  #lb-grid-{{ section.id }} .lb-grid__empty-icon { font-size: 2.5rem; margin-bottom: 16px; opacity: 0.4; }
-  #lb-grid-{{ section.id }} .lb-grid__empty-heading {
-    font-size: 1.2rem; font-weight: 700; color: {{ text_col }};
-    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;
-  }
-  #lb-grid-{{ section.id }} .lb-grid__empty-text { font-size: 0.9rem; color: {{ muted }}; }
-
-  /* ── MODAL ── */
-  .lb-modal-{{ section.id }} {
-    display: none;
-    position: fixed; inset: 0; z-index: 9999;
-    background: rgba(0,0,0,0.88);
-    align-items: center; justify-content: center;
-    padding: 24px;
-  }
-  .lb-modal-{{ section.id }}.is-open { display: flex; }
-  .lb-modal-{{ section.id }} .lbm__inner {
-    background: #111;
-    border: 1px solid #2a2a2a;
-    border-radius: 4px;
-    max-width: 960px; width: 100%;
-    max-height: 90vh;
-    overflow-y: auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    position: relative;
-  }
-  @media (max-width: 700px) {
-    .lb-modal-{{ section.id }} .lbm__inner { grid-template-columns: 1fr; }
-  }
-  .lb-modal-{{ section.id }} .lbm__img-wrap {
-    position: relative; aspect-ratio: 1/1; overflow: hidden; background: #0a0a0a;
-  }
-  .lb-modal-{{ section.id }} .lbm__img-wrap img { width: 100%; height: 100%; object-fit: cover; }
-  .lb-modal-{{ section.id }} .lbm__body {
-    padding: 40px 36px;
-    display: flex; flex-direction: column; gap: 16px; color: #fff;
-  }
-  .lb-modal-{{ section.id }} .lbm__vendor {
-    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: {{ muted }};
-  }
-  .lb-modal-{{ section.id }} .lbm__title {
-    font-size: clamp(1.2rem, 2.5vw, 1.8rem); font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.2; margin: 0;
-  }
-  .lb-modal-{{ section.id }} .lbm__price { font-size: 1.2rem; color: {{ accent }}; font-weight: 600; }
-  .lb-modal-{{ section.id }} .lbm__price s { color: {{ muted }}; font-weight: 400; margin-left: 8px; font-size: 0.9rem; }
-  .lb-modal-{{ section.id }} .lbm__desc { font-size: 0.9rem; color: {{ muted }}; line-height: 1.7; flex: 1; }
-  .lb-modal-{{ section.id }} .lbm__atc {
-    width: 100%; background: {{ accent }}; color: #0a0a0a;
-    border: none; font-size: 11px; font-weight: 700;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    padding: 14px 0; border-radius: 2px; cursor: pointer;
-    transition: opacity 0.2s ease;
-  }
-  .lb-modal-{{ section.id }} .lbm__atc:hover { opacity: 0.85; }
-  .lb-modal-{{ section.id }} .lbm__atc:disabled { opacity: 0.4; cursor: not-allowed; }
-  .lb-modal-{{ section.id }} .lbm__view-link {
-    display: block; text-align: center;
-    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
-    color: {{ muted }}; text-decoration: none; transition: color 0.2s;
-  }
-  .lb-modal-{{ section.id }} .lbm__view-link:hover { color: {{ accent }}; }
-  .lb-modal-{{ section.id }} .lbm__close {
-    position: absolute; top: 16px; right: 16px;
-    background: none; border: none; color: {{ muted }};
-    font-size: 1.4rem; cursor: pointer; line-height: 1;
-    transition: color 0.2s; z-index: 2;
-  }
-  .lb-modal-{{ section.id }} .lbm__close:hover { color: #fff; }
-  .lb-modal-{{ section.id }} .lbm__nav {
-    position: absolute; top: 50%; transform: translateY(-50%);
-    background: rgba(0,0,0,0.6); border: 1px solid #2a2a2a;
-    color: #fff; font-size: 1.2rem;
-    width: 40px; height: 40px; border-radius: 2px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; transition: border-color 0.2s, background 0.2s; z-index: 2;
-  }
-  .lb-modal-{{ section.id }} .lbm__nav:hover { border-color: {{ accent }}; background: rgba(0,0,0,0.9); }
-  .lb-modal-{{ section.id }} .lbm__prev { left: -20px; }
-  .lb-modal-{{ section.id }} .lbm__next { right: -20px; }
-  @media (max-width: 700px) {
-    .lb-modal-{{ section.id }} .lbm__prev { left: 8px; }
-    .lb-modal-{{ section.id }} .lbm__next { right: 8px; }
-    .lb-modal-{{ section.id }} .lbm__body { padding: 24px 20px; }
-  }
-  .lb-modal-{{ section.id }} .lbm__counter {
-    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
-    font-size: 10px; letter-spacing: 0.1em; color: {{ muted }};
-  }
-  .lb-modal-{{ section.id }} .lbm__feedback {
-    font-size: 11px; text-align: center; color: {{ accent }};
-    min-height: 16px; letter-spacing: 0.08em;
-  }
-</style>
-
-<section id="lb-grid-{{ section.id }}">
-  <div class="lb-grid__inner">
-
-    <div class="lb-grid__header">
-      <div>
-        {%- if section.settings.label != blank -%}
-          <p class="lb-grid__label">{{ section.settings.label }}</p>
-        {%- endif -%}
-        <h2 class="lb-grid__heading">{{ section.settings.heading | default: collection.title }}</h2>
-      </div>
-      {%- if collection.products_count > 0 -%}
-        <span class="lb-grid__count" id="lbCount_{{ section.id }}">{{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}</span>
-      {%- endif -%}
-    </div>
-
-    {%- if collection.products_count > 0 -%}
-
-      <div class="lb-grid__toolbar">
-        <select class="lb-grid__sort" id="lbSort_{{ section.id }}" aria-label="Sort products">
-          <option value="featured">Featured</option>
-          <option value="price-asc">Price: Low → High</option>
-          <option value="price-desc">Price: High → Low</option>
-          <option value="newest">Newest</option>
-          <option value="az">A → Z</option>
-          <option value="za">Z → A</option>
-        </select>
-      </div>
-
-      <div class="lb-grid__grid" id="lbGridEl_{{ section.id }}">
-        {%- for product in collection.products -%}
-          <div class="lb-grid__card"
-            data-index="{{ forloop.index0 }}"
-            data-title="{{ product.title | downcase | escape }}"
-            data-price="{{ product.price }}"
-            data-created="{{ product.created_at | date: '%s' }}"
-          >
-            <div class="lb-grid__img-wrap lb-modal-trigger" data-index="{{ forloop.index0 }}">
-              {%- if product.featured_image -%}
-                <img src="{{ product.featured_image | image_url: width: 800 }}"
-                  alt="{{ product.featured_image.alt | escape }}" loading="lazy" width="800">
-              {%- else -%}
-                <div style="width:100%;height:100%;background:#1a1a1a;"></div>
-              {%- endif -%}
-              {%- if product.compare_at_price > product.price -%}
-                <span class="lb-grid__badge">Sale</span>
-              {%- elsif product.tags contains 'new' -%}
-                <span class="lb-grid__badge">New</span>
-              {%- endif -%}
-            </div>
-            <div class="lb-grid__body">
-              {%- if section.settings.show_vendor -%}
-                <p class="lb-grid__vendor">{{ product.vendor }}</p>
-              {%- endif -%}
-              <h3 class="lb-grid__title lb-modal-trigger" data-index="{{ forloop.index0 }}">{{ product.title }}</h3>
-              <p class="lb-grid__price">
-                {{ product.price | money }}
-                {%- if product.compare_at_price > product.price -%}
-                  <s>{{ product.compare_at_price | money }}</s>
-                {%- endif -%}
-              </p>
-              <form class="lb-atc-form">
-                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                <button type="submit" class="lb-grid__atc"
-                  {%- unless product.available -%} disabled style="opacity:0.4;cursor:not-allowed;"{%- endunless -%}>
-                  {%- if product.available -%}Add to Cart{%- else -%}Sold Out{%- endif -%}
-                </button>
-              </form>
-            </div>
-          </div>
-        {%- endfor -%}
-      </div>
-
-      <div class="lb-grid__empty" id="lbEmpty_{{ section.id }}">
-        <div class="lb-grid__empty-icon">◻</div>
-        <p class="lb-grid__empty-heading">No Results Found</p>
-        <p class="lb-grid__empty-text">Try adjusting the sort or browse a different category.</p>
-      </div>
-
-    {%- else -%}
-      <div class="lb-grid__empty is-visible">
-        <div class="lb-grid__empty-icon">◻</div>
-        <p class="lb-grid__empty-heading">Nothing Here Yet</p>
-        <p class="lb-grid__empty-text">{{ section.settings.empty_text | default: 'New products are on their way. Check back soon.' }}</p>
-      </div>
-    {%- endif -%}
-
+  <div class="lb-project-grid__header">
+    {% if section.settings.eyebrow != blank %}
+      <p class="lb-kicker">{{ section.settings.eyebrow }}</p>
+    {% endif %}
+    <h2>{{ section.settings.heading }}</h2>
+    {% if section.settings.copy != blank %}
+      <p>{{ section.settings.copy }}</p>
+    {% endif %}
   </div>
+
+  {% if section.settings.show_filters %}
+    <div class="lb-project-grid__filters" data-lb-project-filters>
+      <button class="lb-filter-button is-active" type="button" data-category="all">All</button>
+      {% assign categories_string = '' %}
+      {% for project in projects %}
+        {% assign project_category = project.category.value | default: project.category %}
+        {% if project_category != blank %}
+          {% assign category_token = project_category | strip | append: '||' %}
+          {% unless categories_string contains category_token %}
+            {% assign categories_string = categories_string | append: category_token %}
+          {% endunless %}
+        {% endif %}
+      {% endfor %}
+      {% assign categories = categories_string | split: '||' %}
+      {% for category in categories %}
+        {% if category != blank %}
+          <button class="lb-filter-button" type="button" data-category="{{ category | handleize }}">{{ category }}</button>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="lb-project-grid__grid" data-lb-project-grid>
+    {% assign visible_count = 0 %}
+    {% for project in projects %}
+      {% assign project_featured = project.featured.value | default: project.featured %}
+      {% assign project_category = project.category.value | default: project.category %}
+      {% assign project_title = project.title.value | default: project.title %}
+      {% assign project_summary = project.summary.value | default: project.summary %}
+      {% assign project_image = project.featured_image.value | default: project.featured_image %}
+      {% assign project_url = project.system.url %}
+      {% assign project_handle = project.system.handle %}
+
+      {% if section.settings.only_featured and project_featured != true and project_featured != 'true' %}
+        {% continue %}
+      {% endif %}
+      {% if section.settings.category != blank and project_category != section.settings.category %}
+        {% continue %}
+      {% endif %}
+
+      {% assign visible_count = visible_count | plus: 1 %}
+
+      {% if visible_count <= section.settings.limit %}
+        <article
+          class="lb-project-card"
+          data-project-category="{{ project_category | handleize }}"
+          data-project-title="{{ project_title | escape }}"
+          data-project-summary="{{ project_summary | escape }}"
+          data-project-category-label="{{ project_category | escape }}"
+          data-project-url="{{ project_url }}"
+          data-project-image="{{ project_image | image_url: width: 1400 }}"
+          role="button"
+          tabindex="0"
+          aria-label="View {{ project_title }}"
+        >
+          {% if project_image != blank %}
+            {{
+              project_image
+              | image_url: width: 1200
+              | image_tag:
+                class: 'lb-project-card__image',
+                loading: 'lazy',
+                draggable: 'false'
+            }}
+          {% endif %}
+          <div class="lb-project-card__content">
+            {% if project_category != blank %}
+              <p class="lb-project-card__category">{{ project_category }}</p>
+            {% endif %}
+            <h3>{{ project_title }}</h3>
+            {% if project_summary != blank %}
+              <p>{{ project_summary }}</p>
+            {% endif %}
+            <span class="lb-project-card__cta">View Project →</span>
+          </div>
+          <div class="lb-project-card__shield"></div>
+        </article>
+      {% endif %}
+    {% endfor %}
+
+    {% if visible_count == 0 %}
+      <p class="lb-empty-state">Add Project metaobjects in Shopify Admin to populate this section.</p>
+    {% endif %}
+  </div>
+
 </section>
 
-<!-- MODAL -->
-<div class="lb-modal-{{ section.id }}" id="lbModal_{{ section.id }}" role="dialog" aria-modal="true">
-  <div class="lbm__inner">
-    <button class="lbm__close" aria-label="Close">✕</button>
-    <button class="lbm__nav lbm__prev" aria-label="Previous">&#8592;</button>
-    <button class="lbm__nav lbm__next" aria-label="Next">&#8594;</button>
-    <div class="lbm__img-wrap">
-      <img class="lbm__img" src="" alt="">
+{%- comment -%} ── PROJECT LIGHTBOX ── {%- endcomment -%}
+<div id="lbpg-lightbox" aria-hidden="true">
+  <div id="lbpg-backdrop"></div>
+  <div id="lbpg-panel">
+    <button id="lbpg-close" aria-label="Close">✕</button>
+    <div id="lbpg-body">
+      <div id="lbpg-img-wrap">
+        <img id="lbpg-img" src="" alt="" draggable="false">
+        <div id="lbpg-img-shield"></div>
+      </div>
+      <div id="lbpg-content">
+        <p id="lbpg-category"></p>
+        <h2 id="lbpg-title"></h2>
+        <p id="lbpg-summary"></p>
+        <a id="lbpg-link" href="#">View Full Project →</a>
+      </div>
     </div>
-    <div class="lbm__body">
-      <p class="lbm__vendor"></p>
-      <h2 class="lbm__title"></h2>
-      <p class="lbm__price"></p>
-      <p class="lbm__desc"></p>
-      <form class="lbm__form">
-        <input type="hidden" name="id" class="lbm__variant-id">
-        <button type="submit" class="lbm__atc">Add to Cart</button>
-      </form>
-      <p class="lbm__feedback"></p>
-      <a class="lbm__view-link" href="#">View Full Product Page →</a>
-    </div>
-    <span class="lbm__counter"></span>
   </div>
 </div>
 
+<style>
+  .lb-project-grid__header { padding: 0 60px; margin-bottom: 48px; }
+  .lb-project-grid__header h2 { font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 900; text-transform: uppercase; letter-spacing: 0.03em; margin: 8px 0 12px; }
+  .lb-project-grid__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding: 0 60px; }
+
+  .lb-project-card {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    aspect-ratio: 4/3;
+    background: #111;
+    display: block;
+  }
+  .lb-project-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  .lb-project-card:hover .lb-project-card__image { transform: scale(1.04); }
+  .lb-project-card__shield {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+  }
+  .lb-project-card__content {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 24px;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .lb-project-card:hover .lb-project-card__content { opacity: 1; }
+  .lb-project-card__category { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #7dd8e8; margin: 0 0 6px; }
+  .lb-project-card h3 { font-size: 1rem; font-weight: 700; text-transform: uppercase; color: #fff; margin: 0 0 6px; }
+  .lb-project-card p { font-size: 12px; color: #aaa; margin: 0 0 10px; line-height: 1.5; }
+  .lb-project-card__cta { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #7dd8e8; font-weight: 600; }
+
+  /* ── LIGHTBOX ── */
+  #lbpg-lightbox {
+    position: fixed; inset: 0; z-index: 10000;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  #lbpg-lightbox.is-open { opacity: 1; pointer-events: all; }
+  #lbpg-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.92); }
+  #lbpg-panel {
+    position: relative; z-index: 1;
+    background: #0a0a0a;
+    width: min(900px, 92vw);
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: translateY(20px);
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+  }
+  #lbpg-lightbox.is-open #lbpg-panel { transform: translateY(0); }
+  #lbpg-close {
+    position: absolute; top: 16px; right: 16px;
+    background: none; border: none; color: #fff;
+    font-size: 18px; cursor: pointer; z-index: 10;
+    transition: color 0.2s;
+  }
+  #lbpg-close:hover { color: #7dd8e8; }
+  #lbpg-body { display: flex; flex-direction: column; }
+  #lbpg-img-wrap { position: relative; aspect-ratio: 16/8; overflow: hidden; }
+  #lbpg-img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    pointer-events: none; user-select: none; -webkit-user-drag: none;
+  }
+  #lbpg-img-shield { position: absolute; inset: 0; z-index: 2; }
+  #lbpg-content { padding: 32px; }
+  #lbpg-category { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #7dd8e8; margin: 0 0 10px; }
+  #lbpg-title { font-size: clamp(1.2rem, 2.5vw, 1.8rem); font-weight: 900; text-transform: uppercase; color: #fff; margin: 0 0 14px; letter-spacing: 0.03em; }
+  #lbpg-summary { font-size: 13px; color: #aaa; line-height: 1.8; margin: 0 0 24px; }
+  #lbpg-link { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #7dd8e8; text-decoration: none; font-weight: 600; transition: opacity 0.2s; }
+  #lbpg-link:hover { opacity: 0.7; }
+
+  @media (max-width: 860px) {
+    .lb-project-grid__header { padding: 0 24px; }
+    .lb-project-grid__grid { grid-template-columns: 1fr; padding: 0 24px; }
+  }
+</style>
+
 <script>
 (function() {
-  var allProducts = window.lbGridProducts_{{ section.id }} || [];
-  var modal = document.getElementById('lbModal_{{ section.id }}');
-  var grid = document.getElementById('lbGridEl_{{ section.id }}');
-  var emptyEl = document.getElementById('lbEmpty_{{ section.id }}');
-  var countEl = document.getElementById('lbCount_{{ section.id }}');
-  var sortEl = document.getElementById('lbSort_{{ section.id }}');
-  if (!grid) return;
+  var lightbox = document.getElementById('lbpg-lightbox');
+  var backdrop = document.getElementById('lbpg-backdrop');
+  var closeBtn = document.getElementById('lbpg-close');
+  var lbImg = document.getElementById('lbpg-img');
+  var lbCategory = document.getElementById('lbpg-category');
+  var lbTitle = document.getElementById('lbpg-title');
+  var lbSummary = document.getElementById('lbpg-summary');
+  var lbLink = document.getElementById('lbpg-link');
 
-  var cards = Array.from(grid.querySelectorAll('.lb-grid__card'));
-  var visibleIndices = cards.map(function(c) { return parseInt(c.dataset.index); });
-  var currentModalIndex = 0;
-  var touchStartX = 0;
-
-  function getVisibleCards() {
-    return cards.filter(function(c) { return !c.hasAttribute('data-hidden'); });
-  }
-
-  function applySort() {
-    var sort = sortEl ? sortEl.value : 'featured';
-    var visible = getVisibleCards();
-    visible.sort(function(a, b) {
-      if (sort === 'price-asc') return parseInt(a.dataset.price) - parseInt(b.dataset.price);
-      if (sort === 'price-desc') return parseInt(b.dataset.price) - parseInt(a.dataset.price);
-      if (sort === 'newest') return parseInt(b.dataset.created) - parseInt(a.dataset.created);
-      if (sort === 'az') return a.dataset.title.localeCompare(b.dataset.title);
-      if (sort === 'za') return b.dataset.title.localeCompare(a.dataset.title);
-      return parseInt(a.dataset.index) - parseInt(b.dataset.index);
-    });
-    visible.forEach(function(card) { grid.appendChild(card); });
-    var count = visible.length;
-    if (countEl) countEl.textContent = count + ' ' + (count === 1 ? 'product' : 'products');
-    if (emptyEl) emptyEl.classList.toggle('is-visible', count === 0);
-    visibleIndices = visible.map(function(c) { return parseInt(c.dataset.index); });
-  }
-
-  if (sortEl) sortEl.addEventListener('change', applySort);
-
-  if (!modal || !allProducts.length) return;
-
-  var img = modal.querySelector('.lbm__img');
-  var vendor = modal.querySelector('.lbm__vendor');
-  var title = modal.querySelector('.lbm__title');
-  var price = modal.querySelector('.lbm__price');
-  var desc = modal.querySelector('.lbm__desc');
-  var variantId = modal.querySelector('.lbm__variant-id');
-  var atcBtn = modal.querySelector('.lbm__atc');
-  var feedback = modal.querySelector('.lbm__feedback');
-  var viewLink = modal.querySelector('.lbm__view-link');
-  var counter = modal.querySelector('.lbm__counter');
-
-  function openModal(productIndex) {
-    var pos = visibleIndices.indexOf(productIndex);
-    if (pos === -1) pos = 0;
-    currentModalIndex = pos;
-    render();
-    modal.classList.add('is-open');
+  function openLightbox(card) {
+    lbImg.src = card.dataset.projectImage || '';
+    lbImg.alt = card.dataset.projectTitle || '';
+    lbCategory.textContent = card.dataset.projectCategoryLabel || '';
+    lbTitle.textContent = card.dataset.projectTitle || '';
+    lbSummary.textContent = card.dataset.projectSummary || '';
+    lbLink.href = card.dataset.projectUrl || '#';
+    lbSummary.style.display = card.dataset.projectSummary ? '' : 'none';
+    lightbox.classList.add('is-open');
+    lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    document.getElementById('lbpg-panel').scrollTop = 0;
   }
 
-  function closeModal() {
-    modal.classList.remove('is-open');
+  function closeLightbox() {
+    lightbox.classList.remove('is-open');
+    lightbox.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
-    feedback.textContent = '';
+    setTimeout(function() { lbImg.src = ''; }, 300);
   }
 
-  function render() {
-    var p = allProducts[visibleIndices[currentModalIndex]];
-    if (!p) return;
-    img.src = p.image || '';
-    img.alt = p.image_alt || '';
-    vendor.textContent = p.vendor || '';
-    title.textContent = p.title || '';
-    var priceHtml = p.price;
-    if (p.compare_at_price) priceHtml += ' <s>' + p.compare_at_price + '</s>';
-    price.innerHTML = priceHtml;
-    desc.textContent = p.description || '';
-    variantId.value = p.id;
-    viewLink.href = p.url;
-    counter.textContent = (currentModalIndex + 1) + ' / ' + visibleIndices.length;
-    atcBtn.disabled = !p.available;
-    atcBtn.textContent = p.available ? 'Add to Cart' : 'Sold Out';
-    feedback.textContent = '';
-  }
-
-  function prev() {
-    currentModalIndex = (currentModalIndex - 1 + visibleIndices.length) % visibleIndices.length;
-    render();
-  }
-  function next() {
-    currentModalIndex = (currentModalIndex + 1) % visibleIndices.length;
-    render();
-  }
-
-  document.querySelectorAll('#lb-grid-{{ section.id }} .lb-modal-trigger').forEach(function(el) {
-    el.addEventListener('click', function() { openModal(parseInt(el.dataset.index)); });
+  document.querySelectorAll('.lb-project-card').forEach(function(card) {
+    card.addEventListener('click', function() { openLightbox(card); });
+    card.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') openLightbox(card); });
   });
 
-  modal.querySelector('.lbm__prev').addEventListener('click', function(e) { e.stopPropagation(); prev(); });
-  modal.querySelector('.lbm__next').addEventListener('click', function(e) { e.stopPropagation(); next(); });
-  modal.querySelector('.lbm__close').addEventListener('click', closeModal);
-  modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
+  closeBtn.addEventListener('click', closeLightbox);
+  backdrop.addEventListener('click', closeLightbox);
   document.addEventListener('keydown', function(e) {
-    if (!modal.classList.contains('is-open')) return;
-    if (e.key === 'Escape') closeModal();
-    if (e.key === 'ArrowLeft') prev();
-    if (e.key === 'ArrowRight') next();
+    if (e.key === 'Escape' && lightbox.classList.contains('is-open')) closeLightbox();
   });
 
-  modal.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; }, { passive: true });
-  modal.addEventListener('touchend', function(e) {
-    var diff = touchStartX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) { diff > 0 ? next() : prev(); }
-  });
-
-  modal.querySelector('.lbm__form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    atcBtn.disabled = true;
-    atcBtn.textContent = 'Adding...';
-    fetch('/cart/add.js', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: parseInt(variantId.value), quantity: 1 })
-    })
-    .then(function(r) { return r.json(); })
-    .then(function() {
-      feedback.textContent = '✓ Added to cart';
-      atcBtn.textContent = 'Add to Cart';
-      atcBtn.disabled = false;
-      document.dispatchEvent(new CustomEvent('cart:refresh'));
-    })
-    .catch(function() {
-      feedback.textContent = 'Something went wrong. Try again.';
-      atcBtn.textContent = 'Add to Cart';
-      atcBtn.disabled = false;
-    });
-  });
-
-  document.querySelectorAll('#lb-grid-{{ section.id }} .lb-atc-form').forEach(function(form) {
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      var btn = form.querySelector('button');
-      var id = form.querySelector('input[name="id"]').value;
-      btn.disabled = true;
-      btn.textContent = 'Adding...';
-      fetch('/cart/add.js', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: parseInt(id), quantity: 1 })
-      })
-      .then(function(r) { return r.json(); })
-      .then(function() {
-        btn.textContent = '✓ Added';
-        setTimeout(function() { btn.textContent = 'Add to Cart'; btn.disabled = false; }, 2000);
-        document.dispatchEvent(new CustomEvent('cart:refresh'));
-      })
-      .catch(function() {
-        btn.textContent = 'Error';
-        setTimeout(function() { btn.textContent = 'Add to Cart'; btn.disabled = false; }, 2000);
-      });
-    });
+  /* ── IMAGE PROTECTION ── */
+  document.querySelectorAll('.lb-project-card__image, #lbpg-img').forEach(function(img) {
+    img.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+    img.setAttribute('draggable', 'false');
   });
 })();
 </script>
 
 {% schema %}
 {
-  "name": "LB Product Grid",
-  "tag": "section",
-  "class": "lb-product-grid",
+  "name": "LB Project Grid",
   "settings": [
-    { "type": "text", "id": "label", "label": "Eyebrow Label", "default": "The Collection" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "All Products" },
-    { "type": "textarea", "id": "empty_text", "label": "Empty State Text", "default": "New products are on their way. Check back soon." },
-    { "type": "select", "id": "columns", "label": "Columns (desktop)", "options": [
-      { "value": "2", "label": "2" },
-      { "value": "3", "label": "3" },
-      { "value": "4", "label": "4" }
-    ], "default": "3" },
-    { "type": "range", "id": "grid_gap", "label": "Grid Gap (px)", "min": 8, "max": 48, "step": 4, "default": 24 },
-    { "type": "checkbox", "id": "show_vendor", "label": "Show Vendor", "default": true },
-    { "type": "color", "id": "bg_color", "label": "Background", "default": "#0a0a0a" },
-    { "type": "color", "id": "card_bg", "label": "Card Background", "default": "#1a1a1a" },
-    { "type": "color", "id": "text_color", "label": "Text", "default": "#ffffff" },
-    { "type": "color", "id": "muted_color", "label": "Muted Text", "default": "#aaaaaa" },
-    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#7dd8e8" },
-    { "type": "range", "id": "padding_top", "label": "Padding Top", "min": 0, "max": 200, "step": 8, "default": 80 },
-    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom", "min": 0, "max": 200, "step": 8, "default": 96 }
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Portfolio" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Featured Projects" },
+    { "type": "textarea", "id": "copy", "label": "Intro Copy", "default": "Murals, campaigns, installations, and commercial creative work." },
+    { "type": "checkbox", "id": "only_featured", "label": "Only Show Featured Projects", "default": false },
+    { "type": "text", "id": "category", "label": "Category Filter", "info": "Optional. Must match the Project Category field exactly." },
+    { "type": "checkbox", "id": "show_filters", "label": "Show Category Filter Buttons", "default": false },
+    { "type": "range", "id": "limit", "label": "Projects To Show", "min": 3, "max": 24, "step": 1, "default": 6 }
   ],
-  "presets": [{ "name": "LB Product Grid" }]
+  "presets": [{ "name": "LB Project Grid" }]
 }
 {% endschema %}
