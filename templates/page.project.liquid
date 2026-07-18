@@ -1,0 +1,383 @@
+{% assign project = metaobject %}
+
+<article class="lb-project" itemscope itemtype="https://schema.org/CreativeWork">
+
+  {%- comment -%} ── HERO ── {%- endcomment -%}
+  <section class="lb-project__hero">
+    {% if project.featured_image.value %}
+      {{
+        project.featured_image.value
+        | image_url: width: 1600
+        | image_tag:
+          loading: 'eager',
+          fetchpriority: 'high',
+          alt: project.title.value,
+          class: 'lb-project__hero-img',
+          sizes: '100vw'
+      }}
+    {% endif %}
+    <div class="lb-project__hero-overlay"></div>
+    <div class="lb-project__hero-content">
+      <p class="lb-kicker">
+        {{ project.category.value | default: 'Project' }}
+        {% if project.completion_date.value %}
+          <span class="lb-project__year">· {{ project.completion_date.value | date: "%Y" }}</span>
+        {% endif %}
+      </p>
+      <h1 class="lb-project__title" itemprop="name">{{ project.title.value }}</h1>
+      {% if project.summary.value %}
+        <p class="lb-project__summary" itemprop="description">{{ project.summary.value }}</p>
+      {% endif %}
+    </div>
+  </section>
+
+  {%- comment -%} ── META STRIP ── {%- endcomment -%}
+  <div class="lb-project__meta-strip">
+    <div class="lb-project__meta-strip-inner">
+      {% if project.client.value %}
+        <div class="lb-project__meta-item">
+          <span class="lb-project__meta-label">Client</span>
+          <span class="lb-project__meta-value">{{ project.client.value }}</span>
+        </div>
+      {% endif %}
+      {% if project.category.value %}
+        <div class="lb-project__meta-item">
+          <span class="lb-project__meta-label">Type</span>
+          <span class="lb-project__meta-value">{{ project.category.value }}</span>
+        </div>
+      {% endif %}
+      {% if project.completion_date.value %}
+        <div class="lb-project__meta-item">
+          <span class="lb-project__meta-label">Year</span>
+          <span class="lb-project__meta-value">{{ project.completion_date.value | date: "%Y" }}</span>
+        </div>
+      {% endif %}
+      {% if project.featured.value %}
+        <div class="lb-project__meta-item">
+          <span class="lb-project__meta-label">Status</span>
+          <span class="lb-project__meta-value lb-project__meta-value--featured">Featured</span>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  {%- comment -%} ── STORY ── {%- endcomment -%}
+  {% if project.story.value %}
+    <section class="lb-project__story">
+      <div class="lb-project__story-inner">
+        <p class="lb-kicker">Project Story</p>
+        <div class="lb-project__story-body" itemprop="description">
+          {{ project.story.value }}
+        </div>
+      </div>
+    </section>
+  {% endif %}
+
+  {%- comment -%} ── GALLERY ── {%- endcomment -%}
+  {% if project.gallery.value and project.gallery.value.size > 0 %}
+    <section class="lb-project__gallery">
+      <div class="lb-project__gallery-inner">
+        <p class="lb-kicker">Project Gallery</p>
+        <div class="lb-project__gallery-grid">
+          {% for image in project.gallery.value %}
+            <figure class="lb-project__gallery-item" data-index="{{ forloop.index0 }}">
+              {{
+                image
+                | image_url: width: 1200
+                | image_tag:
+                  loading: 'lazy',
+                  alt: project.title.value | append: ' — ' | append: forloop.index,
+                  class: 'lb-project__gallery-img',
+                  sizes: '(min-width: 1024px) 50vw, 100vw'
+              }}
+            </figure>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+  {% endif %}
+
+  {%- comment -%} ── BACK NAV ── {%- endcomment -%}
+  <div class="lb-project__back">
+    <a href="/pages/gallery" class="lb-project__back-link">
+      <span class="lb-project__back-arrow">←</span> Back to Gallery
+    </a>
+  </div>
+
+</article>
+
+{%- comment -%} ── LIGHTBOX ── {%- endcomment -%}
+<div class="lb-project__lightbox" id="lbProjectLightbox" aria-hidden="true" role="dialog">
+  <button class="lb-project__lightbox-close" aria-label="Close">✕</button>
+  <button class="lb-project__lightbox-prev" aria-label="Previous">‹</button>
+  <button class="lb-project__lightbox-next" aria-label="Next">›</button>
+  <div class="lb-project__lightbox-img-wrap">
+    <img src="" alt="" class="lb-project__lightbox-img" id="lbProjectLightboxImg">
+  </div>
+  <p class="lb-project__lightbox-counter" id="lbProjectLightboxCounter"></p>
+</div>
+<div class="lb-project__lightbox-backdrop" id="lbProjectLightboxBackdrop"></div>
+
+<style>
+.lb-project {
+  background: #0a0a0a;
+  color: #ffffff;
+  min-height: 100vh;
+}
+.lb-project__hero {
+  position: relative;
+  min-height: 90vh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+.lb-project__hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+.lb-project__hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(10,10,10,0.1) 0%, rgba(10,10,10,0.3) 40%, rgba(10,10,10,0.85) 80%, rgba(10,10,10,1) 100%);
+}
+.lb-project__hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 80px 64px;
+  max-width: 900px;
+}
+.lb-project__year { color: #7dd8e8; }
+.lb-project__title {
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+  margin: 12px 0 20px;
+  color: #ffffff;
+}
+.lb-project__summary {
+  font-size: 1rem;
+  color: #aaaaaa;
+  line-height: 1.7;
+  max-width: 640px;
+}
+.lb-project__meta-strip {
+  background: #111111;
+  border-top: 1px solid #1e1e1e;
+  border-bottom: 1px solid #1e1e1e;
+}
+.lb-project__meta-strip-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 64px;
+  display: flex;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+.lb-project__meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.lb-project__meta-label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #555555;
+}
+.lb-project__meta-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+}
+.lb-project__meta-value--featured { color: #7dd8e8; }
+.lb-project__story {
+  padding: 100px 64px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.lb-project__story-inner { max-width: 720px; }
+.lb-project__story-body {
+  font-size: 1rem;
+  color: #cccccc;
+  line-height: 1.9;
+  margin-top: 24px;
+}
+.lb-project__gallery {
+  padding: 0 64px 100px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.lb-project__gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 24px;
+}
+.lb-project__gallery-item {
+  margin: 0;
+  overflow: hidden;
+  cursor: zoom-in;
+  aspect-ratio: 4/3;
+  background: #111111;
+}
+.lb-project__gallery-item:first-child {
+  grid-column: 1 / -1;
+  aspect-ratio: 16/7;
+}
+.lb-project__gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+.lb-project__gallery-item:hover .lb-project__gallery-img { transform: scale(1.03); }
+.lb-project__back {
+  padding: 0 64px 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.lb-project__back-link {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #555555;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.lb-project__back-link:hover { color: #7dd8e8; }
+.lb-project__back-arrow { margin-right: 6px; }
+.lb-project__lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.lb-project__lightbox.is-open { opacity: 1; pointer-events: all; }
+.lb-project__lightbox-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  z-index: 9998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.lb-project__lightbox-backdrop.is-open { opacity: 1; pointer-events: all; }
+.lb-project__lightbox-img-wrap {
+  position: relative;
+  z-index: 10000;
+  max-width: 90vw;
+  max-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lb-project__lightbox-img {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  display: block;
+}
+.lb-project__lightbox-close,
+.lb-project__lightbox-prev,
+.lb-project__lightbox-next {
+  position: fixed;
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  z-index: 10001;
+  padding: 16px;
+  transition: color 0.2s;
+}
+.lb-project__lightbox-close:hover,
+.lb-project__lightbox-prev:hover,
+.lb-project__lightbox-next:hover { color: #7dd8e8; }
+.lb-project__lightbox-close { top: 24px; right: 32px; font-size: 20px; }
+.lb-project__lightbox-prev { left: 24px; top: 50%; transform: translateY(-50%); font-size: 40px; }
+.lb-project__lightbox-next { right: 24px; top: 50%; transform: translateY(-50%); font-size: 40px; }
+.lb-project__lightbox-counter {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: #555555;
+  z-index: 10001;
+}
+@media (max-width: 768px) {
+  .lb-project__hero-content { padding: 48px 24px; }
+  .lb-project__meta-strip-inner { padding: 20px 24px; gap: 24px; }
+  .lb-project__story { padding: 60px 24px; }
+  .lb-project__gallery { padding: 0 24px 60px; }
+  .lb-project__gallery-grid { grid-template-columns: 1fr; }
+  .lb-project__gallery-item:first-child { aspect-ratio: 4/3; }
+  .lb-project__back { padding: 0 24px 48px; }
+}
+</style>
+
+<script>
+(function() {
+  const items = document.querySelectorAll('.lb-project__gallery-item');
+  const lightbox = document.getElementById('lbProjectLightbox');
+  const backdrop = document.getElementById('lbProjectLightboxBackdrop');
+  const lbImg = document.getElementById('lbProjectLightboxImg');
+  const lbCounter = document.getElementById('lbProjectLightboxCounter');
+  const closeBtn = lightbox.querySelector('.lb-project__lightbox-close');
+  const prevBtn = lightbox.querySelector('.lb-project__lightbox-prev');
+  const nextBtn = lightbox.querySelector('.lb-project__lightbox-next');
+  let current = 0;
+  const images = [];
+  items.forEach((item, i) => {
+    const img = item.querySelector('img');
+    if (img) {
+      images.push({ src: img.src.replace(/width=\d+/, 'width=2000'), alt: img.alt });
+      item.addEventListener('click', () => open(i));
+    }
+  });
+  function open(index) {
+    current = index;
+    show();
+    lightbox.classList.add('is-open');
+    backdrop.classList.add('is-open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function close() {
+    lightbox.classList.remove('is-open');
+    backdrop.classList.remove('is-open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+  function show() {
+    lbImg.src = images[current].src;
+    lbImg.alt = images[current].alt;
+    lbCounter.textContent = (current + 1) + ' / ' + images.length;
+  }
+  closeBtn.addEventListener('click', close);
+  backdrop.addEventListener('click', close);
+  prevBtn.addEventListener('click', () => { current = (current - 1 + images.length) % images.length; show(); });
+  nextBtn.addEventListener('click', () => { current = (current + 1) % images.length; show(); });
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('is-open')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') { current = (current - 1 + images.length) % images.length; show(); }
+    if (e.key === 'ArrowRight') { current = (current + 1) % images.length; show(); }
+  });
+})();
+</script>
