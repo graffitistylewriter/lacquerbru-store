@@ -1,5 +1,4 @@
 {%- assign gallery_items = shop.metaobjects.lb_gallery_item.values -%}
-{%- assign filter_cats = section.settings.filter_categories | split: '|' -%}
 {%- assign all_projects = shop.metaobjects.project.values -%}
 
 <section class="lb-blueprint-page lb-blueprint-page--gallery">
@@ -23,16 +22,6 @@
     {%- endif -%}
     <p>{{ section.settings.intro_text }}</p>
   </div>
-
-  {%- if filter_cats.size > 0 -%}
-    <div class="gal-filters">
-      <button class="gal-filter active" data-filter="all"><span>All</span></button>
-      {%- for cat in filter_cats -%}
-        {%- assign cat_slug = cat | downcase | replace: ' ', '-' -%}
-        <button class="gal-filter" data-filter="{{ cat_slug }}"><span>{{ cat }}</span></button>
-      {%- endfor -%}
-    </div>
-  {%- endif -%}
 
   <div class="gal-masonry" id="gal-masonry">
 
