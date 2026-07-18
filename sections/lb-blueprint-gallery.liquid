@@ -38,7 +38,8 @@
 
     {%- for item in gallery_items -%}
 
-      {%- assign img = item.image.value -%}
+      {%- assign img_file = item.image.value -%}
+      {%- assign img_url = img_file.preview_image.src -%}
       {%- assign item_title = item.title.value -%}
       {%- assign cats = item.categories.value -%}
       {%- assign wide = item.wide.value -%}
@@ -67,15 +68,11 @@
           data-cats="{{ cat_slugs | strip }}"
           {% if linked_project != nil %}data-project-handle="{{ project_handle }}"{% endif %}
         >
-        {%- assign img = item.image.value -%}
-        {%- assign img_url = img.preview_image.src -%}
-
-        <img
-          src="{{ img_url }}"
-          alt="{{ item_title | escape }}"
-          loading="lazy"
-        >
-
+          <img
+            src="{{ img_url }}"
+            alt="{{ item_title | escape }}"
+            loading="lazy"
+          >
           <div class="gal-item-ov">
             {%- if item_title != blank -%}
               <div class="gal-item-title">{{ item_title }}</div>
@@ -100,10 +97,10 @@
             "summary": {{ linked_project.summary.value | default: '' | json }},
             "story": {{ linked_project.story.value | default: '' | json }},
             "featured": {{ linked_project.featured.value | json }},
-            "hero": {{ linked_project.featured_image.value | image_url: width: 1600 | json }},
+            "hero": {{ linked_project.featured_image.value.preview_image.src | json }},
             "gallery": [
               {%- for gimg in linked_project.gallery.value -%}
-                {{ gimg | image_url: width: 1200 | json }}{% unless forloop.last %},{% endunless %}
+                {{ gimg.preview_image.src | json }}{% unless forloop.last %},{% endunless %}
               {%- endfor -%}
             ]
           }
@@ -199,7 +196,6 @@
   /* ── MASONRY ── */
   .gal-masonry { columns: 2; column-gap: 8px; }
   @media (min-width: 768px) { .gal-masonry { columns: 3; } }
-
   .gal-item { break-inside: avoid; margin-bottom: 8px; overflow: hidden; position: relative; cursor: pointer; }
   .gal-item.wide { column-span: all; }
   .gal-item img { display: block; width: 100%; height: auto; }
