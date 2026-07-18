@@ -12,16 +12,73 @@
     "page-hero": {
       "type": "lb-hero",
       "settings": {
-        "min_height": 400,
-        "show_scroll_indicator": false,
+        "overlay_color": "#000000",
+        "overlay_opacity": 40,
+        "overlay_width": 100,
+        "overlay_height": 100,
+        "eyebrow": "If Not Unique, Why Bother",
+        "heading": "Street Artist.",
+        "heading_em": "Digital Creator.",
+        "subtext": "Graffiti murals, digital art, and creative assets born from 16 years of aerosol culture in Cape Town.",
         "btn1_label": "",
-        "btn2_label": ""
+        "btn1_url": "",
+        "btn2_label": "",
+        "btn2_url": "",
+        "content_align": "left",
+        "min_height": 400,
+        "padding_v": 120,
+        "content_max_width": 700,
+        "show_scroll_indicator": false,
+        "scroll_label": "Scroll",
+        "text_color": "#ffffff",
+        "subtext_color": "#aaaaaa",
+        "accent_color": "#7dd8e8"
       }
     },
     "main": {
       "type": "main-page",
-      "settings": {}
+      "settings": {
+        "heading_align": "left",
+        "show_eyebrow": false,
+        "eyebrow_text": "",
+        "show_divider": true,
+        "content_align": "left",
+        "content_width": 900,
+        "bg_color": "#0a0a0a",
+        "text_color": "#ffffff",
+        "accent_color": "#7dd8e8",
+        "padding_top": 80,
+        "padding_bottom": 100
+      }
+    },
+    "lb_featured_products_V6Mjiz": {
+      "type": "lb-featured-products",
+      "name": "Featured Products",
+      "settings": {
+        "label": "Available Now",
+        "heading": "The Collection",
+        "subtext": "Pick a collection above or add products manually using the blocks below.",
+        "view_all_label": "View All Products",
+        "collection": "blog",
+        "product_limit": 4,
+        "columns": "3",
+        "grid_gap": 24,
+        "show_vendor": true,
+        "show_badge": true,
+        "bg_color": "#0A0A0A",
+        "card_bg": "#1A1A1A",
+        "text_color": "#FFFFFF",
+        "muted_color": "#AAAAAA",
+        "accent_color": "#7DD8E8",
+        "heading_color": "#FFFFFF",
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
     }
   },
-  "order": ["page-hero", "main"]
+  "order": [
+    "page-hero",
+    "main",
+    "lb_featured_products_V6Mjiz"
+  ]
 }
