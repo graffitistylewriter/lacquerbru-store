@@ -39,7 +39,7 @@
     {%- for item in gallery_items -%}
 
       {%- assign img_file = item.image.value -%}
-      {%- assign img_url = img_file.preview_image.src -%}
+      {%- assign img_url = img_file.image.src -%}
       {%- assign item_title = item.title.value -%}
       {%- assign cats = item.categories.value -%}
       {%- assign wide = item.wide.value -%}
@@ -97,10 +97,10 @@
             "summary": {{ linked_project.summary.value | default: '' | json }},
             "story": {{ linked_project.story.value | default: '' | json }},
             "featured": {{ linked_project.featured.value | json }},
-            "hero": {{ linked_project.featured_image.value.preview_image.src | json }},
+            "hero": {{ linked_project.featured_image.value.image.src | json }},
             "gallery": [
               {%- for gimg in linked_project.gallery.value -%}
-                {{ gimg.preview_image.src | json }}{% unless forloop.last %},{% endunless %}
+                {{ gimg.image.src | json }}
               {%- endfor -%}
             ]
           }
