@@ -163,14 +163,14 @@
         "heading": "Ready to Create Something Unique?",
         "subtext": "Every great project starts with a conversation. Tell us what you have in mind.",
         "btn1_label": "Start a Commission",
-        "btn1_url": "",
+        "btn1_url": "shopify://pages/commission-contact",
         "btn2_label": "",
         "btn2_url": "",
         "align": "left",
         "bg_color": "#111111",
-        "text_color": "#FFFFFF",
-        "subtext_color": "#AAAAAA",
-        "accent_color": "#7DD8E8",
+        "text_color": "#ffffff",
+        "subtext_color": "#aaaaaa",
+        "accent_color": "#7dd8e8",
         "padding_v": 100
       }
     },
