@@ -42,8 +42,10 @@
       {% assign project_title = project.title.value | default: project.title %}
       {% assign project_summary = project.summary.value | default: project.summary %}
       {% assign project_image = project.featured_image.value | default: project.featured_image %}
-      {% assign project_url = project.system.url %}
       {% assign project_handle = project.system.handle %}
+      {% assign project_client = project.client.value | default: '' %}
+      {% assign project_year = project.completion_date.value | date: "%Y" | default: '' %}
+      {% assign project_story = project.story.value | default: '' %}
 
       {% if section.settings.only_featured and project_featured != true and project_featured != 'true' %}
         {% continue %}
@@ -55,14 +57,28 @@
       {% assign visible_count = visible_count | plus: 1 %}
 
       {% if visible_count <= section.settings.limit %}
+        <script type="application/json" id="lbpg-data-{{ project_handle | replace: '-', '_' }}">
+        {
+          "handle": {{ project_handle | json }},
+          "title": {{ project_title | json }},
+          "category": {{ project_category | json }},
+          "year": {{ project_year | json }},
+          "client": {{ project_client | json }},
+          "summary": {{ project_summary | json }},
+          "story": {{ project_story | json }},
+          "hero": {{ project_image | image_url: width: 1600 | json }},
+          "gallery": [
+            {%- for gimg in project.gallery.value -%}
+              {{ gimg | image_url: width: 1200 | json }}{% unless forloop.last %},{% endunless %}
+            {%- endfor -%}
+          ]
+        }
+        </script>
+
         <article
           class="lb-project-card"
           data-project-category="{{ project_category | handleize }}"
-          data-project-title="{{ project_title | escape }}"
-          data-project-summary="{{ project_summary | escape }}"
-          data-project-category-label="{{ project_category | escape }}"
-          data-project-url="{{ project_url }}"
-          data-project-image="{{ project_image | image_url: width: 1400 }}"
+          data-project-handle="{{ project_handle }}"
           role="button"
           tabindex="0"
           aria-label="View {{ project_title }}"
@@ -83,7 +99,7 @@
             {% endif %}
             <h3>{{ project_title }}</h3>
             {% if project_summary != blank %}
-              <p>{{ project_summary }}</p>
+              <p>{{ project_summary | truncate: 100 }}</p>
             {% endif %}
             <span class="lb-project-card__cta">View Project →</span>
           </div>
@@ -99,113 +115,97 @@
 
 </section>
 
-{%- comment -%} ── PROJECT LIGHTBOX ── {%- endcomment -%}
 <div id="lbpg-lightbox" aria-hidden="true">
   <div id="lbpg-backdrop"></div>
   <div id="lbpg-panel">
     <button id="lbpg-close" aria-label="Close">✕</button>
-    <div id="lbpg-body">
-      <div id="lbpg-img-wrap">
-        <img id="lbpg-img" src="" alt="" draggable="false">
-        <div id="lbpg-img-shield"></div>
+    <div id="lbpg-content">
+      <div id="lbpg-hero">
+        <img id="lbpg-hero-img" src="" alt="" draggable="false">
+        <div id="lbpg-hero-overlay"></div>
+        <div id="lbpg-hero-text">
+          <p id="lbpg-kicker"></p>
+          <h2 id="lbpg-title"></h2>
+          <p id="lbpg-summary"></p>
+        </div>
       </div>
-      <div id="lbpg-content">
-        <p id="lbpg-category"></p>
-        <h2 id="lbpg-title"></h2>
-        <p id="lbpg-summary"></p>
-        <a id="lbpg-link" href="#">View Full Project →</a>
+      <div id="lbpg-meta-strip">
+        <div class="lbpg-meta-item" id="lbpg-client-wrap">
+          <span class="lbpg-meta-label">Client</span>
+          <span class="lbpg-meta-value" id="lbpg-client"></span>
+        </div>
+        <div class="lbpg-meta-item" id="lbpg-type-wrap">
+          <span class="lbpg-meta-label">Type</span>
+          <span class="lbpg-meta-value" id="lbpg-type"></span>
+        </div>
+        <div class="lbpg-meta-item" id="lbpg-year-wrap">
+          <span class="lbpg-meta-label">Year</span>
+          <span class="lbpg-meta-value" id="lbpg-year"></span>
+        </div>
+      </div>
+      <div id="lbpg-story-wrap">
+        <p class="lbpg-section-label">Project Story</p>
+        <div id="lbpg-story"></div>
+      </div>
+      <div id="lbpg-gallery-wrap">
+        <p class="lbpg-section-label">Project Gallery</p>
+        <div id="lbpg-gallery-grid"></div>
+      </div>
+      <div id="lbpg-footer">
+        <a id="lbpg-more-link" href="/pages/featured-projects">View More Projects →</a>
       </div>
     </div>
   </div>
 </div>
 
 <style>
-  .lb-project-grid__header { padding: 0 60px; margin-bottom: 48px; }
-  .lb-project-grid__header h2 { font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 900; text-transform: uppercase; letter-spacing: 0.03em; margin: 8px 0 12px; }
-  .lb-project-grid__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding: 0 60px; }
+  .lb-project-grid__header { padding:0 60px; margin-bottom:48px; }
+  .lb-project-grid__header h2 { font-size:clamp(1.8rem,3vw,2.8rem); font-weight:900; text-transform:uppercase; letter-spacing:.03em; margin:8px 0 12px; }
+  .lb-project-grid__grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; padding:0 60px; }
+  .lb-project-card { position:relative; overflow:hidden; cursor:pointer; aspect-ratio:4/3; background:#111; display:block; }
+  .lb-project-card__image { width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s ease; pointer-events:none; user-select:none; -webkit-user-drag:none; }
+  .lb-project-card:hover .lb-project-card__image { transform:scale(1.04); }
+  .lb-project-card__shield { position:absolute; inset:0; z-index:2; }
+  .lb-project-card__content { position:absolute; bottom:0; left:0; right:0; padding:24px; background:linear-gradient(to top,rgba(0,0,0,.85) 0%,transparent 100%); z-index:3; opacity:0; transition:opacity .3s; }
+  .lb-project-card:hover .lb-project-card__content { opacity:1; }
+  .lb-project-card__category { font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:#7dd8e8; margin:0 0 6px; }
+  .lb-project-card h3 { font-size:1rem; font-weight:700; text-transform:uppercase; color:#fff; margin:0 0 6px; }
+  .lb-project-card p { font-size:12px; color:#aaa; margin:0 0 10px; line-height:1.5; }
+  .lb-project-card__cta { font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:#7dd8e8; font-weight:600; }
 
-  .lb-project-card {
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    aspect-ratio: 4/3;
-    background: #111;
-    display: block;
-  }
-  .lb-project-card__image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.5s ease;
-    pointer-events: none;
-    user-select: none;
-    -webkit-user-drag: none;
-  }
-  .lb-project-card:hover .lb-project-card__image { transform: scale(1.04); }
-  .lb-project-card__shield {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-  }
-  .lb-project-card__content {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    padding: 24px;
-    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
-    z-index: 3;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .lb-project-card:hover .lb-project-card__content { opacity: 1; }
-  .lb-project-card__category { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #7dd8e8; margin: 0 0 6px; }
-  .lb-project-card h3 { font-size: 1rem; font-weight: 700; text-transform: uppercase; color: #fff; margin: 0 0 6px; }
-  .lb-project-card p { font-size: 12px; color: #aaa; margin: 0 0 10px; line-height: 1.5; }
-  .lb-project-card__cta { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #7dd8e8; font-weight: 600; }
+  #lbpg-lightbox { position:fixed; inset:0; z-index:10000; display:flex; align-items:stretch; justify-content:flex-end; opacity:0; pointer-events:none; transition:opacity .3s ease; }
+  #lbpg-lightbox.is-open { opacity:1; pointer-events:all; }
+  #lbpg-backdrop { position:absolute; inset:0; background:rgba(0,0,0,0.85); }
+  #lbpg-panel { position:relative; z-index:1; width:min(780px,100vw); background:#0a0a0a; overflow-y:auto; transform:translateX(100%); transition:transform .4s cubic-bezier(0.16,1,0.3,1); }
+  #lbpg-lightbox.is-open #lbpg-panel { transform:translateX(0); }
+  #lbpg-close { position:sticky; top:0; float:right; margin:16px 16px 0 0; background:none; border:none; color:#fff; font-size:18px; cursor:pointer; z-index:10; transition:color .2s; }
+  #lbpg-close:hover { color:#7dd8e8; }
+  #lbpg-content { padding-bottom:60px; }
+  #lbpg-hero { position:relative; height:55vh; overflow:hidden; }
+  #lbpg-hero-img { width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; user-select:none; }
+  #lbpg-hero-overlay { position:absolute; inset:0; background:linear-gradient(to bottom,rgba(10,10,10,0) 30%,rgba(10,10,10,.95) 100%); }
+  #lbpg-hero-text { position:absolute; bottom:0; left:0; right:0; padding:32px; }
+  #lbpg-kicker { font-size:9px; letter-spacing:.22em; text-transform:uppercase; color:#7dd8e8; margin:0 0 8px; }
+  #lbpg-title { font-size:clamp(1.4rem,3vw,2rem); font-weight:900; text-transform:uppercase; letter-spacing:.04em; color:#fff; margin:0 0 10px; line-height:1.1; }
+  #lbpg-summary { font-size:13px; color:#aaa; line-height:1.6; margin:0; }
+  #lbpg-meta-strip { display:flex; gap:32px; flex-wrap:wrap; padding:20px 32px; border-bottom:1px solid #1e1e1e; background:#111; }
+  .lbpg-meta-item { display:flex; flex-direction:column; gap:3px; }
+  .lbpg-meta-label { font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:#555; }
+  .lbpg-meta-value { font-size:12px; font-weight:600; color:#fff; letter-spacing:.04em; }
+  #lbpg-story-wrap { padding:40px 32px 0; }
+  .lbpg-section-label { font-size:9px; letter-spacing:.22em; text-transform:uppercase; color:#7dd8e8; margin:0 0 16px; }
+  #lbpg-story { font-size:13px; color:#ccc; line-height:1.9; }
+  #lbpg-gallery-wrap { padding:40px 32px 0; }
+  #lbpg-gallery-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:16px; }
+  #lbpg-gallery-grid img { width:100%; aspect-ratio:4/3; object-fit:cover; display:block; pointer-events:none; user-select:none; }
+  #lbpg-gallery-grid img:first-child { grid-column:1/-1; aspect-ratio:16/7; }
+  #lbpg-footer { padding:32px 32px 0; }
+  #lbpg-more-link { font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:#7dd8e8; text-decoration:none; font-weight:600; transition:opacity .2s; display:inline-block; border:1px solid #7dd8e8; padding:12px 28px; }
+  #lbpg-more-link:hover { opacity:.7; }
 
-  /* ── LIGHTBOX ── */
-  #lbpg-lightbox {
-    position: fixed; inset: 0; z-index: 10000;
-    display: flex; align-items: center; justify-content: center;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.3s ease;
-  }
-  #lbpg-lightbox.is-open { opacity: 1; pointer-events: all; }
-  #lbpg-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.92); }
-  #lbpg-panel {
-    position: relative; z-index: 1;
-    background: #0a0a0a;
-    width: min(900px, 92vw);
-    max-height: 90vh;
-    overflow-y: auto;
-    transform: translateY(20px);
-    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
-  }
-  #lbpg-lightbox.is-open #lbpg-panel { transform: translateY(0); }
-  #lbpg-close {
-    position: absolute; top: 16px; right: 16px;
-    background: none; border: none; color: #fff;
-    font-size: 18px; cursor: pointer; z-index: 10;
-    transition: color 0.2s;
-  }
-  #lbpg-close:hover { color: #7dd8e8; }
-  #lbpg-body { display: flex; flex-direction: column; }
-  #lbpg-img-wrap { position: relative; aspect-ratio: 16/8; overflow: hidden; }
-  #lbpg-img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-    pointer-events: none; user-select: none; -webkit-user-drag: none;
-  }
-  #lbpg-img-shield { position: absolute; inset: 0; z-index: 2; }
-  #lbpg-content { padding: 32px; }
-  #lbpg-category { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #7dd8e8; margin: 0 0 10px; }
-  #lbpg-title { font-size: clamp(1.2rem, 2.5vw, 1.8rem); font-weight: 900; text-transform: uppercase; color: #fff; margin: 0 0 14px; letter-spacing: 0.03em; }
-  #lbpg-summary { font-size: 13px; color: #aaa; line-height: 1.8; margin: 0 0 24px; }
-  #lbpg-link { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #7dd8e8; text-decoration: none; font-weight: 600; transition: opacity 0.2s; }
-  #lbpg-link:hover { opacity: 0.7; }
-
-  @media (max-width: 860px) {
-    .lb-project-grid__header { padding: 0 24px; }
-    .lb-project-grid__grid { grid-template-columns: 1fr; padding: 0 24px; }
+  @media(max-width:860px){
+    .lb-project-grid__header { padding:0 24px; }
+    .lb-project-grid__grid { grid-template-columns:1fr; padding:0 24px; }
   }
 </style>
 
@@ -214,20 +214,58 @@
   var lightbox = document.getElementById('lbpg-lightbox');
   var backdrop = document.getElementById('lbpg-backdrop');
   var closeBtn = document.getElementById('lbpg-close');
-  var lbImg = document.getElementById('lbpg-img');
-  var lbCategory = document.getElementById('lbpg-category');
-  var lbTitle = document.getElementById('lbpg-title');
-  var lbSummary = document.getElementById('lbpg-summary');
-  var lbLink = document.getElementById('lbpg-link');
+  var heroImg = document.getElementById('lbpg-hero-img');
+  var kicker = document.getElementById('lbpg-kicker');
+  var title = document.getElementById('lbpg-title');
+  var summary = document.getElementById('lbpg-summary');
+  var client = document.getElementById('lbpg-client');
+  var clientWrap = document.getElementById('lbpg-client-wrap');
+  var type = document.getElementById('lbpg-type');
+  var typeWrap = document.getElementById('lbpg-type-wrap');
+  var year = document.getElementById('lbpg-year');
+  var yearWrap = document.getElementById('lbpg-year-wrap');
+  var story = document.getElementById('lbpg-story');
+  var storyWrap = document.getElementById('lbpg-story-wrap');
+  var galleryGrid = document.getElementById('lbpg-gallery-grid');
+  var galleryWrap = document.getElementById('lbpg-gallery-wrap');
 
-  function openLightbox(card) {
-    lbImg.src = card.dataset.projectImage || '';
-    lbImg.alt = card.dataset.projectTitle || '';
-    lbCategory.textContent = card.dataset.projectCategoryLabel || '';
-    lbTitle.textContent = card.dataset.projectTitle || '';
-    lbSummary.textContent = card.dataset.projectSummary || '';
-    lbLink.href = card.dataset.projectUrl || '#';
-    lbSummary.style.display = card.dataset.projectSummary ? '' : 'none';
+  function openLightbox(handle) {
+    var safeKey = handle.replace(/-/g, '_');
+    var dataEl = document.getElementById('lbpg-data-' + safeKey);
+    if (!dataEl) return;
+    var data;
+    try { data = JSON.parse(dataEl.textContent); } catch(e) { return; }
+
+    heroImg.src = data.hero || '';
+    heroImg.alt = data.title || '';
+    kicker.textContent = [data.category, data.year].filter(Boolean).join(' · ');
+    title.textContent = data.title || '';
+    summary.textContent = data.summary || '';
+
+    if (data.client) { client.textContent = data.client; clientWrap.style.display = ''; }
+    else { clientWrap.style.display = 'none'; }
+    if (data.category) { type.textContent = data.category; typeWrap.style.display = ''; }
+    else { typeWrap.style.display = 'none'; }
+    if (data.year) { year.textContent = data.year; yearWrap.style.display = ''; }
+    else { yearWrap.style.display = 'none'; }
+
+    if (data.story) { story.innerHTML = data.story; storyWrap.style.display = ''; }
+    else { storyWrap.style.display = 'none'; }
+
+    galleryGrid.innerHTML = '';
+    if (data.gallery && data.gallery.length > 0) {
+      data.gallery.forEach(function(src) {
+        var img = document.createElement('img');
+        img.src = src; img.alt = data.title; img.loading = 'lazy';
+        img.draggable = false;
+        img.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+        galleryGrid.appendChild(img);
+      });
+      galleryWrap.style.display = '';
+    } else {
+      galleryWrap.style.display = 'none';
+    }
+
     lightbox.classList.add('is-open');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
@@ -238,12 +276,15 @@
     lightbox.classList.remove('is-open');
     lightbox.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
-    setTimeout(function() { lbImg.src = ''; }, 300);
   }
 
   document.querySelectorAll('.lb-project-card').forEach(function(card) {
-    card.addEventListener('click', function() { openLightbox(card); });
-    card.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') openLightbox(card); });
+    card.addEventListener('click', function() {
+      openLightbox(card.dataset.projectHandle);
+    });
+    card.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') openLightbox(card.dataset.projectHandle);
+    });
   });
 
   closeBtn.addEventListener('click', closeLightbox);
@@ -252,10 +293,8 @@
     if (e.key === 'Escape' && lightbox.classList.contains('is-open')) closeLightbox();
   });
 
-  /* ── IMAGE PROTECTION ── */
-  document.querySelectorAll('.lb-project-card__image, #lbpg-img').forEach(function(img) {
-    img.addEventListener('contextmenu', function(e) { e.preventDefault(); });
-    img.setAttribute('draggable', 'false');
+  document.querySelectorAll('.lb-project-card__image').forEach(function(img) {
+    img.addEventListener('contextmenu', function(e){ e.preventDefault(); });
   });
 })();
 </script>
