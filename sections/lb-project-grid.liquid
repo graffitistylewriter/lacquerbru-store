@@ -44,8 +44,10 @@
       {% assign project_handle = project.system.handle %}
       {% assign project_client = project.client.value | default: '' %}
       {% assign project_year = project.completion_date.value | date: "%Y" %}
-      {% assign project_story = project.story.value | default: '' %}
+      {% assign project_story = project.story.value | default: '' | strip_html %}
       {% assign project_hero = project_image | image_url: width: 1600 %}
+      {% capture gallery_urls %}{% for gimg in project.gallery.value %}{{ gimg | image_url: width: 1200 }}{% unless forloop.last %}|{% endunless %}{% endfor %}{% endcapture %}
+
 
       {% if section.settings.only_featured and project_featured != true and project_featured != 'true' %}
         {% continue %}
@@ -67,6 +69,7 @@
           data-summary="{{ project_summary | escape }}"
           data-story="{{ project_story | escape }}"
           data-hero="{{ project_hero }}"
+          data-gallery="{{ gallery_urls }}"
           role="button"
           tabindex="0"
         >
@@ -122,9 +125,9 @@
           <span class="lbpg-meta-value" id="lbpg-year"></span>
         </div>
       </div>
-      <div id="lbpg-story-wrap">
-        <p class="lbpg-section-label">Project Story</p>
-        <div id="lbpg-story"></div>
+      <div id="lbpg-gallery-wrap">
+        <p class="lbpg-section-label">Project Gallery</p>
+        <div id="lbpg-gallery-grid"></div>
       </div>
       <div id="lbpg-footer">
         <a id="lbpg-more-link" href="/pages/featured-projects">View More Projects →</a>
@@ -175,6 +178,10 @@
   @media(max-width:860px){
     .lb-project-grid__header{padding:0 24px;}
     .lb-project-grid__grid{grid-template-columns:1fr;padding:0 24px;}
+  #lbpg-gallery-wrap{padding:40px 32px 0;}
+  #lbpg-gallery-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px;}
+  #lbpg-gallery-grid img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;pointer-events:none;user-select:none;}
+  #lbpg-gallery-grid img:first-child{grid-column:1/-1;aspect-ratio:16/7;}
   }
 </style>
 
@@ -207,6 +214,21 @@
     if(d.category){lbType.textContent=d.category;typeWrap.style.display='';}else{typeWrap.style.display='none';}
     if(d.year){lbYear.textContent=d.year;yearWrap.style.display='';}else{yearWrap.style.display='none';}
     if(d.story){story.textContent=d.story;storyWrap.style.display='';}else{storyWrap.style.display='none';}
+    var galleryGrid=document.getElementById('lbpg-gallery-grid');
+    var galleryWrap=document.getElementById('lbpg-gallery-wrap');
+    galleryGrid.innerHTML='';
+    if(d.gallery&&d.gallery.length>0){
+      var imgs=d.gallery.split('|').filter(Boolean);
+      if(imgs.length>0){
+        imgs.forEach(function(src){
+          var img=document.createElement('img');
+          img.src=src;img.alt=d.title;img.loading='lazy';img.draggable=false;
+          img.addEventListener('contextmenu',function(e){e.preventDefault();});
+          galleryGrid.appendChild(img);
+        });
+        galleryWrap.style.display='';
+      }else{galleryWrap.style.display='none';}
+    }else{galleryWrap.style.display='none';}
     lightbox.classList.add('is-open');
     lightbox.setAttribute('aria-hidden','false');
     document.body.style.overflow='hidden';
