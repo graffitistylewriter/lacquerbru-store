@@ -1,3 +1,4 @@
+{%- comment -%} HERO SECTION — lb-hero.liquid {%- endcomment -%}
 <section
   class="lb-hero"
   style="
@@ -75,39 +76,38 @@
     </div>
   {% endif %}
 
-{%- comment -%} FILTER BAR — Gallery and Product/Collection templates only {%- endcomment -%}
-{%- assign show_filters = false -%}
-{%- assign show_shop_filters = false -%}
+  {%- comment -%} FILTER BAR — Gallery and Collection templates only {%- endcomment -%}
+  {%- assign show_filters = false -%}
+  {%- assign show_shop_filters = false -%}
 
-{%- if template.name == 'collection' or template.name == 'list-collections' -%}
-  {%- assign show_filters = true -%}
-  {%- assign show_shop_filters = true -%}
-{%- elsif template.name == 'page' and template.suffix contains 'gallery' -%}
-  {%- assign show_filters = true -%}
-{%- endif -%}
-
-{%- if show_filters -%}
-  {%- if show_shop_filters -%}
-    {%- assign filter_cats = 'All Products|Brush Packs|Prints & Canvas|Merchandise|Digital Downloads' | split: '|' -%}
-    <div class="lb-hero__filters">
-      <button class="gal-filter active" data-filter="all">All Products</button>
-      {%- for cat in filter_cats offset: 1 -%}
-        {%- assign cat_clean = cat | strip -%}
-        <button class="gal-filter" data-filter="{{ cat_clean | downcase | replace: ' ', '-' | replace: '&', 'and' }}">{{ cat_clean }}</button>
-      {%- endfor -%}
-    </div>
-  {%- else -%}
-    {%- assign filter_cats = 'Commercial|Private|Freestyle|New Work' | split: '|' -%}
-    <div class="lb-hero__filters">
-      <button class="gal-filter active" data-filter="all">All</button>
-      {%- for cat in filter_cats -%}
-        {%- assign cat_clean = cat | strip -%}
-        <button class="gal-filter" data-filter="{{ cat_clean | downcase | replace: ' ', '-' }}">{{ cat_clean }}</button>
-      {%- endfor -%}
-    </div>
+  {%- if template.name == 'collection' or template.name == 'list-collections' -%}
+    {%- assign show_filters = true -%}
+    {%- assign show_shop_filters = true -%}
+  {%- elsif template.name == 'page' and template.suffix contains 'gallery' -%}
+    {%- assign show_filters = true -%}
   {%- endif -%}
-{%- endif -%}
 
+  {%- if show_filters -%}
+    {%- if show_shop_filters -%}
+      {%- assign filter_cats = 'All Products|Brush Packs|Prints & Canvas|Merchandise|Digital Downloads' | split: '|' -%}
+      <div class="lb-hero__filters">
+        <button class="gal-filter active" data-filter="all">All Products</button>
+        {%- for cat in filter_cats offset: 1 -%}
+          {%- assign cat_clean = cat | strip -%}
+          <button class="gal-filter" data-filter="{{ cat_clean | downcase | replace: ' ', '-' | replace: '&', 'and' }}">{{ cat_clean }}</button>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      {%- assign filter_cats = 'Commercial|Private|Freestyle|New Work' | split: '|' -%}
+      <div class="lb-hero__filters">
+        <button class="gal-filter active" data-filter="all">All</button>
+        {%- for cat in filter_cats -%}
+          {%- assign cat_clean = cat | strip -%}
+          <button class="gal-filter" data-filter="{{ cat_clean | downcase | replace: ' ', '-' }}">{{ cat_clean }}</button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  {%- endif -%}
 
 </section>
 
@@ -120,134 +120,90 @@
     width: 100%;
     height: 100%;
   }
-  .lb-hero__bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-  }
-  .lb-hero__bg-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center center;
-    display: block;
-  }
-  .lb-hero__overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-    pointer-events: none;
-  }
+  .lb-hero__bg { position: absolute; inset: 0; z-index: 0; }
+  .lb-hero__bg-img { width: 100%; height: 100%; object-fit: cover; object-position: center center; display: block; }
+  .lb-hero__overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; pointer-events: none; }
+
   .lb-hero__content {
     position: relative;
     z-index: 2;
-    padding: {{ section.settings.padding_v }}px 60px;
+    padding: clamp(40px, 8vw, {{ section.settings.padding_v }}px) var(--lb-container-pad);
     max-width: {{ section.settings.content_max_width }}px;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: var(--lb-space-sm);
   }
-  .lb-hero__content--left { align-items: flex-start; margin-right: auto; }
+  .lb-hero__content--left   { align-items: flex-start; margin-right: auto; }
   .lb-hero__content--center { align-items: center; text-align: center; margin: 0 auto; }
-  .lb-hero__content--right { align-items: flex-end; text-align: right; margin-left: auto; }
+  .lb-hero__content--right  { align-items: flex-end; text-align: right; margin-left: auto; }
 
   .lb-hero__eyebrow {
-    font-size: 25px;
+    font-size: var(--lb-text-xs);
     font-weight: 650;
     letter-spacing: 0.28em;
     text-transform: uppercase;
     color: {{ section.settings.accent_color }};
   }
   .lb-hero__heading {
-    font-size: clamp(36px, 6vw, 80px);
+    font-size: clamp(32px, 6vw, 80px);
     font-weight: 700;
     line-height: 1.0;
     letter-spacing: -0.02em;
     color: {{ section.settings.text_color }};
     margin: 0;
   }
-  .lb-hero__heading em {
-    font-style: italic;
-    color: {{ section.settings.accent_color }};
-  }
+  .lb-hero__heading em { font-style: italic; color: {{ section.settings.accent_color }}; }
+
   .lb-hero__subtext {
-    font-size: clamp(14px, 1.5vw, 17px);
+    font-size: var(--lb-text-md);
     line-height: 1.75;
     color: {{ section.settings.subtext_color }};
     max-width: 560px;
     margin: 0;
   }
-  .lb-hero__btns {
-    display: flex;
-    gap: 14px;
-    flex-wrap: wrap;
-    margin-top: 8px;
-  }
+
+  .lb-hero__btns { display: flex; gap: var(--lb-space-sm); flex-wrap: wrap; margin-top: var(--lb-space-xs); }
 
   .lb-btn {
-    font-size: 11px;
+    font-size: var(--lb-text-xs);
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    padding: 16px 40px;
+    padding: var(--lb-space-xs) var(--lb-space-md);
     text-decoration: none;
     display: inline-block;
-    transition: all 0.2s;
+    transition: all var(--lb-transition);
     font-family: inherit;
     cursor: pointer;
     border: 1.5px solid transparent;
   }
-  .lb-btn--primary {
-    background: {{ section.settings.accent_color }};
-    color: #FFFFFF;
-    border-color: {{ section.settings.accent_color }};
-  }
-  .lb-btn--primary:hover {
-    background: {{ section.settings.accent_color }};
-    color: #FFFFFF;
-    opacity: 0.85;
-  }
-  .lb-btn--ghost {
-    background: transparent;
-    color: {{ section.settings.text_color }};
-    border-color: rgba(255,255,255,0.35);
-  }
-  .lb-btn--ghost:hover {
-    border-color: {{ section.settings.accent_color }};
-    color: {{ section.settings.accent_color }};
-  }
-  .lb-btn--commission {
-    background: {{ section.settings.accent_color }};
-    color: #FFFFFF;
-    border-color: {{ section.settings.accent_color }};
-  }
-  .lb-btn--commission:hover {
-    background: {{ section.settings.accent_color }};
-    color: #FFFFFF;
-    opacity: 0.85;
-  }
+  .lb-btn--primary    { background: {{ section.settings.accent_color }}; color: #fff; border-color: {{ section.settings.accent_color }}; }
+  .lb-btn--primary:hover { opacity: 0.85; }
+  .lb-btn--ghost      { background: transparent; color: {{ section.settings.text_color }}; border-color: rgba(255,255,255,0.35); }
+  .lb-btn--ghost:hover { border-color: {{ section.settings.accent_color }}; color: {{ section.settings.accent_color }}; }
+  .lb-btn--commission { background: {{ section.settings.accent_color }}; color: #fff; border-color: {{ section.settings.accent_color }}; }
+  .lb-btn--commission:hover { opacity: 0.85; }
 
   .lb-hero__scroll {
     position: absolute;
-    bottom: 32px;
-    left: 60px;
+    bottom: var(--lb-space-md);
+    left: var(--lb-container-pad);
     z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: var(--lb-space-xs);
     opacity: 0.5;
   }
   .lb-hero__scroll-line {
     width: 1px;
-    height: 48px;
+    height: clamp(32px, 4vw, 48px);
     background: {{ section.settings.text_color }};
     animation: lb-scroll-pulse 2s ease-in-out infinite;
   }
   .lb-hero__scroll span {
-    font-size: 9px;
+    font-size: var(--lb-text-xs);
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: {{ section.settings.text_color }};
@@ -256,14 +212,12 @@
 
   @keyframes lb-scroll-pulse {
     0%, 100% { opacity: 0.25; transform: scaleY(0.8); }
-    50% { opacity: 1; transform: scaleY(1); }
+    50%       { opacity: 1;    transform: scaleY(1); }
   }
 
   .lb-hero__filters {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    bottom: 0; left: 0; right: 0;
     z-index: 3;
     display: flex;
     justify-content: center;
@@ -274,35 +228,20 @@
     color: #aaaaaa;
     border: none;
     border-right: 1px solid rgba(255,255,255,0.08);
-    font-size: 10px;
+    font-size: var(--lb-text-xs);
     font-weight: 700;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    padding: 16px 28px;
+    padding: clamp(10px, 1.5vw, 16px) clamp(12px, 2vw, 28px);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all var(--lb-transition);
     font-family: inherit;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
   }
-  .lb-hero__filters .gal-filter:first-child {
-    border-left: 1px solid rgba(255,255,255,0.08);
-  }
-  .lb-hero__filters .gal-filter:hover {
-    background: rgba(20,20,20,0.9);
-    color: #ffffff;
-  }
-  .lb-hero__filters .gal-filter.active {
-    background: #5BC8E8 !important;
-    color: #ffffff !important;
-  }
-
-  @media (max-width: 768px) {
-    .lb-hero__content { padding: {{ section.settings.padding_v | divided_by: 1.5 | round }}px 24px; }
-    .lb-hero__scroll { left: 24px; }
-    .lb-btn { padding: 14px 28px; }
-    .lb-hero__filters .gal-filter { padding: 12px 16px; font-size: 9px; }
-  }
+  .lb-hero__filters .gal-filter:first-child { border-left: 1px solid rgba(255,255,255,0.08); }
+  .lb-hero__filters .gal-filter:hover  { background: rgba(20,20,20,0.9); color: #fff; }
+  .lb-hero__filters .gal-filter.active { background: #5BC8E8 !important; color: #fff !important; }
 </style>
 
 {% schema %}
@@ -312,6 +251,7 @@
   "settings": [
     { "type": "header", "content": "Background" },
     { "type": "image_picker", "id": "bg_image", "label": "Background Image" },
+    { "type": "color", "id": "bg_color", "label": "Background Colour", "default": "#0a0a0a" },
 
     { "type": "header", "content": "Overlay" },
     { "type": "color", "id": "overlay_color", "label": "Overlay Colour", "default": "#000000" },
