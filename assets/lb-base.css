@@ -1,33 +1,55 @@
+/* ============================================================
+   LACQUER BRU — DESIGN TOKEN FOUNDATION
+   lb-base.css — loaded globally via layout/theme.liquid
+   Edit this file to change spacing, type, or colour site-wide.
+   ============================================================ */
+
 :root {
-  --lb-void: #0a0a0a;
-  --lb-ink: #1a1a1a;
-  --lb-wall: #2a2a2a;
-  --lb-concrete: #3d3d3d;
-  --lb-blue: #7dd8e8;
-  --lb-white: #ffffff;
-  --lb-muted: #aaaaaa;
-  --lb-red: #e8442a;
-  --lb-gold: #f5a623;
-  --lb-black: var(--lb-void);
 
-  --lb-space-xs: 8px;
-  --lb-space-sm: 16px;
-  --lb-space-md: 32px;
-  --lb-space-lg: 60px;
-  --lb-space-xl: 100px;
+  /* ── COLOURS ── */
+  --lb-void:      #0a0a0a;
+  --lb-ink:       #1a1a1a;
+  --lb-wall:      #2a2a2a;
+  --lb-concrete:  #3d3d3d;
+  --lb-blue:      #7dd8e8;
+  --lb-white:     #ffffff;
+  --lb-muted:     #aaaaaa;
+  --lb-red:       #e8442a;
+  --lb-gold:      #f5a623;
+  --lb-black:     var(--lb-void);
 
-  --lb-text-sm: 13px;
-  --lb-text-md: 16px;
-  --lb-text-lg: 24px;
-  --lb-text-xl: clamp(30px, 4vw, 50px);
-  --lb-text-hero: clamp(52px, 9vw, 100px);
+  /* ── SPACING — fluid, no media queries needed ── */
+  --lb-space-xs:  clamp(6px,  1vw,  10px);
+  --lb-space-sm:  clamp(12px, 2vw,  20px);
+  --lb-space-md:  clamp(20px, 3vw,  40px);
+  --lb-space-lg:  clamp(32px, 5vw,  72px);
+  --lb-space-xl:  clamp(48px, 8vw, 120px);
 
-  --lb-radius: 8px;
-  --lb-transition: .25s ease;
-  --lb-page-width: 1240px;
+  /* ── LAYOUT ── */
+  --lb-container-pad: clamp(16px, 4vw, 60px);
+  --lb-section-pad:   clamp(32px, 6vw, 96px);
+  --lb-grid-gap:      clamp(4px,  0.8vw, 12px);
+  --lb-page-width:    1240px;
+
+  /* ── TYPOGRAPHY — fluid ── */
+  --lb-text-xs:   clamp(9px,  1vw,   11px);
+  --lb-text-sm:   clamp(12px, 1.3vw, 14px);
+  --lb-text-md:   clamp(13px, 1.5vw, 16px);
+  --lb-text-lg:   clamp(16px, 2vw,   22px);
+  --lb-text-xl:   clamp(28px, 4vw,   50px);
+  --lb-text-hero: clamp(40px, 7vw,  100px);
+
+  /* ── MISC ── */
+  --lb-radius:     4px;
+  --lb-radius-sm:  2px;
+  --lb-transition: 0.25s ease;
 }
 
-* {
+/* ============================================================
+   GLOBAL RESET
+   ============================================================ */
+
+*, *::before, *::after {
   box-sizing: border-box;
 }
 
@@ -41,13 +63,11 @@ body {
   background: var(--lb-void);
   color: var(--lb-white);
   font-family: 'Inter', sans-serif;
+  font-size: var(--lb-text-md);
+  line-height: 1.7;
 }
 
-body,
-button,
-input,
-textarea,
-select {
+body, button, input, textarea, select {
   font: inherit;
 }
 
@@ -66,108 +86,117 @@ button {
   cursor: pointer;
 }
 
-h1,
-h2,
-h3,
-p,
-dl,
-dd {
+h1, h2, h3, p, dl, dd {
   margin: 0;
 }
 
-h1,
-h2,
-h3 {
+h1, h2, h3 {
   font-family: 'Oswald', sans-serif;
   font-weight: 700;
   line-height: 1.05;
-  letter-spacing: .04em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
-h2 {
-  font-size: var(--lb-text-xl);
-}
-
-h3 {
-  font-size: 22px;
-}
+h1 { font-size: var(--lb-text-hero); }
+h2 { font-size: var(--lb-text-xl); }
+h3 { font-size: var(--lb-text-lg); }
 
 p {
   color: var(--lb-muted);
-  font-size: 15px;
+  font-size: var(--lb-text-md);
   line-height: 1.8;
 }
 
+/* ============================================================
+   SHARED UTILITY CLASSES
+   ============================================================ */
+
 .lb-kicker {
   color: var(--lb-blue);
-  font-size: 10px;
+  font-size: var(--lb-text-xs);
   font-weight: 500;
-  letter-spacing: .28em;
+  letter-spacing: 0.28em;
   line-height: 1.4;
   text-transform: uppercase;
+  display: block;
 }
 
+.section-label {
+  color: var(--lb-blue);
+  font-size: var(--lb-text-xs);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: var(--lb-space-xs);
+}
+
+.section-h2 {
+  font-size: var(--lb-text-xl);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  color: var(--lb-white);
+}
+
+/* ── BUTTONS ── */
 .lb-btn,
 .lb-btn--primary,
 .lb-btn--ghost,
-.lb-email-capture button {
+.btn-primary {
   display: inline-flex;
   min-height: 44px;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--lb-blue);
-  padding: 12px 22px;
-  font-size: 11px;
+  padding: var(--lb-space-xs) var(--lb-space-md);
+  font-size: var(--lb-text-xs);
   font-weight: 600;
-  letter-spacing: .18em;
+  letter-spacing: 0.18em;
   line-height: 1;
   text-transform: uppercase;
-  transition: background var(--lb-transition), border-color var(--lb-transition), color var(--lb-transition);
+  text-decoration: none;
+  border: 1.5px solid var(--lb-blue);
+  transition:
+    background var(--lb-transition),
+    border-color var(--lb-transition),
+    color var(--lb-transition),
+    opacity var(--lb-transition);
+  cursor: pointer;
+  font-family: inherit;
 }
 
 .lb-btn,
 .lb-btn--primary,
-.lb-email-capture button {
+.btn-primary {
   background: var(--lb-blue);
   color: var(--lb-void);
+  border-color: var(--lb-blue);
 }
 
 .lb-btn:hover,
 .lb-btn--primary:hover,
-.lb-email-capture button:hover {
-  border-color: var(--lb-white);
-  background: var(--lb-white);
+.btn-primary:hover {
+  opacity: 0.85;
 }
 
 .lb-btn--ghost {
   background: transparent;
   color: var(--lb-white);
+  border-color: rgba(255,255,255,0.35);
 }
 
 .lb-btn--ghost:hover {
+  border-color: var(--lb-blue);
   color: var(--lb-blue);
 }
 
+/* ── EMPTY STATE ── */
 .lb-empty-state {
   grid-column: 1 / -1;
   border: 1px solid var(--lb-wall);
-  padding: 28px;
+  padding: var(--lb-space-md);
   color: var(--lb-muted);
   text-align: center;
-}
-
-@media (max-width: 960px) {
-  :root {
-    --lb-space-lg: 24px;
-    --lb-space-xl: 70px;
-  }
-}
-@media screen and (max-width: 749px) {
-  .lb-hero__btns {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-  }
 }
