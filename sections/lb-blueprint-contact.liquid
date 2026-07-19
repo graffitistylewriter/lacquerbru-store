@@ -97,6 +97,52 @@
 
 </section>
 
+<style>
+  /* ── LAYOUT ── */
+  .ct-body { display: grid; grid-template-columns: 1fr 1.4fr; min-height: 600px; }
+  .ct-info { background: var(--lb-ink); padding: var(--lb-space-xl) var(--lb-container-pad); }
+  .ct-info .section-h2 { margin-bottom: var(--lb-space-md); }
+  .ct-info > p { font-size: var(--lb-text-md); color: var(--lb-muted); line-height: 1.9; margin-bottom: var(--lb-space-lg); }
+
+  .cinfo-item { display: flex; align-items: flex-start; gap: var(--lb-space-sm); margin-bottom: var(--lb-space-md); }
+  .cinfo-icon { color: var(--lb-blue); font-size: var(--lb-text-sm); font-weight: 600; flex-shrink: 0; min-width: 60px; }
+  .cinfo-label { font-size: var(--lb-text-xs); letter-spacing: 0.16em; text-transform: uppercase; color: var(--lb-concrete); display: block; margin-bottom: 3px; }
+  .cinfo-val { font-size: var(--lb-text-sm); color: var(--lb-white); }
+  .cinfo-val a { color: var(--lb-blue); text-decoration: none; transition: color var(--lb-transition); }
+  .cinfo-val a:hover { color: var(--lb-white); }
+
+  /* ── SOCIAL ── */
+  .ct-social { margin-top: var(--lb-space-lg); padding-top: var(--lb-space-md); border-top: 0.5px solid var(--lb-wall); }
+  .ct-social h4 { font-size: var(--lb-text-xs); letter-spacing: 0.2em; text-transform: uppercase; color: var(--lb-muted); margin-bottom: var(--lb-space-md); font-weight: 500; }
+  .soc-links { display: flex; flex-direction: column; gap: var(--lb-space-sm); }
+  .soc-link { display: flex; align-items: center; gap: var(--lb-space-sm); text-decoration: none; padding: var(--lb-space-sm); border: 0.5px solid var(--lb-wall); transition: border-color var(--lb-transition); }
+  .soc-link:hover { border-color: var(--lb-blue); }
+  .soc-handle { font-size: var(--lb-text-sm); font-weight: 600; color: var(--lb-white); }
+  .soc-desc { font-size: var(--lb-text-xs); color: var(--lb-muted); margin-top: 2px; }
+
+  /* ── FORM ── */
+  .ct-form { background: var(--lb-void); padding: var(--lb-space-xl) var(--lb-container-pad); border-left: 0.5px solid var(--lb-wall); }
+  .ct-form-title { font-family: 'Oswald', sans-serif; font-size: var(--lb-text-lg); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--lb-white); margin-bottom: var(--lb-space-xs); }
+  .ct-form-sub { font-size: var(--lb-text-sm); color: var(--lb-muted); margin-bottom: var(--lb-space-md); line-height: 1.7; }
+  .fg-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--lb-space-sm); }
+  .fgrp { display: flex; flex-direction: column; gap: var(--lb-space-xs); margin-bottom: var(--lb-space-sm); }
+  .fgrp label { font-size: var(--lb-text-xs); font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--lb-muted); }
+  .fgrp input, .fgrp select, .fgrp textarea { background: var(--lb-ink); border: 0.5px solid var(--lb-wall); color: var(--lb-white); padding: var(--lb-space-sm); font-size: var(--lb-text-sm); font-family: inherit; outline: none; transition: border-color var(--lb-transition); width: 100%; border-radius: 0; }
+  .fgrp input:focus, .fgrp select:focus, .fgrp textarea:focus { border-color: var(--lb-blue); }
+  .fgrp select { appearance: none; -webkit-appearance: none; cursor: pointer; color-scheme: dark; }
+  .fgrp textarea { min-height: 140px; resize: vertical; }
+  .form-sbmt { width: 100%; background: var(--lb-blue); color: var(--lb-void); font-size: var(--lb-text-xs); font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; padding: var(--lb-space-md); border: none; cursor: pointer; font-family: inherit; transition: background var(--lb-transition); }
+  .form-sbmt:hover { background: var(--lb-white); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 960px) {
+    .ct-body { grid-template-columns: 1fr; }
+    .ct-info, .ct-form { padding: var(--lb-space-lg) var(--lb-container-pad); }
+    .ct-form { border-left: none; border-top: 0.5px solid var(--lb-wall); }
+    .fg-row { grid-template-columns: 1fr; }
+  }
+</style>
+
 {% schema %}
 {
   "name": "LB Blueprint Contact",
