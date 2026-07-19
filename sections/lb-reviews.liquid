@@ -41,18 +41,18 @@
 </section>
 
 <style>
-  .lb-reviews__header { margin-bottom: 48px; }
-  .lb-reviews__label { display: block; font-size: 10px; font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase; margin-bottom: 12px; }
-  .lb-reviews__heading { font-size: clamp(24px, 3.5vw, 44px); font-weight: 700; letter-spacing: -0.01em; margin: 0 0 10px; text-transform: uppercase; }
-  .lb-reviews__subtext { font-size: 14px; line-height: 1.75; margin: 0; max-width: 480px; }
-  .lb-reviews__grid { display: grid; gap: 24px; }
-  .lb-reviews__card { padding: 32px; display: flex; flex-direction: column; gap: 14px; }
-  .lb-reviews__stars { font-size: 18px; letter-spacing: 2px; }
-  .lb-reviews__body { font-size: 14px; line-height: 1.75; margin: 0; font-style: italic; }
-  .lb-reviews__author { font-size: 13px; font-weight: 600; }
-  .lb-reviews__verified { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; }
+  .lb-reviews__header { margin-bottom: var(--lb-space-lg); }
+  .lb-reviews__label { display: block; font-size: var(--lb-text-xs); font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase; margin-bottom: var(--lb-space-sm); }
+  .lb-reviews__heading { font-size: var(--lb-text-xl); font-weight: 700; letter-spacing: -0.01em; margin: 0 0 var(--lb-space-xs); text-transform: uppercase; }
+  .lb-reviews__subtext { font-size: var(--lb-text-sm); line-height: 1.75; margin: 0; max-width: 480px; }
+  .lb-reviews__grid { display: grid; gap: var(--lb-space-md); }
+  .lb-reviews__card { padding: var(--lb-space-md); display: flex; flex-direction: column; gap: var(--lb-space-sm); }
+  .lb-reviews__stars { font-size: var(--lb-text-lg); letter-spacing: 2px; }
+  .lb-reviews__body { font-size: var(--lb-text-sm); line-height: 1.75; margin: 0; font-style: italic; }
+  .lb-reviews__author { font-size: var(--lb-text-sm); font-weight: 600; }
+  .lb-reviews__verified { font-size: var(--lb-text-xs); font-weight: 500; letter-spacing: 0.08em; }
   @media (max-width: 860px) {
-    .lb-reviews { padding-left: 24px !important; padding-right: 24px !important; }
+    .lb-reviews { padding-left: var(--lb-container-pad) !important; padding-right: var(--lb-container-pad) !important; }
     .lb-reviews__grid { grid-template-columns: 1fr !important; }
   }
 </style>
