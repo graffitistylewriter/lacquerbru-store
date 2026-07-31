@@ -19,6 +19,17 @@
     </div>
   {% endif %}
 
+  {%- comment -%} OVERLAY {%- endcomment -%}
+  {% if section.settings.overlay_opacity > 0 %}
+    <div
+      class="lb-hero__overlay"
+      style="
+        background-color: {{ section.settings.overlay_color }};
+        opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+      "
+    ></div>
+  {% endif %}
+
   {%- comment -%} CONTENT {%- endcomment -%}
   <div class="lb-hero__content lb-hero__content--{{ section.settings.content_align }}">
 
