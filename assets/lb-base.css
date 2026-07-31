@@ -148,6 +148,7 @@ p {
 .btn-primary {
   display: inline-flex;
   min-height: 44px;
+  min-width: 140px;
   align-items: center;
   justify-content: center;
   padding: var(--lb-space-xs) var(--lb-space-md);
