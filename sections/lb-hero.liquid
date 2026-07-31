@@ -19,14 +19,11 @@
     </div>
   {% endif %}
 
-  {%- comment -%} OVERLAY {%- endcomment -%}
-  {% if section.settings.overlay_opacity > 0 %}
+  {%- comment -%} IMAGE OVERLAY — darkens the full hero photo {%- endcomment -%}
+  {% if section.settings.image_overlay_opacity > 0 %}
     <div
-      class="lb-hero__overlay"
-      style="
-        background-color: {{ section.settings.overlay_color }};
-        opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
-      "
+      class="lb-hero__image-overlay"
+      style="background-color: {{ section.settings.image_overlay_color }}; opacity: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};"
     ></div>
   {% endif %}
 
@@ -132,13 +129,17 @@
     padding: {{ section.settings.overlay_pad_v }}px {{ section.settings.overlay_pad_h }}px;
   }
 
-  .lb-hero__overlay {
+  .lb-hero__image-overlay {
     position: absolute;
     inset: 0;
-    z-index: 0;
+    z-index: 1;
     pointer-events: none;
-    border-radius: 2px;
   }
+
+  .lb-hero__content {
+  position: relative;
+  z-index: 3;
+  ...
 
   .lb-hero__heading {
     position: relative;
@@ -311,11 +312,15 @@
     { "type": "image_picker", "id": "bg_image", "label": "Background Image" },
     { "type": "color", "id": "bg_color", "label": "Background Colour", "default": "#0a0a0a" },
 
-    { "type": "header", "content": "Overlay" },
-    { "type": "color", "id": "overlay_color", "label": "Overlay Colour", "default": "#000000" },
-    { "type": "range", "id": "overlay_opacity", "label": "Overlay Opacity (0 = off)", "min": 0, "max": 100, "step": 5, "default": 0, "unit": "%" },
-    { "type": "range", "id": "overlay_pad_v", "label": "Overlay Vertical Padding", "min": 0, "max": 60, "step": 4, "default": 8, "unit": "px" },
-    { "type": "range", "id": "overlay_pad_h", "label": "Overlay Horizontal Padding", "min": 0, "max": 80, "step": 4, "default": 16, "unit": "px" },
+    { "type": "header", "content": "Hero Image Overlay" },
+    { "type": "color", "id": "image_overlay_color", "label": "Image Overlay Colour", "default": "#000000" },
+    { "type": "range", "id": "image_overlay_opacity", "label": "Image Overlay Opacity (0 = off)", "min": 0, "max": 100, "step": 5, "default": 40, "unit": "%" },
+
+    { "type": "header", "content": "Heading Scrim" },
+    { "type": "color", "id": "overlay_color", "label": "Scrim Colour", "default": "#000000" },
+    { "type": "range", "id": "overlay_opacity", "label": "Scrim Opacity (0 = off)", "min": 0, "max": 100, "step": 5, "default": 0, "unit": "%" },
+    { "type": "range", "id": "overlay_pad_v", "label": "Scrim Vertical Padding", "min": 0, "max": 60, "step": 4, "default": 8, "unit": "px" },
+    { "type": "range", "id": "overlay_pad_h", "label": "Scrim Horizontal Padding", "min": 0, "max": 80, "step": 4, "default": 16, "unit": "px" },
 
     { "type": "header", "content": "Content" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow Text", "default": "If Not Unique, Why Bother" },
