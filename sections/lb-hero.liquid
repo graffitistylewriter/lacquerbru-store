@@ -38,12 +38,20 @@
     {% endif %}
 
     {% if section.settings.heading != blank %}
-      <h1 class="lb-hero__heading">
-        {{ section.settings.heading }}
-        {% if section.settings.heading_em != blank %}
-          <em>{{ section.settings.heading_em }}</em>
+      <div class="lb-hero__heading-wrap">
+        {% if section.settings.overlay_opacity > 0 %}
+          <div
+            class="lb-hero__overlay"
+            style="background-color: {{ section.settings.overlay_color }}; opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};"
+          ></div>
         {% endif %}
-      </h1>
+        <h1 class="lb-hero__heading">
+          {{ section.settings.heading }}
+          {% if section.settings.heading_em != blank %}
+            <em>{{ section.settings.heading_em }}</em>
+          {% endif %}
+        </h1>
+      </div>
     {% endif %}
 
     {% if section.settings.subtext != blank %}
@@ -53,14 +61,10 @@
     {% if section.settings.btn1_label != blank or section.settings.btn2_label != blank %}
       <div class="lb-hero__btns">
         {% if section.settings.btn1_label != blank %}
-          <a href="{{ section.settings.btn1_url }}" class="lb-btn lb-btn--primary">
-            {{ section.settings.btn1_label }}
-          </a>
+          <a href="{{ section.settings.btn1_url }}" class="lb-btn lb-btn--primary">{{ section.settings.btn1_label }}</a>
         {% endif %}
         {% if section.settings.btn2_label != blank %}
-          <a href="{{ section.settings.btn2_url }}" class="lb-btn lb-btn--commission">
-            {{ section.settings.btn2_label }}
-          </a>
+          <a href="{{ section.settings.btn2_url }}" class="lb-btn lb-btn--commission">{{ section.settings.btn2_label }}</a>
         {% endif %}
       </div>
     {% endif %}
