@@ -32,12 +32,13 @@
   --lb-page-width:    1240px;
 
   /* ── TYPOGRAPHY — fluid ── */
+  --lb-text-xs:   clamp(10px, 1vw,   11px);
+  --lb-text-hero: clamp(32px, 7vw,  100px);
   --lb-text-xs:   clamp(9px,  1vw,   11px);
   --lb-text-sm:   clamp(12px, 1.3vw, 14px);
   --lb-text-md:   clamp(13px, 1.5vw, 16px);
   --lb-text-lg:   clamp(16px, 2vw,   22px);
   --lb-text-xl:   clamp(28px, 4vw,   50px);
-  --lb-text-hero: clamp(40px, 7vw,  100px);
 
   /* ── MISC ── */
   --lb-radius:     4px;
