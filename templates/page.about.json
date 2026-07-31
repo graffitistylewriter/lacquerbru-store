@@ -13,6 +13,7 @@
       "type": "lb-hero",
       "settings": {
         "bg_image": "shopify://shop_images/envynause_Work_from_a_while_ago_with_my_big_bro__bener1graffiti_-_In_m_2019-05-29_ByCv3mvATe3_2054414909382408119.jpg",
+        "bg_color": "#0a0a0a",
         "overlay_color": "#000000",
         "overlay_opacity": 40,
         "overlay_width": 100,
