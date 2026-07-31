@@ -248,8 +248,7 @@
     .lb-hero { min-height: 520px !important; }
     .lb-hero__content { max-width: 100% !important; }
     .lb-hero__subtext { max-width: 100%; }
-    .lb-hero__btns { flex-direction: column; align-items: flex-start; }
-    .lb-hero__content--center .lb-hero__btns { align-items: center; }
+    .lb-hero__btns { flex-wrap: wrap; gap: var(--lb-space-sm); }
     .lb-hero__scroll { display: none; }
   }
   @media (max-width: 480px) {
@@ -257,6 +256,7 @@
     .lb-hero__filters { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; }
     .lb-hero__filters .gal-filter { flex-shrink: 0; }
   }
+
 </style>
 
 {% schema %}
