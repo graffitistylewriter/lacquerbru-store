@@ -548,3 +548,12 @@
 
   .lb-product-trust { flex-direction: column; }
 }
+
+@media (max-width: 768px) {
+  .lb-hero { min-height: 520px; }
+
+  .lb-shop-featured__grid,
+  .lb-collection-main__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
