@@ -181,26 +181,21 @@
         "button_link": ""
       }
     },
-    "lb_featured_products_Yjqhcx": {
-      "type": "lb-featured-products",
-      "name": "Featured Products",
+    "lb_featured_articles_bGwERw": {
+      "type": "lb-featured-articles",
+      "name": "LB Featured Articles",
       "settings": {
-        "label": "Available Now",
-        "heading": "LATEST ARTICLES",
-        "subtext": "Pick a collection above or add products manually using the blocks below.",
-        "view_all_label": "VIEW ALL ARTICLES",
-        "collection": "blog",
-        "product_limit": 4,
-        "columns": "3",
-        "grid_gap": 24,
-        "show_vendor": true,
-        "show_badge": true,
+        "eyebrow": "From the Studio",
+        "heading": "Latest Articles",
+        "subtext": "Thoughts on art, culture, and the creative process.",
+        "blog_handle": "news",
+        "limit": 3,
+        "columns": "2",
+        "view_all_label": "View All Articles",
         "bg_color": "#0a0a0a",
-        "card_bg": "#1a1a1a",
         "text_color": "#ffffff",
         "muted_color": "#aaaaaa",
         "accent_color": "#7dd8e8",
-        "heading_color": "#ffffff",
         "padding_top": 100,
         "padding_bottom": 100
       }
@@ -211,6 +206,6 @@
     "lb_marquee_L4wnbX",
     "lb_reviews_PM3AzR",
     "lb_commission_strip_aJQDWL",
-    "lb_featured_products_Yjqhcx"
+    "lb_featured_articles_bGwERw"
   ]
 }
