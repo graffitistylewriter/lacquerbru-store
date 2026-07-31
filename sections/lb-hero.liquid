@@ -123,30 +123,34 @@
     height: 100%;
   }
   .lb-hero__bg { position: absolute; inset: 0; z-index: 0; }
+
   .lb-hero__bg-img { width: 100%; height: 100%; object-fit: cover; object-position: center center; display: block; }
+
+  .lb-hero__heading-wrap {
+    position: relative;
+    display: inline-block;
+    padding: {{ section.settings.overlay_pad_v }}px {{ section.settings.overlay_pad_h }}px;
+  }
+
   .lb-hero__overlay {
     position: absolute;
-    inset: auto;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1;
+    inset: 0;
+    z-index: 0;
     pointer-events: none;
-    /* Mask: only show overlay behind heading area, fade out below */
-    -webkit-mask-image: linear-gradient(
-      to bottom,
-      black 0%,
-      black 55%,
-      transparent 75%
-    );
-    mask-image: linear-gradient(
-      to bottom,
-      black 0%,
-      black 55%,
-      transparent 75%
-    );
+    border-radius: 2px;
   }
+
+  .lb-hero__heading {
+    position: relative;
+    z-index: 1;
+    font-size: var(--lb-text-hero);
+    font-weight: 700;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: {{ section.settings.text_color }};
+    margin: 0;
+  }
+  .lb-hero__heading em { font-style: italic; color: {{ section.settings.accent_color }}; }
 
   .lb-hero__content {
     position: relative;
@@ -309,9 +313,9 @@
 
     { "type": "header", "content": "Overlay" },
     { "type": "color", "id": "overlay_color", "label": "Overlay Colour", "default": "#000000" },
-    { "type": "range", "id": "overlay_opacity", "label": "Overlay Opacity", "min": 0, "max": 100, "step": 5, "default": 40, "unit": "%" },
-    { "type": "range", "id": "overlay_width", "label": "Overlay Width", "min": 10, "max": 100, "step": 5, "default": 100, "unit": "%" },
-    { "type": "range", "id": "overlay_height", "label": "Overlay Height", "min": 10, "max": 100, "step": 5, "default": 100, "unit": "%" },
+    { "type": "range", "id": "overlay_opacity", "label": "Overlay Opacity (0 = off)", "min": 0, "max": 100, "step": 5, "default": 0, "unit": "%" },
+    { "type": "range", "id": "overlay_pad_v", "label": "Overlay Vertical Padding", "min": 0, "max": 60, "step": 4, "default": 8, "unit": "px" },
+    { "type": "range", "id": "overlay_pad_h", "label": "Overlay Horizontal Padding", "min": 0, "max": 80, "step": 4, "default": 16, "unit": "px" },
 
     { "type": "header", "content": "Content" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow Text", "default": "If Not Unique, Why Bother" },
