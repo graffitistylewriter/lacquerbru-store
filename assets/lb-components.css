@@ -523,6 +523,15 @@
   .lb-mobile-filter-toggle { display: inline-flex; align-items: center; gap: var(--lb-space-xs); }
 }
 
+@media (max-width: 768px) {
+  .lb-hero { min-height: 520px; }
+
+  .lb-shop-featured__grid,
+  .lb-collection-main__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 @media (max-width: 640px) {
   .lb-gallery-strip__header { grid-template-columns: 1fr; }
 
@@ -547,13 +556,4 @@
   .lb-email-capture button { width: 100%; }
 
   .lb-product-trust { flex-direction: column; }
-}
-
-@media (max-width: 768px) {
-  .lb-hero { min-height: 520px; }
-
-  .lb-shop-featured__grid,
-  .lb-collection-main__grid {
-    grid-template-columns: 1fr 1fr;
-  }
 }
