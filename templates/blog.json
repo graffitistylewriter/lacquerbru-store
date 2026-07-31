@@ -12,24 +12,64 @@
     "hero": {
       "type": "lb-hero",
       "settings": {
-        "eyebrow": "The Journal",
-        "heading": "Behind the Work.",
-        "heading_em": "",
-        "subtext": "Stories, process, and perspectives from the studio.",
+        "bg_image": "shopify://shop_images/envynause_From_last_years_work__blocking_out_some_letters_at_an_event_2017-11-09_BbSkYHEH2IJ_1644536800470852105.jpg",
+        "bg_color": "#0a0a0a",
+        "image_overlay_color": "#000000",
+        "image_overlay_opacity": 40,
+        "overlay_color": "#000000",
+        "overlay_opacity": 0,
+        "overlay_pad_v": 8,
+        "overlay_pad_h": 16,
+        "eyebrow": "Food for Thought ..",
+        "heading": "howit Bru!",
+        "heading_em": "wall stories",
+        "subtext": "Our dedicated space for Stories | Articles | News | Thoughts relating to our industry. The",
         "btn1_label": "",
+        "btn1_url": "",
         "btn2_label": "",
+        "btn2_url": "",
+        "content_align": "left",
+        "min_height": 400,
+        "padding_v": 120,
+        "content_max_width": 700,
         "show_scroll_indicator": false,
-        "min_height": 400
+        "scroll_label": "Scroll",
+        "text_color": "#ffffff",
+        "subtext_color": "#aaaaaa",
+        "accent_color": "#7dd8e8"
       }
     },
     "marquee": {
       "type": "lb-marquee",
-      "settings": {}
+      "settings": {
+        "accessibility_label": "Lacquer Bru creative services",
+        "separator": "&middot;"
+      }
     },
     "main": {
       "type": "main-blog",
-      "settings": {}
+      "settings": {
+        "show_featured": true,
+        "featured_label": "Latest Post",
+        "columns": "3",
+        "posts_per_page": 9,
+        "gap": 24,
+        "show_read_time": true,
+        "read_more_label": "Read More",
+        "empty_text": "No posts yet. Check back soon.",
+        "bg_color": "#0a0a0a",
+        "card_bg": "#1a1a1a",
+        "text_color": "#ffffff",
+        "muted_color": "#aaaaaa",
+        "accent_color": "#7dd8e8",
+        "padding_top": 60,
+        "padding_bottom": 100
+      }
     }
   },
-  "order": ["hero", "marquee", "main"]
+  "order": [
+    "hero",
+    "marquee",
+    "main"
+  ]
 }
