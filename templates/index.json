@@ -166,7 +166,7 @@
     "featured-articles": {
       "type": "lb-featured-articles",
       "settings": {
-        "eyebrow": "From the Studio",
+        "eyebrow": "From the Studio ..",
         "heading": "Latest Articles",
         "subtext": "Thoughts on art, culture, and the creative process.",
         "blog_handle": "news",
