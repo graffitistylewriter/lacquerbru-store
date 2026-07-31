@@ -154,7 +154,7 @@
     "featured-projects": {
       "type": "lb-project-grid",
       "settings": {
-        "eyebrow": "want to know more..",
+        "eyebrow": "want to know more ..",
         "heading": "Featured Projects",
         "copy": "DIVE IN TO SOME EXCLUSIVE INSIGHTS IN OUR CURATED FEATURED PROJECTS.",
         "only_featured": true,
