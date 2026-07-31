@@ -14,10 +14,12 @@
       "settings": {
         "bg_image": "shopify://shop_images/envynause_2015-12-06_-8m1YCkvQL_1133951999903200267_dd63fccc-4b22-4cc4-a8ab-22542436d5e6.jpg",
         "bg_color": "#0a0a0a",
+        "image_overlay_color": "#000000",
+        "image_overlay_opacity": 10,
         "overlay_color": "#000000",
-        "overlay_opacity": 50,
-        "overlay_width": 100,
-        "overlay_height": 10,
+        "overlay_opacity": 20,
+        "overlay_pad_v": 12,
+        "overlay_pad_h": 80,
         "eyebrow": "TRANSFORM YOUR SPACES INTO EXPERIENCES",
         "heading": "IF NOT UNIQUE..",
         "heading_em": "WHY BOTHER",
@@ -152,13 +154,13 @@
     "featured-projects": {
       "type": "lb-project-grid",
       "settings": {
-        "eyebrow": "The Work",
+        "eyebrow": "want to know more..",
         "heading": "Featured Projects",
-        "copy": "Murals, campaigns, installations and commercial creative work.",
+        "copy": "DIVE IN TO SOME EXCLUSIVE INSIGHTS IN OUR CURATED FEATURED PROJECTS.",
         "only_featured": true,
         "category": "",
-        "show_filters": false,
-        "limit": 3
+        "show_filters": true,
+        "limit": 9
       }
     },
     "featured-articles": {
