@@ -56,7 +56,13 @@
         {% endif %}
       </li>
     {% endfor %}
-
+    {% if section.settings.cta_label != blank %}
+      <li class="lb-nav__item lb-nav__item--cta">
+        <a href="{{ section.settings.cta_url }}" class="lb-nav__cta lb-nav__cta--inline">
+          {{ section.settings.cta_label }}
+        </a>
+      </li>
+    {% endif %}
   </ul>
 
 
