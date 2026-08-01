@@ -4,7 +4,7 @@
 >
   <div class="lb-about-strip__inner lb-about-strip__inner--{{ section.settings.image_side }}">
 
-    <div class="lb-about-strip__img-col">
+    <div class="lb-about-strip__img-col lb-reveal">
       {% if section.settings.image != blank %}
         {{ section.settings.image | image_url: width: 900 | image_tag:
           loading: 'lazy',
@@ -19,7 +19,7 @@
       {% endif %}
     </div>
 
-    <div class="lb-about-strip__txt">
+    <div class="lb-about-strip__txt lb-reveal">
       {% if section.settings.label != blank %}
         <span class="lb-about-strip__label" style="color:{{ section.settings.accent_color }};">{{ section.settings.label }}</span>
       {% endif %}
@@ -30,7 +30,7 @@
         <div class="lb-about-strip__body" style="color:{{ section.settings.muted_color }};">{{ section.settings.body }}</div>
       {% endif %}
       {% if section.settings.show_stats %}
-        <div class="lb-about-strip__stats">
+        <div class="lb-about-strip__stats lb-reveal-stagger">
           {% for i in (1..4) %}
             {%- assign num_key = 'stat_' | append: i | append: '_num' -%}
             {%- assign lbl_key = 'stat_' | append: i | append: '_label' -%}
