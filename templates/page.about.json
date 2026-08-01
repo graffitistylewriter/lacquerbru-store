@@ -121,6 +121,64 @@
         "separator": "·"
       }
     },
+    "178555078055a802cf": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_8124d1c_BBa3wm": {
+          "type": "ai_gen_block_8124d1c",
+          "name": "Text with image",
+          "settings": {
+            "heading": "Premium craftsmanship",
+            "body_text": "<p>Share your story, philosophy, or process. Use this space to connect with your audience through compelling narrative and pair it with striking photography that brings your vision to life.</p>",
+            "layout": "image-left",
+            "mobile_layout": "image-first",
+            "image_width": 50,
+            "vertical_alignment": "center",
+            "content_gap": 60,
+            "desktop_width_percent": 100,
+            "heading_font": "system_ui_n4",
+            "heading_size": 40,
+            "heading_spacing": 20,
+            "body_size": 16,
+            "background_color": "#111111",
+            "heading_color": "#f0ede6",
+            "text_color": "#f0ede6",
+            "section_padding": 60,
+            "image_border_radius": 0
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_8124d1c_bGie6A": {
+          "type": "ai_gen_block_8124d1c",
+          "settings": {
+            "heading": "JA BRU!",
+            "body_text": "<p>Every project starts with a blank canvas and a simple question:</p><p><strong>If not unique, why bother?</strong></p><p>That philosophy drives everything we create. We don't believe in templates or one-size-fits-all artwork. Every concept is carefully designed around the space, the people who experience it, and the story our clients want to tell.</p>",
+            "image": "shopify://shop_images/envynause_Greeting_the_future____._._._Hello_to_everyone_I_hope_you_a_2018-09-17_Bn0fn1XD4M_1870258822062244671.jpg",
+            "layout": "image-left",
+            "mobile_layout": "image-first",
+            "image_width": 50,
+            "vertical_alignment": "center",
+            "content_gap": 60,
+            "desktop_width_percent": 100,
+            "heading_font": "system_ui_n4",
+            "heading_size": 40,
+            "heading_spacing": 20,
+            "body_size": 16,
+            "background_color": "#111111",
+            "heading_color": "#f0ede6",
+            "text_color": "#f0ede6",
+            "section_padding": 60,
+            "image_border_radius": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_8124d1c_BBa3wm",
+        "ai_gen_block_8124d1c_bGie6A"
+      ],
+      "settings": {}
+    },
     "lb_reviews_PM3AzR": {
       "type": "lb-reviews",
       "blocks": {
@@ -201,24 +259,14 @@
         "padding_top": 100,
         "padding_bottom": 100
       }
-    },
-    "lb_about_pack_3HQdyX": {
-      "type": "lb-about-pack",
-      "name": "LB About Pack",
-      "settings": {
-        "image_tag": "16+ Years of Aerosol Culture",
-        "label": "Why These Brushes Are Different",
-        "heading": "Built From the Inside Out",
-        "body": "<p>What began as a passion for graffiti and street art has evolved into a creative studio dedicated to transforming ordinary spaces into memorable experiences. We partner with businesses, brands, hospitality venues, and private clients to create bespoke murals, feature walls, artistic installations, and custom creative solutions that leave a lasting impression.</p><p>Every project starts with a blank canvas and a simple question:</p><p><strong>If not unique, why bother?</strong></p><p>That philosophy drives everything we create. We don't believe in templates or one-size-fits-all artwork. Every concept is carefully designed around the space, the people who experience it, and the story our clients want to tell.</p>"
-      }
     }
   },
   "order": [
     "hero",
     "lb_marquee_L4wnbX",
+    "178555078055a802cf",
     "lb_reviews_PM3AzR",
     "lb_commission_strip_aJQDWL",
-    "lb_featured_articles_bGwERw",
-    "lb_about_pack_3HQdyX"
+    "lb_featured_articles_bGwERw"
   ]
 }
