@@ -260,3 +260,26 @@ section,
     align-items: center;
   }
 }
+
+/* ── About strip outer wrapper fix ── */
+section.lb-about-strip,
+div.lb-about-strip {
+  max-width: 100vw;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+@media (max-width: 860px) {
+  .lb-about-strip__inner {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .lb-about-strip__img-col,
+  .lb-about-strip__txt {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+}
+
