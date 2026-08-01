@@ -7,7 +7,7 @@
     {% endif %}
   </div>
   <div class="hero-ol"></div>
-  <div class="hero-c">
+  <div class="hero-c lb-reveal">
     {% if section.settings.hero_eyebrow != blank %}
       <span class="eyebrow">{{ section.settings.hero_eyebrow }}</span>
     {% endif %}
@@ -36,7 +36,7 @@
 </div>
 {% endif %}
 
-<div class="gg">
+<div class="gg lb-reveal lb-reveal-stagger">
   {% if section.settings.gallery_img1 != blank %}
   <a href="{{ section.settings.gallery_img1_url }}" class="gi tall">
     {{ section.settings.gallery_img1 | image_url: width: 1200 | image_tag: alt: section.settings.gallery_img1_alt, loading: 'lazy', width: 1200, height: 800 }}
@@ -57,13 +57,13 @@
   {% endif %}
 </div>
 {% if section.settings.gallery_cta_label != blank %}
-<div class="gallery-cta">
+<div class="gallery-cta lb-reveal">
   <a href="{{ section.settings.gallery_cta_url }}" class="btn-blue">{{ section.settings.gallery_cta_label }}</a>
 </div>
 {% endif %}
 
 <div class="shop-sec">
-  <div class="shop-hd">
+  <div class="shop-hd lb-reveal">
     <div>
       {% if section.settings.shop_label != blank %}<span class="section-label">{{ section.settings.shop_label }}</span>{% endif %}
       <h2 class="section-h2">{{ section.settings.shop_heading }}</h2>
@@ -73,7 +73,7 @@
       <a href="{{ section.settings.shop_link_url }}" class="shop-lnk">{{ section.settings.shop_link_label }} &rarr;</a>
     {% endif %}
   </div>
-  <div class="pg">
+  <div class="pg lb-reveal lb-reveal-stagger">
     {% if section.settings.product_1 != blank %}
       {% assign prod1 = all_products[section.settings.product_1] %}
       <div class="pc">
@@ -141,7 +141,7 @@
   </div>
 </div>
 
-<div class="about-strip">
+<div class="about-strip lb-reveal">
   {% if section.settings.about_image != blank %}
     <div class="as-img">
       {{ section.settings.about_image | image_url: width: 900 | image_tag: alt: 'About Lacquer Bru', loading: 'lazy' }}
@@ -153,7 +153,7 @@
     {% if section.settings.about_label != blank %}<span class="section-label">{{ section.settings.about_label }}</span>{% endif %}
     <div class="as-q">{{ section.settings.about_quote_plain }}<em> {{ section.settings.about_quote_em }}</em></div>
     <div class="as-body">{{ section.settings.about_body }}</div>
-    <div class="as-stats">
+    <div class="as-stats lb-reveal-stagger">
       <div><span class="stn">{{ section.settings.stat1_number }}</span><span class="stl">{{ section.settings.stat1_label }}</span></div>
       <div><span class="stn">{{ section.settings.stat2_number }}</span><span class="stl">{{ section.settings.stat2_label }}</span></div>
       <div><span class="stn">{{ section.settings.stat3_number }}</span><span class="stl">{{ section.settings.stat3_label }}</span></div>
@@ -164,7 +164,7 @@
   </div>
 </div>
 
-<section class="comm-sec">
+<section class="comm-sec lb-reveal">
   <div class="comm-in">
     <div>
       {% if section.settings.comm_label != blank %}<span class="section-label">{{ section.settings.comm_label }}</span>{% endif %}
@@ -182,7 +182,7 @@
         <a href="{{ section.settings.comm_btn_url }}" class="btn-primary">{{ section.settings.comm_btn_label }}</a>
       {% endif %}
     </div>
-    <div class="cig">
+    <div class="cig lb-reveal-stagger">
       {% if section.settings.comm_img1 != blank %}{{ section.settings.comm_img1 | image_url: width: 1200 | image_tag: alt: 'Commission work', loading: 'lazy', width: 1200, height: 800 }}{% endif %}
       {% if section.settings.comm_img2 != blank %}{{ section.settings.comm_img2 | image_url: width: 1200 | image_tag: alt: 'Commission work', loading: 'lazy', width: 1200, height: 800 }}{% endif %}
       {% if section.settings.comm_img3 != blank %}{{ section.settings.comm_img3 | image_url: width: 1200 | image_tag: alt: 'Commission work', loading: 'lazy', width: 1200, height: 800 }}{% endif %}
@@ -191,7 +191,7 @@
   </div>
 </section>
 
-<div class="email-sec">
+<div class="email-sec lb-reveal">
   <h2 class="email-h">{{ section.settings.email_heading }}</h2>
   <p class="email-sub">{{ section.settings.email_subtext }}</p>
   <div class="eform">
