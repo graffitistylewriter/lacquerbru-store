@@ -201,3 +201,62 @@ p {
   color: var(--lb-muted);
   text-align: center;
 }
+
+/* ============================================================
+   MOBILE OVERFLOW GUARD — prevent horizontal scroll globally
+   ============================================================ */
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Force all sections to respect viewport width */
+section,
+.lb-hero,
+.lb-about-strip,
+.lb-featured-articles,
+.lb-project-grid,
+.lb-reviews,
+.lb-commission-strip,
+.lb-cta-banner,
+.lb-trust-strip,
+.lb-footer,
+.lb-marquee,
+.lb-blueprint-page {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Fix hardcoded 60px padding on sections — replace with fluid token on mobile */
+@media (max-width: 768px) {
+  section[style*="padding"],
+  div[style*="padding"] {
+    padding-left: var(--lb-container-pad) !important;
+    padding-right: var(--lb-container-pad) !important;
+  }
+
+  .lb-about-strip,
+  .lb-featured-articles,
+  .lb-project-grid,
+  .lb-reviews,
+  .lb-commission-strip,
+  .lb-cta-banner,
+  .lb-footer__main,
+  .lb-footer__email-bar,
+  .lb-footer__trust,
+  .lb-footer__bottom {
+    padding-left: var(--lb-container-pad) !important;
+    padding-right: var(--lb-container-pad) !important;
+  }
+
+  /* Center all section content on mobile */
+  .lb-about-strip__inner,
+  .lb-featured-articles__inner,
+  .lb-project-grid,
+  .lb-reviews,
+  .lb-commission-strip__inner {
+    text-align: center;
+    align-items: center;
+  }
+}
