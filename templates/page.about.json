@@ -128,8 +128,9 @@
           "type": "ai_gen_block_8124d1c",
           "name": "Text with image",
           "settings": {
-            "heading": "Premium craftsmanship",
-            "body_text": "<p>Share your story, philosophy, or process. Use this space to connect with your audience through compelling narrative and pair it with striking photography that brings your vision to life.</p>",
+            "heading": "OUR STORY",
+            "body_text": "<p><br/>What began as a passion for graffiti and street art has evolved into a creative studio dedicated to transforming ordinary spaces into memorable experiences.</p><p>We partner with businesses, brands, hospitality venues, and private clients to create bespoke murals, feature walls, artistic installations, and custom creative solutions that leave a lasting impression.<br/><br/></p>",
+            "image": "shopify://shop_images/envynause_SWIPE_This_has_been_a_crazy_month_so_far_in_South_Africa._Lo_2018-12-01_Bq1r_POAxsE_1924637877438978820.jpg",
             "layout": "image-left",
             "mobile_layout": "text-first",
             "image_width": 50,
