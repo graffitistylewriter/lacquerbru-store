@@ -54,9 +54,14 @@
 </section>
 
 <style>
-  .lb-about-strip__inner { display: grid; grid-template-columns: 1fr 1fr; gap: var(--lb-space-xl); align-items: center; max-width: var(--lb-page-width); margin: 0 auto; }
+  .lb-about-strip { width: 100%; overflow-x: hidden; }
+  .lb-about-strip__inner { display: grid; grid-template-columns: 1fr 1fr; gap: var(--lb-space-xl); align-items: center; max-width: var(--lb-page-width); margin: 0 auto; width: 100%; }
+
+  .lb-about-strip__inner--left .lb-about-strip__img-col { order: 1; }
+  .lb-about-strip__inner--left .lb-about-strip__txt { order: 2; }
   .lb-about-strip__inner--right .lb-about-strip__img-col { order: 2; }
   .lb-about-strip__inner--right .lb-about-strip__txt { order: 1; }
+
   .lb-about-strip__img { width: 100%; height: auto; display: block; }
   .lb-about-strip__img-placeholder { aspect-ratio: 1/1; background: rgba(255,255,255,0.04); display: flex; align-items: center; justify-content: center; }
   .lb-about-strip__placeholder-svg { width: 60%; opacity: 0.1; }
@@ -70,10 +75,20 @@
   .lb-about-strip__stat-label { font-size: var(--lb-text-xs); letter-spacing: 0.1em; text-transform: uppercase; }
 
   @media (max-width: 860px) {
-    .lb-about-strip { padding-left: var(--lb-container-pad) !important; padding-right: var(--lb-container-pad) !important; }
-    .lb-about-strip__inner { grid-template-columns: 1fr; gap: var(--lb-space-lg); }
-    .lb-about-strip__inner--right .lb-about-strip__img-col { order: 0; }
-    .lb-about-strip__inner--right .lb-about-strip__txt { order: 0; }
+    .lb-about-strip {
+      padding-left: var(--lb-container-pad) !important;
+      padding-right: var(--lb-container-pad) !important;
+    }
+    .lb-about-strip__inner {
+      grid-template-columns: 1fr;
+      gap: var(--lb-space-lg);
+    }
+    .lb-about-strip__inner--left .lb-about-strip__img-col,
+    .lb-about-strip__inner--right .lb-about-strip__img-col { order: 1; }
+    .lb-about-strip__inner--left .lb-about-strip__txt,
+    .lb-about-strip__inner--right .lb-about-strip__txt { order: 2; }
+    .lb-about-strip__txt { text-align: center; align-items: center; }
+    .lb-about-strip__stats { justify-items: center; }
   }
 </style>
 
