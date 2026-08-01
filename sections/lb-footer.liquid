@@ -249,7 +249,13 @@
   .lb-footer__email-btn { background: rgba(0,0,0,0.3); color: inherit; font-size: var(--lb-text-xs); font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; padding: var(--lb-space-xs) var(--lb-space-sm); border: none; cursor: pointer; font-family: inherit; white-space: nowrap; transition: background var(--lb-transition); }
   .lb-footer__email-btn:hover { background: rgba(0,0,0,0.5); }
 
-  .lb-footer__main { padding: var(--lb-space-lg) var(--lb-container-pad) var(--lb-space-md); display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: var(--lb-space-md); border-top: 0.5px solid var(--lb-footer-border); }
+  .lb-footer__main {
+    padding: var(--lb-space-lg) var(--lb-container-pad) var(--lb-space-md);
+    display: grid;
+    grid-template-columns: 2fr repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--lb-space-md);
+    border-top: 0.5px solid var(--lb-footer-border);
+  }
 
   .lb-footer__logo { display: flex; flex-direction: column; line-height: 1; text-decoration: none; margin-bottom: var(--lb-space-sm); }
   .lb-footer__logo-img { height: 40px; width: auto; }
