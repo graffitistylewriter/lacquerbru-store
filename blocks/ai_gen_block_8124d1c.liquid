@@ -25,6 +25,14 @@
     .ai-text-image-container-{{ ai_gen_id }} {
       grid-template-columns: {% if block.settings.layout == 'image-left' %}{{ block.settings.image_width }}% 1fr{% else %}1fr {{ block.settings.image_width }}%{% endif %};
     }
+
+    {% if block.settings.layout == 'image-left' %}
+      .ai-text-image-content-{{ ai_gen_id }} { order: 2; }
+      .ai-text-image-image-wrapper-{{ ai_gen_id }} { order: 1; }
+    {% else %}
+      .ai-text-image-content-{{ ai_gen_id }} { order: 1; }
+      .ai-text-image-image-wrapper-{{ ai_gen_id }} { order: 2; }
+    {% endif %}
   }
 
   .ai-text-image-content-{{ ai_gen_id }} {
