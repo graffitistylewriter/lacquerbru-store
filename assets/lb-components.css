@@ -500,6 +500,60 @@
 }
 
 /* ======================================
+   MARQUEE — pause on hover
+====================================== */
+
+.lb-marquee:hover .lb-marquee__track {
+  animation-play-state: paused;
+}
+
+/* ======================================
+   BUTTON HOVER UPGRADE
+====================================== */
+
+.lb-btn,
+.lb-btn--primary,
+.lb-btn--ghost,
+.btn-primary {
+  transform: translateY(0);
+}
+
+.lb-btn:hover,
+.lb-btn--primary:hover,
+.btn-primary:hover,
+.lb-btn--ghost:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(125, 216, 232, 0.18);
+}
+
+/* ======================================
+   IMAGE HOVER ZOOM — product + project cards
+====================================== */
+
+.lb-product-card img,
+.lb-project-card__image {
+  transition: transform 0.5s ease;
+}
+
+.lb-product-card:hover img {
+  transform: scale(1.04);
+}
+
+.lb-project-card:hover .lb-project-card__image {
+  transform: scale(1.04);
+}
+
+/* Ensure overflow is hidden on card containers */
+.lb-product-card img {
+  overflow: hidden;
+}
+
+.lb-project-card {
+  overflow: hidden;
+}
+
+
+/* ======================================
    RESPONSIVE
 ====================================== */
 
