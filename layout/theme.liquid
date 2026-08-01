@@ -226,5 +226,33 @@
 })();
 </script>
 
+<div class="lb-page-transition" id="lb-page-transition"></div>
+
+<script>
+(function() {
+  var overlay = document.getElementById('lb-page-transition');
+  if (!overlay) return;
+
+  /* Fade in on arrival */
+  window.addEventListener('pageshow', function() {
+    overlay.classList.remove('is-leaving');
+  });
+
+  /* Fade out on departure */
+  document.addEventListener('click', function(e) {
+    var link = e.target.closest('a');
+    if (!link) return;
+    var href = link.getAttribute('href');
+    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || link.target === '_blank') return;
+    if (link.hostname && link.hostname !== window.location.hostname) return;
+    e.preventDefault();
+    overlay.classList.add('is-leaving');
+    setTimeout(function() {
+      window.location.href = href;
+    }, 350);
+  });
+})();
+</script>
+
 </body>
 </html>
