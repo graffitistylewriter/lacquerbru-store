@@ -1,7 +1,7 @@
 {% assign projects = shop.metaobjects.project.values %}
 
 <section class="lb-project-grid">
-  <div class="lb-project-grid__header">
+  <div class="lb-project-grid__header lb-reveal">
     {% if section.settings.eyebrow != blank %}
       <p class="lb-kicker">{{ section.settings.eyebrow }}</p>
     {% endif %}
@@ -12,7 +12,7 @@
   </div>
 
   {% if section.settings.show_filters %}
-    <div class="lb-project-grid__filters">
+    <div class="lb-project-grid__filters lb-reveal">
       <button class="lb-filter-button is-active" type="button" data-category="all">All</button>
       {% assign categories_string = '' %}
       {% for project in projects %}
@@ -33,7 +33,7 @@
     </div>
   {% endif %}
 
-  <div class="lb-project-grid__grid">
+  <div class="lb-project-grid__grid lb-reveal lb-reveal-stagger">
     {% assign visible_count = 0 %}
     {% for project in projects %}
       {% assign project_featured = project.featured.value | default: project.featured %}
@@ -47,7 +47,6 @@
       {% assign project_story = project.story.value | default: '' | strip_html %}
       {% assign project_hero = project_image | image_url: width: 1600 %}
       {% capture gallery_urls %}{% for gimg in project.gallery.value %}{{ gimg | image_url: width: 1200 }}{% unless forloop.last %}|{% endunless %}{% endfor %}{% endcapture %}
-
 
       {% if section.settings.only_featured and project_featured != true and project_featured != 'true' %}
         {% continue %}
