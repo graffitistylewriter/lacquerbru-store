@@ -35,7 +35,7 @@
         "show_scroll_indicator": true,
         "scroll_label": "Scroll For More",
         "text_color": "#ffffff",
-        "subtext_color": "#FFFFFF",
+        "subtext_color": "#ffffff",
         "accent_color": "#7dd8e8"
       }
     },
@@ -204,8 +204,8 @@
         "text_color": "#ffffff",
         "muted_color": "#aaaaaa",
         "accent_color": "#7dd8e8",
-        "padding_top": 100,
-        "padding_bottom": 100
+        "padding_top": 80,
+        "padding_bottom": 80
       }
     },
     "lb_cta_banner_cXmyMN": {
