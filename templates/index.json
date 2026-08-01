@@ -190,7 +190,7 @@
         "heading": "< Insert HEADING HERE >",
         "body": "<p>&lt;Insert Body Text Here&gt;</p>",
         "btn_label": "Read the Full Story",
-        "btn_url": "",
+        "btn_url": "shopify://pages/about",
         "show_stats": true,
         "stat_1_num": "16 YEARS",
         "stat_1_label": "PROFESSIONAL CREATIVE EXPERTISE",
