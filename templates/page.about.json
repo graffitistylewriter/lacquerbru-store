@@ -201,6 +201,16 @@
         "padding_top": 100,
         "padding_bottom": 100
       }
+    },
+    "lb_about_pack_3HQdyX": {
+      "type": "lb-about-pack",
+      "name": "LB About Pack",
+      "settings": {
+        "image_tag": "16+ Years of Aerosol Culture",
+        "label": "Why These Brushes Are Different",
+        "heading": "Built From the Inside Out",
+        "body": "<p>What began as a passion for graffiti and street art has evolved into a creative studio dedicated to transforming ordinary spaces into memorable experiences. We partner with businesses, brands, hospitality venues, and private clients to create bespoke murals, feature walls, artistic installations, and custom creative solutions that leave a lasting impression.</p><p>Every project starts with a blank canvas and a simple question:</p><p><strong>If not unique, why bother?</strong></p><p>That philosophy drives everything we create. We don't believe in templates or one-size-fits-all artwork. Every concept is carefully designed around the space, the people who experience it, and the story our clients want to tell.</p>"
+      }
     }
   },
   "order": [
@@ -208,6 +218,7 @@
     "lb_marquee_L4wnbX",
     "lb_reviews_PM3AzR",
     "lb_commission_strip_aJQDWL",
-    "lb_featured_articles_bGwERw"
+    "lb_featured_articles_bGwERw",
+    "lb_about_pack_3HQdyX"
   ]
 }
