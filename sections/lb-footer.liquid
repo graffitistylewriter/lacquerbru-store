@@ -164,7 +164,7 @@
 
   {%- comment -%} TRUST STRIP {%- endcomment -%}
   {% if section.settings.show_trust_strip %}
-  <div class="lb-footer__trust">
+  <div class="lb-footer__trust lb-reveal">
     {% for i in (1..4) %}
       {%- assign icon_key = 'trust_' | append: i | append: '_icon' -%}
       {%- assign label_key = 'trust_' | append: i | append: '_label' -%}
@@ -185,7 +185,7 @@
   {% endif %}
 
   {%- comment -%} BOTTOM BAR {%- endcomment -%}
-  <div class="lb-footer__bottom">
+  <div class="lb-footer__bottom lb-reveal">
     <span class="lb-footer__copy">
       &copy; {{ 'now' | date: '%Y' }}
       {% if section.settings.copyright_text != blank %}
