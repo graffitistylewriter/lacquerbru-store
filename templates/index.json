@@ -17,7 +17,7 @@
         "image_overlay_color": "#000000",
         "image_overlay_opacity": 10,
         "overlay_color": "#000000",
-        "overlay_opacity": 20,
+        "overlay_opacity": 30,
         "overlay_pad_v": 12,
         "overlay_pad_h": 40,
         "eyebrow": "TRANSFORM YOUR SPACES INTO EXPERIENCES",
@@ -33,9 +33,9 @@
         "padding_v": 120,
         "content_max_width": 700,
         "show_scroll_indicator": true,
-        "scroll_label": "Scroll",
+        "scroll_label": "Scroll For More",
         "text_color": "#ffffff",
-        "subtext_color": "#aaaaaa",
+        "subtext_color": "#FFFFFF",
         "accent_color": "#7dd8e8"
       }
     },
