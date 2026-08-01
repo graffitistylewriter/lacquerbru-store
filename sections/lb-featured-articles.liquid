@@ -5,7 +5,7 @@
 
   <div class="lb-featured-articles__inner">
 
-    <div class="lb-featured-articles__header">
+    <div class="lb-featured-articles__header lb-reveal">
       {%- if section.settings.eyebrow != blank -%}
         <p class="lb-kicker" style="color:{{ section.settings.accent_color }};">{{ section.settings.eyebrow }}</p>
       {%- endif -%}
@@ -15,7 +15,7 @@
       {%- endif -%}
     </div>
 
-    <div class="lb-featured-articles__grid">
+    <div class="lb-featured-articles__grid lb-reveal lb-reveal-stagger">
       {%- assign count = 0 -%}
       {%- for article in articles -%}
         {%- if count >= section.settings.limit -%}{%- break -%}{%- endif -%}
@@ -47,7 +47,7 @@
     </div>
 
     {%- if section.settings.view_all_label != blank -%}
-      <div class="lb-featured-articles__footer">
+      <div class="lb-featured-articles__footer lb-reveal">
         <a href="/blogs/{{ section.settings.blog_handle }}" class="lb-btn lb-btn--outline" style="color:{{ section.settings.accent_color }};border-color:{{ section.settings.accent_color }};">
           {{ section.settings.view_all_label }}
         </a>
