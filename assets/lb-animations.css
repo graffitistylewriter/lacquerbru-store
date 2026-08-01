@@ -1,21 +1,29 @@
-/* ======================================
-   GLOBAL ANIMATIONS
-====================================== */
+/* ============================================================
+   LACQUER BRU — ANIMATIONS
+   lb-animations.css — loaded globally via layout/theme.liquid
+   ============================================================ */
 
-.fade-in {
-
+/* ── FADE UP — base state ── */
+.lb-reveal {
   opacity: 0;
-
-  transform: translateY(30px);
-
-  transition:
-    opacity .6s ease,
-    transform .6s ease;
+  transform: translateY(32px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
 }
 
-.fade-in.visible {
-
+.lb-reveal.is-visible {
   opacity: 1;
-
   transform: translateY(0);
+}
+
+/* ── STAGGER delays for grid children ── */
+.lb-reveal-stagger > *:nth-child(1) { transition-delay: 0s; }
+.lb-reveal-stagger > *:nth-child(2) { transition-delay: 0.1s; }
+.lb-reveal-stagger > *:nth-child(3) { transition-delay: 0.2s; }
+.lb-reveal-stagger > *:nth-child(4) { transition-delay: 0.3s; }
+.lb-reveal-stagger > *:nth-child(5) { transition-delay: 0.4s; }
+.lb-reveal-stagger > *:nth-child(6) { transition-delay: 0.5s; }
+
+/* ── Respect reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .lb-reveal { opacity: 1; transform: none; transition: none; }
 }
