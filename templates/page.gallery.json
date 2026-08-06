@@ -30,7 +30,7 @@
     "hero": {
       "type": "lb-hero",
       "settings": {
-        "bg_image": "shopify://shop_images/envynause_Back_again_in_Hamburg____nvs_crew_official_._At_the_hall_wi_2019-03-28_BvjDqGRg1jD_2009465945831200963_3.jpg",
+        "bg_image": "shopify://shop_images/LacquerBru_Hero_Image-5.png",
         "bg_color": "#0a0a0a",
         "image_overlay_color": "#000000",
         "image_overlay_opacity": 0,
@@ -53,7 +53,7 @@
         "show_scroll_indicator": true,
         "scroll_label": "Scroll For More",
         "text_color": "#ffffff",
-        "subtext_color": "#aaaaaa",
+        "subtext_color": "#FFFFFF",
         "accent_color": "#7dd8e8"
       }
     },
