@@ -12,7 +12,7 @@
     "shop_hero": {
       "type": "lb-shop-hero",
       "settings": {
-        "bg_image": "shopify://shop_images/envynause_Another_quickie___._._._.__envy__throwups__throwies__envious_2020-02-16_B8n5xGapGLj_2245017002062406371.jpg",
+        "bg_image": "shopify://shop_images/LacquerBru_Hero_Image-8.png",
         "heading": "SHOP",
         "tagline": "Built by a working artist. Tested on real work. Made for yours.",
         "category_menu": "shop-categories"
@@ -211,12 +211,12 @@
         "grid_gap": 24,
         "show_vendor": true,
         "show_badge": true,
-        "bg_color": "#0A0A0A",
-        "card_bg": "#1A1A1A",
-        "text_color": "#FFFFFF",
-        "muted_color": "#AAAAAA",
-        "accent_color": "#7DD8E8",
-        "heading_color": "#FFFFFF",
+        "bg_color": "#0a0a0a",
+        "card_bg": "#1a1a1a",
+        "text_color": "#ffffff",
+        "muted_color": "#aaaaaa",
+        "accent_color": "#7dd8e8",
+        "heading_color": "#ffffff",
         "padding_top": 100,
         "padding_bottom": 100
       }
