@@ -12,11 +12,14 @@
     "hero": {
       "type": "lb-hero",
       "settings": {
-        "bg_image": "shopify://shop_images/envynause_Here_s_one_from_my_wall_with__bener1graffiti_in_August_2016_2017-01-11_BPI1-ccgC8P_1425626669678341903.jpg",
+        "bg_image": "shopify://shop_images/LacquerBru_Hero_Image-9.png",
+        "bg_color": "#0a0a0a",
+        "image_overlay_color": "#000000",
+        "image_overlay_opacity": 40,
         "overlay_color": "#000000",
         "overlay_opacity": 40,
-        "overlay_width": 100,
-        "overlay_height": 100,
+        "overlay_pad_v": 8,
+        "overlay_pad_h": 16,
         "eyebrow": "Work Together",
         "heading": "Commission Inquiry.",
         "heading_em": "",
