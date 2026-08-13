@@ -75,24 +75,30 @@
 
       {%- comment -%} PRICE + CTA {%- endcomment -%}
       {% if feat_product != blank %}
+        {%- assign sorted_variants = feat_product.variants | sort: 'price' -%}
+        {%- assign min_price = sorted_variants.first.price -%}
+        {%- assign max_price = sorted_variants.last.price -%}
         <div class="lpf-price-row">
-          <div class="lpf-price">{{ feat_product.price | money }}</div>
-          {% if section.settings.license_note != blank %}
-            <div class="lpf-license">{{ section.settings.license_note }}</div>
+          {% if feat_product.variants.size > 1 %}
+            <div class="lpf-price">
+              {{ min_price | money }} – {{ max_price | money }}
+            </div>
+            <div class="lpf-license">Choose your license below</div>
+          {% else %}
+            <div class="lpf-price">{{ feat_product.price | money }}</div>
+            {% if section.settings.license_note != blank %}
+              <div class="lpf-license">{{ section.settings.license_note }}</div>
+            {% endif %}
           {% endif %}
         </div>
         <div class="lpf-btns">
           <a href="{{ feat_product.url }}" class="lpf-cart">
-            {{ section.settings.cta_label | default: 'Add to Cart' }} — {{ feat_product.price | money }}
+            {{ section.settings.cta_label | default: 'Select License' }}
           </a>
           <button data-lb-about-pack-trigger class="lpf-read-more">
             Read More
           </button>
         </div>
-      {% endif %}
-
-      {% if section.settings.guarantee != blank %}
-        <div class="lpf-guarantee">{{ section.settings.guarantee }}</div>
       {% endif %}
 
     </div>
