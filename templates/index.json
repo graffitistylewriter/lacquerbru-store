@@ -261,6 +261,60 @@
         "accessibility_label": "Lacquer Bru creative services",
         "separator": "·"
       }
+    },
+    "178665619070e521b3": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_ba2cc79_3MF3cj": {
+          "type": "ai_gen_block_ba2cc79",
+          "settings": {
+            "image_1": "shopify://shop_images/LacquerBru_Hero_Image-8.png",
+            "image_2": "shopify://shop_images/LacquerBru_Hero_Image-Main.png",
+            "image_3": "shopify://shop_images/LacquerBru_Hero_Image-2.png",
+            "image_4": "shopify://shop_images/envynause_Final_piece_from_my_recent_work_with_my_wife__kamyschifferph_2017-04-30_BTf8DOtgYyD_1504184905309981827_5a257210-0aa5-4a5a-9b02-ec7c8b1db99b.jpg",
+            "product_title": "Premium Design Pack TEST",
+            "product_description": "<p>A comprehensive collection of premium design assets crafted for creative professionals.</p>",
+            "license_heading": "License Options",
+            "commercial_title": "Commercial License",
+            "commercial_feature_1": "Unlimited commercial projects",
+            "commercial_feature_2": "Client work permitted",
+            "commercial_feature_3": "Resale rights included",
+            "commercial_feature_4": "Lifetime updates",
+            "personal_title": "Personal License",
+            "personal_feature_1": "Personal projects only",
+            "personal_feature_2": "Single user license",
+            "personal_feature_3": "No client work",
+            "personal_feature_4": "Lifetime updates",
+            "included_heading": "What's Included",
+            "included_item_1": "High-resolution files",
+            "included_item_2": "Layered source files",
+            "included_item_3": "Documentation",
+            "included_item_4": "Premium support",
+            "included_item_5": "",
+            "included_item_6": "",
+            "cta_text": "View Product Details",
+            "cta_url": "",
+            "panel_width": 600,
+            "background_color": "#0a0a0a",
+            "heading_color": "#ffffff",
+            "text_color": "#aaaaaa",
+            "accent_color": "#7dd8e8",
+            "border_color": "#333333",
+            "card_background": "#1a1a1a",
+            "cta_background": "#7dd8e8",
+            "cta_text_color": "#0a0a0a",
+            "cta_border_radius": 4,
+            "title_size": 32,
+            "section_heading_size": 14,
+            "text_size": 14
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_ba2cc79_3MF3cj"
+      ],
+      "settings": {}
     }
   },
   "order": [
@@ -271,6 +325,7 @@
     "featured-articles",
     "about",
     "lb_cta_banner_cXmyMN",
-    "marquee"
+    "marquee",
+    "178665619070e521b3"
   ]
 }

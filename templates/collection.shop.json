@@ -9,20 +9,10 @@
  */
 {
   "sections": {
-    "shop_hero": {
-      "type": "lb-shop-hero",
-      "settings": {
-        "bg_image": "shopify://shop_images/LacquerBru_Hero_Image-8.png",
-        "heading": "SHOP",
-        "tagline": "Built by a working artist. Tested on real work. Made for yours.",
-        "category_menu": "shop-categories"
-      }
-    },
-    "lb_hero_XpCUDi": {
+    "lb_hero_JgUb8L": {
       "type": "lb-hero",
       "name": "Hero Banner",
       "settings": {
-        "bg_image": "shopify://shop_images/LacquerBru_Hero_Image-5_d3a6e88a-529d-41d0-b954-329f42758f8b.png",
         "bg_color": "#0a0a0a",
         "image_overlay_color": "#000000",
         "image_overlay_opacity": 40,
@@ -30,12 +20,12 @@
         "overlay_opacity": 0,
         "overlay_pad_v": 8,
         "overlay_pad_h": 16,
-        "eyebrow": "ONLINE STORE",
-        "heading": "SHOP",
-        "heading_em": "& MORE",
-        "subtext": "BUILT BY ARTISTS. CREATED FOR YOU",
+        "eyebrow": "Welcome",
+        "heading": "Your Brand.",
+        "heading_em": "Your Story.",
+        "subtext": "Tell your story here. Add a background image and make it yours.",
         "btn1_label": "Shop Now",
-        "btn1_url": "shopify://collections/shop",
+        "btn1_url": "",
         "btn2_label": "Learn More",
         "btn2_url": "",
         "content_align": "left",
@@ -44,9 +34,9 @@
         "content_max_width": 700,
         "show_scroll_indicator": true,
         "scroll_label": "Scroll",
-        "text_color": "#FFFFFF",
-        "subtext_color": "#AAAAAA",
-        "accent_color": "#7DD8E8"
+        "text_color": "#ffffff",
+        "subtext_color": "#aaaaaa",
+        "accent_color": "#7dd8e8"
       }
     },
     "lb_marquee_nTnPGX": {
@@ -471,11 +461,59 @@
         "button_text": "Notify Me",
         "footnote": "No spam. Just new drops. Unsubscribe anytime."
       }
+    },
+    "178665812320d6bdb5": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_c0c4818_MYkEAL": {
+          "type": "ai_gen_block_c0c4818",
+          "settings": {
+            "product_title": "Premium Design Pack",
+            "product_description": "<p>A comprehensive collection of premium design assets crafted for creative professionals. This pack includes everything you need to elevate your projects with dark-luxury aesthetics.</p>",
+            "cta_url": "",
+            "cta_text": "View Product Details",
+            "show_licenses": true,
+            "license_heading": "License Options",
+            "commercial_title": "Commercial License",
+            "commercial_features": "Unlimited commercial projects\nClient work permitted\nExtended usage rights\nPriority support",
+            "personal_title": "Personal License",
+            "personal_features": "Personal projects only\nNon-commercial use\nStandard usage rights\nCommunity support",
+            "show_included": true,
+            "included_heading": "What's Included",
+            "included_items": "High-resolution design files\nLayered source files\nCustomizable templates\nDocumentation & guides\nLifetime updates\nCommercial license",
+            "panel_width": 600,
+            "border_radius": 12,
+            "image_border_radius": 8,
+            "thumbnail_border_radius": 4,
+            "card_border_radius": 8,
+            "cta_border_radius": 6,
+            "background_color": "#0a0a0a",
+            "text_color": "#ffffff",
+            "muted_color": "#aaaaaa",
+            "accent_color": "#7dd8e8",
+            "card_background": "#1a1a1a",
+            "card_border": "#2a2a2a",
+            "cta_background": "#7dd8e8",
+            "cta_text_color": "#0a0a0a",
+            "cta_hover_background": "#5fc4d4",
+            "title_size": 32,
+            "section_heading_size": 24,
+            "license_title_size": 18,
+            "body_size": 15,
+            "feature_size": 14,
+            "cta_size": 16
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_c0c4818_MYkEAL"
+      ],
+      "settings": {}
     }
   },
   "order": [
-    "shop_hero",
-    "lb_hero_XpCUDi",
+    "lb_hero_JgUb8L",
     "lb_marquee_nTnPGX",
     "product_feature",
     "about_pack",
@@ -486,6 +524,7 @@
     "how_it_works",
     "reviews",
     "faq",
-    "notify_signup"
+    "notify_signup",
+    "178665812320d6bdb5"
   ]
 }
