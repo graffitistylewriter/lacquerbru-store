@@ -6,9 +6,20 @@
 
     {%- comment -%} VISUAL SIDE {%- endcomment -%}
     <div class="lpf-visual">
-      <div class="lpf-bg-word">{{ section.settings.bg_word }}</div>
-      <div class="lpf-pack-name">{{ section.settings.pack_name }}</div>
-      <div class="lpf-pack-sub">{{ section.settings.pack_subtitle }}</div>
+      {% if section.settings.pack_image != blank %}
+        <div class="lpf-image-wrap">
+          <img
+            src="{{ section.settings.pack_image | image_url: width: 900 }}"
+            alt="{{ section.settings.pack_image.alt | escape | default: section.settings.pack_name }}"
+            class="lpf-pack-image"
+            loading="lazy"
+          >
+        </div>
+      {% else %}
+        <div class="lpf-bg-word">{{ section.settings.bg_word }}</div>
+        <div class="lpf-pack-name">{{ section.settings.pack_name }}</div>
+        <div class="lpf-pack-sub">{{ section.settings.pack_subtitle }}</div>
+      {% endif %}
 
       <div class="lpf-badge-row">
         {% for block in section.blocks %}
@@ -97,6 +108,11 @@
   .lb-product-feature { width: 100%; box-sizing: border-box; }
   .lpf-inner { display: grid; grid-template-columns: 1fr 1fr; gap: var(--lb-space-xl); align-items: start; max-width: var(--lb-page-width); margin: 0 auto; }
   .lpf-visual { position: relative; display: flex; flex-direction: column; gap: var(--lb-space-md); }
+  .lpf-image-wrap { width: 100%; border-radius: 4px; overflow: hidden; }
+  .lpf-pack-image { width: 100%; height: auto; display: block; object-fit: cover; }
+  .lpf-bg-word { font-size: clamp(60px, 10vw, 120px); font-weight: 900; letter-spacing: -0.04em; text-transform: uppercase; color: rgba(255,255,255,0.04); line-height: 1; user-select: none; }
+  .lpf-pack-name { font-size: clamp(32px, 5vw, 64px); font-weight: 800; letter-spacing: -0.02em; text-transform: uppercase; color: var(--lb-white); line-height: 1; }
+  .lpf-pack-sub { font-size: var(--lb-text-xs); font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--lb-muted); }
   .lpf-badge-row { display: flex; flex-wrap: wrap; gap: var(--lb-space-xs); margin-top: var(--lb-space-xs); }
   .lpf-badge { font-size: var(--lb-text-xs); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: var(--lb-space-xs) var(--lb-space-sm); border: 1px solid rgba(255,255,255,0.15); color: var(--lb-white); }
   .lpf-eyebrow { font-size: var(--lb-text-xs); font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase; color: var(--lb-blue); display: block; margin-bottom: var(--lb-space-sm); }
@@ -161,9 +177,10 @@
     { "type": "text", "id": "license_note", "label": "License Note", "default": "Personal license included." },
     { "type": "text", "id": "guarantee", "label": "Guarantee Line", "default": "Secure checkout · Instant delivery · 3 download attempts · 14-day link validity" },
     { "type": "header", "content": "Visual Panel" },
-    { "type": "text", "id": "bg_word", "label": "Background Word", "default": "FLARE" },
-    { "type": "text", "id": "pack_name", "label": "Pack Name", "default": "FLARE" },
-    { "type": "text", "id": "pack_subtitle", "label": "Pack Subtitle", "default": "Procreate Brush Pack by Lacquer Bru" },
+    { "type": "image_picker", "id": "pack_image", "label": "Pack Image", "info": "Upload a product image. If set, this replaces the text-based visual. Leave blank to use the typographic layout." },
+    { "type": "text", "id": "bg_word", "label": "Background Word (text fallback)", "default": "FLARE" },
+    { "type": "text", "id": "pack_name", "label": "Pack Name (text fallback)", "default": "FLARE" },
+    { "type": "text", "id": "pack_subtitle", "label": "Pack Subtitle (text fallback)", "default": "Procreate Brush Pack by Lacquer Bru" },
     { "type": "header", "content": "Colours & Spacing" },
     { "type": "color", "id": "bg_color", "label": "Background", "default": "#0A0A0A" },
     { "type": "range", "id": "padding_top", "label": "Top Padding", "min": 40, "max": 160, "step": 10, "default": 100, "unit": "px" },
