@@ -78,6 +78,9 @@
           <a href="{{ feat_product.url }}" class="lpf-cart">
             {{ section.settings.cta_label | default: 'Add to Cart' }} — {{ feat_product.price | money }}
           </a>
+          <button data-lb-about-pack-trigger class="lpf-read-more">
+            Read More
+          </button>
         </div>
       {% endif %}
 
@@ -107,9 +110,11 @@
   .lpf-compat-item { font-size: var(--lb-text-xs); font-weight: 500; letter-spacing: 0.1em; padding: var(--lb-space-xs) var(--lb-space-sm); border: 1px solid rgba(255,255,255,0.1); color: var(--lb-concrete); }
   .lpf-compat-item.active { border-color: var(--lb-blue); color: var(--lb-blue); }
   .lpf-price-row { display: flex; align-items: center; gap: var(--lb-space-md); margin-bottom: var(--lb-space-md); flex-wrap: wrap; }
-  .lpf-btns { margin-bottom: var(--lb-space-sm); }
+  .lpf-btns { display: flex; flex-wrap: wrap; gap: var(--lb-space-sm); align-items: center; margin-bottom: var(--lb-space-sm); }
   .lpf-cart { display: inline-block; background: var(--lb-blue); color: var(--lb-void); font-size: var(--lb-text-xs); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; padding: var(--lb-space-sm) var(--lb-space-lg); text-decoration: none; transition: opacity var(--lb-transition); }
   .lpf-cart:hover { opacity: 0.85; }
+  .lpf-read-more { display: inline-block; background: transparent; border: 1px solid #7dd8e8; color: #7dd8e8; font-size: var(--lb-text-xs); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; padding: var(--lb-space-sm) var(--lb-space-lg); cursor: pointer; transition: background var(--lb-transition), color var(--lb-transition); }
+  .lpf-read-more:hover { background: #7dd8e8; color: #0a0a0a; }
   @media (max-width: 860px) {
     .lpf-inner { grid-template-columns: 1fr; gap: var(--lb-space-lg); }
     .lb-product-feature { padding-left: var(--lb-container-pad) !important; padding-right: var(--lb-container-pad) !important; }
@@ -182,4 +187,3 @@
   ]
 }
 {% endschema %}
-
