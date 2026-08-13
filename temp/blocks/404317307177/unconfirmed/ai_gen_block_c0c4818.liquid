@@ -1,6 +1,751 @@
+{% doc %}
+  @prompt
+    Create a dark-luxury styled product detail lightbox section called "LB About Pack" for a Shopify theme. It should slide in as an overlay panel (not a full-screen modal) when triggered from a product feature card. The lightbox should include: a multi-photo image gallery with thumbnail navigation, a product title and full description area, a license comparison block showing Commercial License vs Personal License options with a feature list for each, a "What's Included" section with icons or checkmarks, a close button, and a CTA button linking to the product page. Style should match a dark-luxury editorial aesthetic: dark background (#0a0a0a), white headings, muted grey subtext (#aaaaaa), and a teal accent colour (#7dd8e8). The section should be configurable via theme editor settings (images, text, license details). It should be triggered by a data attribute [data-lb-about-pack-trigger] on external elements.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .lb-about-pack-overlay-{{ ai_gen_id }} {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 20px;
+  }
+
+  .lb-about-pack-overlay-{{ ai_gen_id }}.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .lb-about-pack-panel-{{ ai_gen_id }} {
+    background-color: {{ block.settings.background_color }};
+    width: 100%;
+    max-width: {{ block.settings.panel_width }}px;
+    height: 100%;
+    max-height: calc(100vh - 40px);
+    border-radius: {{ block.settings.border_radius }}px;
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .lb-about-pack-overlay-{{ ai_gen_id }}.active .lb-about-pack-panel-{{ ai_gen_id }} {
+    transform: translateX(0);
+  }
+
+  .lb-about-pack-close-{{ ai_gen_id }} {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: {{ block.settings.text_color }};
+    cursor: pointer;
+    padding: 8px;
+    z-index: 10;
+    transition: opacity 0.2s ease;
+  }
+
+  .lb-about-pack-close-{{ ai_gen_id }}:hover {
+    opacity: 0.7;
+  }
+
+  .lb-about-pack-close-{{ ai_gen_id }} svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .lb-about-pack-content-{{ ai_gen_id }} {
+    padding: 60px 40px 40px;
+  }
+
+  .lb-about-pack-gallery-{{ ai_gen_id }} {
+    margin-bottom: 40px;
+  }
+
+  .lb-about-pack-main-image-{{ ai_gen_id }} {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: {{ block.settings.image_border_radius }}px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    background-color: #1a1a1a;
+  }
+
+  .lb-about-pack-main-image-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .lb-about-pack-thumbnails-{{ ai_gen_id }} {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .lb-about-pack-thumbnail-{{ ai_gen_id }} {
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    border-radius: {{ block.settings.thumbnail_border_radius }}px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.2s ease;
+    background-color: #1a1a1a;
+  }
+
+  .lb-about-pack-thumbnail-{{ ai_gen_id }}.active {
+    border-color: {{ block.settings.accent_color }};
+  }
+
+  .lb-about-pack-thumbnail-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .lb-about-pack-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    color: {{ block.settings.text_color }};
+    margin: 0 0 16px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .lb-about-pack-description-{{ ai_gen_id }} {
+    color: {{ block.settings.muted_color }};
+    font-size: {{ block.settings.body_size }}px;
+    line-height: 1.6;
+    margin-bottom: 40px;
+  }
+
+  .lb-about-pack-section-heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.section_heading_size }}px;
+    color: {{ block.settings.text_color }};
+    margin: 0 0 20px;
+    font-weight: 600;
+  }
+
+  .lb-about-pack-licenses-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  .lb-about-pack-license-card-{{ ai_gen_id }} {
+    background-color: {{ block.settings.card_background }};
+    border: 1px solid {{ block.settings.card_border }};
+    border-radius: {{ block.settings.card_border_radius }}px;
+    padding: 24px;
+  }
+
+  .lb-about-pack-license-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.license_title_size }}px;
+    color: {{ block.settings.text_color }};
+    margin: 0 0 12px;
+    font-weight: 600;
+  }
+
+  .lb-about-pack-license-features-{{ ai_gen_id }} {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .lb-about-pack-license-features-{{ ai_gen_id }} li {
+    color: {{ block.settings.muted_color }};
+    font-size: {{ block.settings.feature_size }}px;
+    margin-bottom: 8px;
+    padding-left: 24px;
+    position: relative;
+  }
+
+  .lb-about-pack-license-features-{{ ai_gen_id }} li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: {{ block.settings.accent_color }};
+    font-weight: bold;
+  }
+
+  .lb-about-pack-included-{{ ai_gen_id }} {
+    margin-bottom: 40px;
+  }
+
+  .lb-about-pack-included-list-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .lb-about-pack-included-item-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: {{ block.settings.muted_color }};
+    font-size: {{ block.settings.body_size }}px;
+  }
+
+  .lb-about-pack-included-icon-{{ ai_gen_id }} {
+    width: 20px;
+    height: 20px;
+    color: {{ block.settings.accent_color }};
+    flex-shrink: 0;
+  }
+
+  .lb-about-pack-cta-{{ ai_gen_id }} {
+    display: inline-block;
+    background-color: {{ block.settings.cta_background }};
+    color: {{ block.settings.cta_text_color }};
+    padding: 16px 32px;
+    border-radius: {{ block.settings.cta_border_radius }}px;
+    text-decoration: none;
+    font-size: {{ block.settings.cta_size }}px;
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    border: none;
+    cursor: pointer;
+  }
+
+  .lb-about-pack-cta-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.cta_hover_background }};
+    transform: translateY(-2px);
+  }
+
+  @media screen and (max-width: 768px) {
+    .lb-about-pack-overlay-{{ ai_gen_id }} {
+      padding: 0;
+    }
+
+    .lb-about-pack-panel-{{ ai_gen_id }} {
+      max-width: 100%;
+      max-height: 100vh;
+      border-radius: 0;
+    }
+
+    .lb-about-pack-content-{{ ai_gen_id }} {
+      padding: 60px 20px 20px;
+    }
+
+    .lb-about-pack-licenses-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+    }
+
+    .lb-about-pack-included-list-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+    }
+  }
+{% endstyle %}
+
+<lb-about-pack-{{ ai_gen_id }} class="lb-about-pack-overlay-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="lb-about-pack-panel-{{ ai_gen_id }}">
+    <button class="lb-about-pack-close-{{ ai_gen_id }}" aria-label="Close lightbox">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <div class="lb-about-pack-content-{{ ai_gen_id }}">
+      {% if block.settings.image_1 or block.settings.image_2 or block.settings.image_3 or block.settings.image_4 %}
+        <div class="lb-about-pack-gallery-{{ ai_gen_id }}">
+          <div class="lb-about-pack-main-image-{{ ai_gen_id }}">
+            {% if block.settings.image_1 %}
+              <img src="{{ block.settings.image_1 | image_url: width: 1200 }}" alt="{{ block.settings.image_1.alt | escape }}" loading="lazy" data-main-image>
+            {% else %}
+              {{ 'product-1' | placeholder_svg_tag }}
+            {% endif %}
+          </div>
+
+          <div class="lb-about-pack-thumbnails-{{ ai_gen_id }}">
+            {% if block.settings.image_1 %}
+              <div class="lb-about-pack-thumbnail-{{ ai_gen_id }} active" data-thumbnail data-image-url="{{ block.settings.image_1 | image_url: width: 1200 }}">
+                <img src="{{ block.settings.image_1 | image_url: width: 160 }}" alt="{{ block.settings.image_1.alt | escape }}" loading="lazy">
+              </div>
+            {% endif %}
+            {% if block.settings.image_2 %}
+              <div class="lb-about-pack-thumbnail-{{ ai_gen_id }}" data-thumbnail data-image-url="{{ block.settings.image_2 | image_url: width: 1200 }}">
+                <img src="{{ block.settings.image_2 | image_url: width: 160 }}" alt="{{ block.settings.image_2.alt | escape }}" loading="lazy">
+              </div>
+            {% endif %}
+            {% if block.settings.image_3 %}
+              <div class="lb-about-pack-thumbnail-{{ ai_gen_id }}" data-thumbnail data-image-url="{{ block.settings.image_3 | image_url: width: 1200 }}">
+                <img src="{{ block.settings.image_3 | image_url: width: 160 }}" alt="{{ block.settings.image_3.alt | escape }}" loading="lazy">
+              </div>
+            {% endif %}
+            {% if block.settings.image_4 %}
+              <div class="lb-about-pack-thumbnail-{{ ai_gen_id }}" data-thumbnail data-image-url="{{ block.settings.image_4 | image_url: width: 1200 }}">
+                <img src="{{ block.settings.image_4 | image_url: width: 160 }}" alt="{{ block.settings.image_4.alt | escape }}" loading="lazy">
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if block.settings.product_title != blank %}
+        <h2 class="lb-about-pack-title-{{ ai_gen_id }}">{{ block.settings.product_title }}</h2>
+      {% endif %}
+
+      {% if block.settings.product_description != blank %}
+        <div class="lb-about-pack-description-{{ ai_gen_id }}">
+          {{ block.settings.product_description }}
+        </div>
+      {% endif %}
+
+      {% if block.settings.show_licenses %}
+        <h3 class="lb-about-pack-section-heading-{{ ai_gen_id }}">{{ block.settings.license_heading }}</h3>
+        <div class="lb-about-pack-licenses-{{ ai_gen_id }}">
+          <div class="lb-about-pack-license-card-{{ ai_gen_id }}">
+            <h4 class="lb-about-pack-license-title-{{ ai_gen_id }}">{{ block.settings.commercial_title }}</h4>
+            <ul class="lb-about-pack-license-features-{{ ai_gen_id }}">
+              {% assign commercial_features = block.settings.commercial_features | newline_to_br | split: '<br />' %}
+              {% for feature in commercial_features %}
+                {% if feature != blank %}
+                  <li>{{ feature | strip }}</li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+
+          <div class="lb-about-pack-license-card-{{ ai_gen_id }}">
+            <h4 class="lb-about-pack-license-title-{{ ai_gen_id }}">{{ block.settings.personal_title }}</h4>
+            <ul class="lb-about-pack-license-features-{{ ai_gen_id }}">
+              {% assign personal_features = block.settings.personal_features | newline_to_br | split: '<br />' %}
+              {% for feature in personal_features %}
+                {% if feature != blank %}
+                  <li>{{ feature | strip }}</li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      {% endif %}
+
+      {% if block.settings.show_included %}
+        <h3 class="lb-about-pack-section-heading-{{ ai_gen_id }}">{{ block.settings.included_heading }}</h3>
+        <div class="lb-about-pack-included-{{ ai_gen_id }}">
+          <div class="lb-about-pack-included-list-{{ ai_gen_id }}">
+            {% assign included_items = block.settings.included_items | newline_to_br | split: '<br />' %}
+            {% for item in included_items %}
+              {% if item != blank %}
+                <div class="lb-about-pack-included-item-{{ ai_gen_id }}">
+                  <svg class="lb-about-pack-included-icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span>{{ item | strip }}</span>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if block.settings.cta_url != blank %}
+        <a href="{{ block.settings.cta_url }}" class="lb-about-pack-cta-{{ ai_gen_id }}">
+          {{ block.settings.cta_text }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</lb-about-pack-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class LbAboutPack{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.closeButton = this.querySelector('.lb-about-pack-close-{{ ai_gen_id }}');
+        this.thumbnails = this.querySelectorAll('[data-thumbnail]');
+        this.mainImage = this.querySelector('[data-main-image]');
+      }
+
+      connectedCallback() {
+        this.setupEventListeners();
+        this.setupTriggers();
+      }
+
+      setupEventListeners() {
+        this.closeButton.addEventListener('click', () => this.close());
+
+        this.addEventListener('click', (e) => {
+          if (e.target === this) {
+            this.close();
+          }
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && this.classList.contains('active')) {
+            this.close();
+          }
+        });
+
+        this.thumbnails.forEach((thumbnail) => {
+          thumbnail.addEventListener('click', () => {
+            this.thumbnails.forEach((t) => t.classList.remove('active'));
+            thumbnail.classList.add('active');
+
+            const imageUrl = thumbnail.getAttribute('data-image-url');
+            if (this.mainImage && imageUrl) {
+              this.mainImage.src = imageUrl;
+            }
+          });
+        });
+      }
+
+      setupTriggers() {
+        const triggers = document.querySelectorAll('[data-lb-about-pack-trigger]');
+        triggers.forEach((trigger) => {
+          trigger.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.open();
+          });
+        });
+      }
+
+      open() {
+        this.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      close() {
+        this.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    customElements.define('lb-about-pack-{{ ai_gen_id }}', LbAboutPack{{ ai_gen_id }});
+  })();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "LB About Pack",
+  "tag": null,
+  "class": "lb-about-pack-lightbox",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Product information"
+    },
+    {
+      "type": "text",
+      "id": "product_title",
+      "label": "Product title",
+      "default": "Premium Design Pack"
+    },
+    {
+      "type": "richtext",
+      "id": "product_description",
+      "label": "Product description",
+      "default": "<p>A comprehensive collection of premium design assets crafted for creative professionals. This pack includes everything you need to elevate your projects with dark-luxury aesthetics.</p>"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA link"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA button text",
+      "default": "View Product Details"
+    },
+    {
+      "type": "header",
+      "content": "Gallery images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Image 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_4",
+      "label": "Image 4"
+    },
+    {
+      "type": "header",
+      "content": "License comparison"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_licenses",
+      "label": "Show license comparison",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "license_heading",
+      "label": "License section heading",
+      "default": "License Options"
+    },
+    {
+      "type": "text",
+      "id": "commercial_title",
+      "label": "Commercial license title",
+      "default": "Commercial License"
+    },
+    {
+      "type": "textarea",
+      "id": "commercial_features",
+      "label": "Commercial license features",
+      "info": "One feature per line",
+      "default": "Unlimited commercial projects\nClient work permitted\nExtended usage rights\nPriority support"
+    },
+    {
+      "type": "text",
+      "id": "personal_title",
+      "label": "Personal license title",
+      "default": "Personal License"
+    },
+    {
+      "type": "textarea",
+      "id": "personal_features",
+      "label": "Personal license features",
+      "info": "One feature per line",
+      "default": "Personal projects only\nNon-commercial use\nStandard usage rights\nCommunity support"
+    },
+    {
+      "type": "header",
+      "content": "What's included"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_included",
+      "label": "Show what's included section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "included_heading",
+      "label": "Included section heading",
+      "default": "What's Included"
+    },
+    {
+      "type": "textarea",
+      "id": "included_items",
+      "label": "Included items",
+      "info": "One item per line",
+      "default": "High-resolution design files\nLayered source files\nCustomizable templates\nDocumentation & guides\nLifetime updates\nCommercial license"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "panel_width",
+      "label": "Panel width",
+      "min": 400,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Panel border radius",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "label": "Image border radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "thumbnail_border_radius",
+      "label": "Thumbnail border radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "label": "License card border radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "cta_border_radius",
+      "label": "CTA button border radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#0a0a0a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Heading text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "muted_color",
+      "label": "Body text",
+      "default": "#aaaaaa"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent",
+      "default": "#7dd8e8"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "License card background",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "card_border",
+      "label": "License card border",
+      "default": "#2a2a2a"
+    },
+    {
+      "type": "color",
+      "id": "cta_background",
+      "label": "CTA button background",
+      "default": "#7dd8e8"
+    },
+    {
+      "type": "color",
+      "id": "cta_text_color",
+      "label": "CTA button text",
+      "default": "#0a0a0a"
+    },
+    {
+      "type": "color",
+      "id": "cta_hover_background",
+      "label": "CTA button hover background",
+      "default": "#5fc4d4"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Product title size",
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "section_heading_size",
+      "label": "Section heading size",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "license_title_size",
+      "label": "License title size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Body text size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "feature_size",
+      "label": "Feature text size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "cta_size",
+      "label": "CTA button text size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    }
+  ],
+  "presets": [
+    {
+      "name": "LB About Pack"
+    }
+  ]
+}
 {% endschema %}
