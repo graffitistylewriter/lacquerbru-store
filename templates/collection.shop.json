@@ -18,6 +18,37 @@
         "category_menu": "shop-categories"
       }
     },
+    "lb_hero_XpCUDi": {
+      "type": "lb-hero",
+      "name": "Hero Banner",
+      "settings": {
+        "bg_image": "shopify://shop_images/LacquerBru_Hero_Image-5_d3a6e88a-529d-41d0-b954-329f42758f8b.png",
+        "bg_color": "#0a0a0a",
+        "image_overlay_color": "#000000",
+        "image_overlay_opacity": 40,
+        "overlay_color": "#000000",
+        "overlay_opacity": 0,
+        "overlay_pad_v": 8,
+        "overlay_pad_h": 16,
+        "eyebrow": "ONLINE STORE",
+        "heading": "SHOP",
+        "heading_em": "& MORE",
+        "subtext": "BUILT BY ARTISTS. CREATED FOR YOU",
+        "btn1_label": "Shop Now",
+        "btn1_url": "shopify://collections/shop",
+        "btn2_label": "Learn More",
+        "btn2_url": "",
+        "content_align": "left",
+        "min_height": 750,
+        "padding_v": 120,
+        "content_max_width": 700,
+        "show_scroll_indicator": true,
+        "scroll_label": "Scroll",
+        "text_color": "#FFFFFF",
+        "subtext_color": "#AAAAAA",
+        "accent_color": "#7DD8E8"
+      }
+    },
     "lb_marquee_nTnPGX": {
       "type": "lb-marquee",
       "blocks": {
@@ -444,6 +475,7 @@
   },
   "order": [
     "shop_hero",
+    "lb_hero_XpCUDi",
     "lb_marquee_nTnPGX",
     "product_feature",
     "about_pack",
